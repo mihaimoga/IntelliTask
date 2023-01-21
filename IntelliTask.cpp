@@ -35,7 +35,7 @@ END_MESSAGE_MAP()
 
 // CIntelliTaskApp construction
 
-CIntelliTaskApp::CIntelliTaskApp()
+CIntelliTaskApp::CIntelliTaskApp() : m_pInstanceChecker(_T("IntelliTask"))
 {
 	EnableHtmlHelp();
 
@@ -94,7 +94,18 @@ BOOL CIntelliTaskApp::InitInstance()
 	EnableTaskbarInteraction(FALSE);
 
 	// AfxInitRichEdit2() is required to use RichEdit control	
-	// AfxInitRichEdit2();
+	AfxInitRichEdit2();
+
+	//Check for the previous instance as soon as possible
+	if (m_pInstanceChecker.PreviousInstanceRunning())
+	{
+		CCommandLineInfo cmdInfo;
+		ParseCommandLine(cmdInfo);
+
+		AfxMessageBox(_T("Previous version detected, will now restore it..."), MB_OK | MB_ICONINFORMATION);
+		m_pInstanceChecker.ActivatePreviousInstance(cmdInfo.m_strFileName);
+		return FALSE;
+	}
 
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
@@ -133,6 +144,10 @@ BOOL CIntelliTaskApp::InitInstance()
 	pFrame->UpdateWindow();
 	// call DragAcceptFiles only if there's a suffix
 	//  In an SDI app, this should occur after ProcessShellCommand
+
+	// If this is the first instance of our App then track it so any other instances can find us
+	m_pInstanceChecker.TrackFirstInstanceRunning(m_pMainWnd->GetSafeHwnd());
+
 	return TRUE;
 }
 

@@ -20,6 +20,7 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #endif
 
 #include "resource.h"       // main symbols
+#include "sinstance.h"
 
 // CIntelliTaskApp:
 // See IntelliTask.cpp for the implementation of this class
@@ -30,6 +31,8 @@ class CIntelliTaskApp : public CWinAppEx
 public:
 	CIntelliTaskApp();
 
+public:
+	CInstanceChecker m_pInstanceChecker;
 
 // Overrides
 public:

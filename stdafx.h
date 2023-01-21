@@ -59,10 +59,6 @@
 #endif
 #endif
 
-#include <string>
-#include <sstream>
-#include <iomanip>
-
 #include <tlhelp32.h>
 #include <psapi.h>
 #pragma comment(lib, "psapi.lib")
@@ -75,3 +71,8 @@
 #define MEM_USAGE_COLUMN_LENGTH 70
 #define COMPANY_COLUMN_LENGTH 120
 #define VERSION_COLUMN_LENGTH 120
+
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <atlsync.h>
