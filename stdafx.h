@@ -76,3 +76,4 @@
 #include <sstream>
 #include <iomanip>
 #include <atlsync.h>
+#include <vector>
