@@ -65,23 +65,23 @@ CSystemSnapshot::~CSystemSnapshot()
 	VERIFY(RemoveAll());
 }
 
-BOOL CSystemSnapshot::RemoveAll()
+bool CSystemSnapshot::RemoveAll()
 {
 	const int nSize = (int)m_arrProcessList.GetSize();
 	for (int nIndex = 0; nIndex < nSize; nIndex++)
 	{
 		CProcessData* pProcessData = m_arrProcessList.GetAt(nIndex);
-		ASSERT(pProcessData != NULL);
+		ASSERT(pProcessData != nullptr);
 		delete pProcessData;
-		pProcessData = NULL;
+		pProcessData = nullptr;
 	}
 	m_arrProcessList.RemoveAll();
-	return TRUE;
+	return true;
 }
 
-BOOL CSystemSnapshot::Refresh()
+bool CSystemSnapshot::Refresh()
 {
-	HANDLE hSnapshot = NULL;
+	HANDLE hSnapshot = nullptr;
 	PROCESSENTRY32 pe32 = { 0 };
 
 	VERIFY(RemoveAll());
@@ -90,7 +90,7 @@ BOOL CSystemSnapshot::Refresh()
 		pe32.dwSize = sizeof(PROCESSENTRY32);
 		if (!Process32First(hSnapshot, &pe32))
 		{
-			return FALSE;
+			return false;
 		}
 
 		do
@@ -102,14 +102,14 @@ BOOL CSystemSnapshot::Refresh()
 	}
 	else
 	{
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
-BOOL CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
+bool CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 {
-	HANDLE hProcess = NULL;
+	HANDLE hProcess = nullptr;
 	PROCESS_MEMORY_COUNTERS pmc = { 0 };
 	pmc.cb = sizeof(PROCESS_MEMORY_COUNTERS);
 
@@ -119,7 +119,7 @@ BOOL CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 	pProcessData->SetParentProcessID(pe32.th32ParentProcessID);
 	pProcessData->SetFileName(pe32.szExeFile);
 
-	if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pe32.th32ProcessID)) != NULL)
+	if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pe32.th32ProcessID)) != nullptr)
 	{
 		pProcessData->m_pCpuUsage.SetProcessID(pe32.th32ProcessID);
 		pProcessData->SetProcessorUsage(pProcessData->m_pCpuUsage.GetUsage());
@@ -129,7 +129,7 @@ BOOL CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 		}
 
 		TCHAR lpszFullPath[MAX_PATH] = { 0 };
-		if (GetModuleFileNameEx(hProcess, NULL, lpszFullPath, MAX_PATH))
+		if (GetModuleFileNameEx(hProcess, nullptr, lpszFullPath, MAX_PATH))
 		{
 			CVersionInfo pVersionInfo;
 			if (pVersionInfo.Load(lpszFullPath))
@@ -141,19 +141,19 @@ BOOL CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 		}
 		VERIFY(CloseHandle(hProcess));
 	}
-	return TRUE;
+	return true;
 }
 
 CProcessData* CSystemSnapshot::UpdateProcess(DWORD dwProcessID)
 {
-	HANDLE hProcess = NULL;
+	HANDLE hProcess = nullptr;
 	PROCESS_MEMORY_COUNTERS pmc = { 0 };
 	pmc.cb = sizeof(PROCESS_MEMORY_COUNTERS);
 
 	CProcessData* pProcessData = GetProcessID(dwProcessID);
-	if (pProcessData != NULL)
+	if (pProcessData != nullptr)
 	{
-		if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, dwProcessID)) != NULL)
+		if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, dwProcessID)) != nullptr)
 		{
 			pProcessData->SetProcessorUsage(pProcessData->m_pCpuUsage.GetUsage());
 			if (GetProcessMemoryInfo(hProcess, &pmc, pmc.cb))
@@ -164,7 +164,7 @@ CProcessData* CSystemSnapshot::UpdateProcess(DWORD dwProcessID)
 		}
 		return pProcessData;
 	}
-	return NULL;
+	return nullptr;
 }
 
 CProcessData* CSystemSnapshot::GetProcessID(DWORD dwProcessID)
@@ -173,11 +173,11 @@ CProcessData* CSystemSnapshot::GetProcessID(DWORD dwProcessID)
 	for (int nIndex = 0; nIndex < nSize; nIndex++)
 	{
 		CProcessData* pProcessData = m_arrProcessList.GetAt(nIndex);
-		ASSERT(pProcessData != NULL);
+		ASSERT(pProcessData != nullptr);
 		if (pProcessData->GetProcessID() == dwProcessID)
 		{
 			return pProcessData;
 		}
 	}
-	return NULL;
+	return nullptr;
 }

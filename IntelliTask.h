@@ -40,7 +40,7 @@ public:
 	virtual int ExitInstance();
 
 // Implementation
-	BOOL EnableFullAccess();
+	bool EnableFullAccess();
 
 public:
 	virtual void PreLoadState();

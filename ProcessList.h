@@ -83,12 +83,12 @@ public:
 	virtual ~CSystemSnapshot();
 
 public:
-	BOOL RemoveAll();
+	bool RemoveAll();
 	int GetSize() { return (int)m_arrProcessList.GetSize(); }
 	CProcessData* GetAt(int nIndex) { return m_arrProcessList.GetAt(nIndex); }
 
-	BOOL Refresh();
-	BOOL InsertProcess(PROCESSENTRY32& pe32);
+	bool Refresh();
+	bool InsertProcess(PROCESSENTRY32& pe32);
 	CProcessData* UpdateProcess(DWORD dwProcessID);
 	CProcessData* GetProcessID(DWORD dwProcessID);
 

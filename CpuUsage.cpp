@@ -37,7 +37,7 @@ CpuUsage::CpuUsage(void)
 ***********************************************/
 DOUBLE CpuUsage::GetUsage()
 {
-	HANDLE hProcess = NULL;
+	HANDLE hProcess = nullptr;
 	// create a local copy to protect against race conditions in setting the member variable
 	DOUBLE nCpuCopy = m_nCpuUsage;
 	if (::InterlockedIncrement(&m_lRunCount) == 1)
@@ -51,7 +51,7 @@ DOUBLE CpuUsage::GetUsage()
 
 		FILETIME ftSysIdle, ftSysKernel, ftSysUser;
 		FILETIME ftProcCreation, ftProcExit, ftProcKernel, ftProcUser;
-		if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, m_dwProcessID)) != NULL)
+		if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, m_dwProcessID)) != nullptr)
 		{
 			if (!GetSystemTimes(&ftSysIdle, &ftSysKernel, &ftSysUser) ||
 				!GetProcessTimes(hProcess, &ftProcCreation,
@@ -62,13 +62,13 @@ DOUBLE CpuUsage::GetUsage()
 				return nCpuCopy;
 			}
 			CloseHandle(hProcess);
-			hProcess = NULL;
+			hProcess = nullptr;
 
 			/* CPU usage is calculated by getting the total amount of time 
 			the system has operated since the last measurement 
 			(made up of kernel + user) and the total
 			amount of time the process has run (kernel + user) */
-			ULONGLONG ftSysIdleDiff = SubtractTimes(ftSysIdle, m_ftPrevSysIdle);
+			// ULONGLONG ftSysIdleDiff = SubtractTimes(ftSysIdle, m_ftPrevSysIdle);
 			ULONGLONG ftSysKernelDiff = SubtractTimes(ftSysKernel, m_ftPrevSysKernel);
 			ULONGLONG ftSysUserDiff = SubtractTimes(ftSysUser, m_ftPrevSysUser);
 

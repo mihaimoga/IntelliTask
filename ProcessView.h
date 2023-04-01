@@ -46,10 +46,10 @@ public:
 	void ResizeListCtrl();
 	void DoubleClickEntry(int nIndex);
 	CString FormatSize(ULONGLONG nFormatSize);
-	BOOL Refresh();
+	bool Refresh();
 
 public:
-	BOOL m_bInitialized;
+	bool m_bInitialized;
 	CMainFrame* m_pMainFrame;
 	CSystemSnapshot m_pSystemSnapshot;
 	UINT m_nRefreshTimerID;

@@ -24,7 +24,7 @@ IMPLEMENT_DYNAMIC(CSortListCtrl, CMFCListCtrl)
 
 CSortListCtrl::CSortListCtrl()
 {
-	m_pSystemSnapshot = NULL;
+	m_pSystemSnapshot = nullptr;
 }
 
 CSortListCtrl::~CSortListCtrl()
@@ -39,11 +39,11 @@ END_MESSAGE_MAP()
 int CSortListCtrl::OnCompareItems(LPARAM lParam1, LPARAM lParam2, int iColumn)
 {
 	UNREFERENCED_PARAMETER(iColumn);
-	if (m_pSystemSnapshot != NULL)
+	if (m_pSystemSnapshot != nullptr)
 	{
 		CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
 		CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
-		if ((pParam1 != NULL) && (pParam2 != NULL))
+		if ((pParam1 != nullptr) && (pParam2 != nullptr))
 		{
 			CString strFileName1 = pParam1->GetFileName();
 			CString strFileName2 = pParam2->GetFileName();

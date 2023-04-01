@@ -25,8 +25,8 @@ IMPLEMENT_DYNCREATE(CProcessView, CMFCListView)
 
 CProcessView::CProcessView()
 {
-	m_bInitialized = FALSE;
-	m_pMainFrame = NULL;
+	m_bInitialized = false;
+	m_pMainFrame = nullptr;
 	m_nRefreshTimerID = 0;
 
 	GetListCtrl().m_pSystemSnapshot = &m_pSystemSnapshot;
@@ -66,7 +66,7 @@ void CProcessView::OnInitialUpdate()
 
 	if (!m_bInitialized)
 	{
-		m_bInitialized = TRUE;
+		m_bInitialized = true;
 
 		GetListCtrl().SetExtendedStyle(GetListCtrl().GetExtendedStyle()
 			| LVS_EX_DOUBLEBUFFER |LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
@@ -81,7 +81,7 @@ void CProcessView::OnInitialUpdate()
 
 		VERIFY(Refresh());
 
-		m_nRefreshTimerID = (UINT)SetTimer(1, 1000, NULL);
+		m_nRefreshTimerID = (UINT)SetTimer(1, 1000, nullptr);
 	}
 }
 
@@ -101,7 +101,7 @@ void CProcessView::OnSize(UINT nType, int cx, int cy)
 void CProcessView::OnTimer(UINT_PTR nIDEvent)
 {
 	CString strListItem;
-	HANDLE hSnapshot = NULL;
+	HANDLE hSnapshot = nullptr;
 	PROCESSENTRY32 pe32 = { 0 };
 	CUIntArray arrProcessID;
 
@@ -116,7 +116,7 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 				{
 					arrProcessID.Add(pe32.th32ProcessID);
 					CProcessData* pProcessData = m_pSystemSnapshot.UpdateProcess(pe32.th32ProcessID);
-					if (pProcessData != NULL)
+					if (pProcessData != nullptr)
 					{
 						const int nCount = GetListCtrl().GetItemCount();
 						for (int nListItem = 0; nListItem < nCount; nListItem++)
@@ -148,7 +148,7 @@ void CProcessView::ResizeListCtrl()
 	HDITEM hdItem = { 0 };
 	hdItem.cxy = 0;
 	hdItem.mask = HDI_WIDTH;
-	if (GetListCtrl().GetSafeHwnd() != NULL)
+	if (GetListCtrl().GetSafeHwnd() != nullptr)
 	{
 		CRect rectClient;
 		GetListCtrl().GetClientRect(&rectClient);
@@ -171,6 +171,7 @@ void CProcessView::ResizeListCtrl()
 
 void CProcessView::DoubleClickEntry(int nIndex)
 {
+	UNREFERENCED_PARAMETER(nIndex);
 }
 
 CString CProcessView::FormatSize(ULONGLONG nFormatSize)
@@ -221,32 +222,32 @@ CString CProcessView::FormatSize(ULONGLONG nFormatSize)
 	return strFormatSize;
 }
 
-BOOL CProcessView::Refresh()
+bool CProcessView::Refresh()
 {
 	CString strListItem;
 	GetListCtrl().SetRedraw(FALSE);
-	int nListItem = GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+	int nOldListItem = GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
 	VERIFY(GetListCtrl().DeleteAllItems());
-	BOOL bRetVal = m_pSystemSnapshot.Refresh();
+	bool bRetVal = m_pSystemSnapshot.Refresh();
 	const int nSize = m_pSystemSnapshot.GetSize();
 	for (int nIndex = 0; nIndex < nSize; nIndex++)
 	{
 		CProcessData* pProcessData = m_pSystemSnapshot.GetAt(nIndex);
-		ASSERT(pProcessData != NULL);
+		ASSERT(pProcessData != nullptr);
 		strListItem.Format(_T("%d"), pProcessData->GetProcessID());
-		const int nListItem = GetListCtrl().InsertItem(GetListCtrl().GetItemCount(), strListItem);
-		GetListCtrl().SetItemText(nListItem, 1, pProcessData->GetFileName());
+		const int nNewListItem = GetListCtrl().InsertItem(GetListCtrl().GetItemCount(), strListItem);
+		GetListCtrl().SetItemText(nNewListItem, 1, pProcessData->GetFileName());
 		strListItem.Format(_T("%.2f%%"), pProcessData->GetProcessorUsage());
-		GetListCtrl().SetItemText(nListItem, 2, strListItem);
-		GetListCtrl().SetItemText(nListItem, 3, FormatSize(pProcessData->GetMemoryUsage()));
-		GetListCtrl().SetItemText(nListItem, 4, pProcessData->GetDescription());
-		GetListCtrl().SetItemText(nListItem, 5, pProcessData->GetCompany());
-		GetListCtrl().SetItemText(nListItem, 6, pProcessData->GetVersion());
-		GetListCtrl().SetItemData(nListItem, pProcessData->GetProcessID());
+		GetListCtrl().SetItemText(nNewListItem, 2, strListItem);
+		GetListCtrl().SetItemText(nNewListItem, 3, FormatSize(pProcessData->GetMemoryUsage()));
+		GetListCtrl().SetItemText(nNewListItem, 4, pProcessData->GetDescription());
+		GetListCtrl().SetItemText(nNewListItem, 5, pProcessData->GetCompany());
+		GetListCtrl().SetItemText(nNewListItem, 6, pProcessData->GetVersion());
+		GetListCtrl().SetItemData(nNewListItem, pProcessData->GetProcessID());
 	}
 	GetListCtrl().Sort(1, TRUE, FALSE);
-	nListItem = 0;
-	GetListCtrl().SetItemState(nListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+	nOldListItem = 0;
+	GetListCtrl().SetItemState(nOldListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	GetListCtrl().SetRedraw(TRUE);
 	GetListCtrl().UpdateWindow();
 	ResizeListCtrl();

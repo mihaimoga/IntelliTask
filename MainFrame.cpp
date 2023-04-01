@@ -44,8 +44,8 @@ END_MESSAGE_MAP()
 
 CMainFrame::CMainFrame()
 {
-	m_MainButton = NULL;
-	m_pProcessView = NULL;
+	m_MainButton = nullptr;
+	m_pProcessView = nullptr;
 }
 
 CMainFrame::~CMainFrame()
@@ -57,8 +57,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	BOOL bNameValid;
-
 	// set the visual manager used to draw all user interface elements
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
 
@@ -66,7 +64,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Silver);
 
 	/* create a view to occupy the client area of the frame
-	if (!m_wndView.Create(NULL, NULL, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, NULL))
+	if (!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
 	{
 		TRACE0("Failed to create view window\n");
 		return -1;
@@ -85,11 +83,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
+	bool bNameValid;
 	CString strTitlePane;
 	bNameValid = strTitlePane.LoadString(IDS_STATUS_PANE1);
 	ASSERT(bNameValid);
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(
-		ID_STATUSBAR_PANE1, strTitlePane, TRUE, NULL,
+		ID_STATUSBAR_PANE1, strTitlePane, TRUE, nullptr,
 		_T("012345678901234567890123456789012345678901234567890123456789")), strTitlePane);
 
 	// enable Visual Studio 2005 style docking window behavior
@@ -110,13 +109,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	CCreateContext pProcessContext;
-	pProcessContext.m_pCurrentDoc = NULL;
+	pProcessContext.m_pCurrentDoc = nullptr;
 	pProcessContext.m_pCurrentFrame = this;
-	pProcessContext.m_pLastView = NULL;
-	pProcessContext.m_pNewDocTemplate = NULL;
+	pProcessContext.m_pLastView = nullptr;
+	pProcessContext.m_pNewDocTemplate = nullptr;
 	pProcessContext.m_pNewViewClass = RUNTIME_CLASS(CProcessView);
 
-	if ((m_pProcessView = (CProcessView*) CreateView(&pProcessContext, AFX_IDW_PANE_FIRST)) != NULL)
+	if ((m_pProcessView = (CProcessView*) CreateView(&pProcessContext, AFX_IDW_PANE_FIRST)) != nullptr)
 	{
 		m_pProcessView->ShowWindow(SW_SHOW);
 		m_pProcessView->OnInitialUpdate();
@@ -139,16 +138,15 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-BOOL CMainFrame::CreateCaptionBar()
+bool CMainFrame::CreateCaptionBar()
 {
 	if (!m_wndCaptionBar.Create(WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, this, ID_VIEW_CAPTION_BAR, -1, TRUE))
 	{
 		TRACE0("Failed to create caption bar\n");
-		return FALSE;
+		return false;
 	}
 
-	BOOL bNameValid;
-
+	bool bNameValid;
 	CString strTemp, strTemp2;
 	bNameValid = strTemp.LoadString(IDS_CAPTION_BUTTON);
 	ASSERT(bNameValid);
@@ -168,7 +166,7 @@ BOOL CMainFrame::CreateCaptionBar()
 	ASSERT(bNameValid);
 	m_wndCaptionBar.SetImageToolTip(strTemp, strTemp2);
 
-	return TRUE;
+	return true;
 }
 
 // CMainFrame diagnostics
@@ -217,7 +215,7 @@ void CMainFrame::OnUpdateViewCaptionBar(CCmdUI* pCmdUI)
 void CMainFrame::OnOptions()
 {
 	CMFCRibbonCustomizeDialog *pOptionsDlg = new CMFCRibbonCustomizeDialog(this, &m_wndRibbonBar);
-	ASSERT(pOptionsDlg != NULL);
+	ASSERT(pOptionsDlg != nullptr);
 
 	pOptionsDlg->DoModal();
 	delete pOptionsDlg;

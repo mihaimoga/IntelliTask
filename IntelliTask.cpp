@@ -135,9 +135,7 @@ BOOL CIntelliTaskApp::InitInstance()
 		return FALSE;
 	m_pMainWnd = pFrame;
 	// create and load the frame with its resources
-	pFrame->LoadFrame(IDR_MAINFRAME,
-		WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, NULL,
-		NULL);
+	pFrame->LoadFrame(IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, nullptr, nullptr);
 
 	// The one and only window has been initialized, so show and update it
 	pFrame->ShowWindow(SW_SHOW);
@@ -159,9 +157,9 @@ int CIntelliTaskApp::ExitInstance()
 	return CWinAppEx::ExitInstance();
 }
 
-BOOL CIntelliTaskApp::EnableFullAccess()
+bool CIntelliTaskApp::EnableFullAccess()
 {
-	HANDLE hToken = NULL;
+	HANDLE hToken = nullptr;
 
 	// List of privileges, all of them, he he ;)
 	LPCTSTR lpctszPrivileges[] = { SE_CREATE_TOKEN_NAME,
@@ -201,18 +199,18 @@ BOOL CIntelliTaskApp::EnableFullAccess()
 		for (int nIndex = 0; lpctszPrivileges[nIndex]; ++nIndex)
 		{
 			::ZeroMemory(&tokenPrivilege, sizeof(tokenPrivilege));
-			LookupPrivilegeValue(NULL,
+			LookupPrivilegeValue(nullptr,
 				lpctszPrivileges[nIndex],
 				&tokenPrivilege.Privileges[0].Luid);
 			tokenPrivilege.PrivilegeCount = 1;
 			tokenPrivilege.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-			AdjustTokenPrivileges(hToken, FALSE, &tokenPrivilege, 0, 0, 0);
+			AdjustTokenPrivileges(hToken, false, &tokenPrivilege, 0, 0, 0);
 		}// End for
 
 		CloseHandle(hToken);
 	}
 
-	return TRUE;
+	return true;
 }
 
 // CIntelliTaskApp message handlers
@@ -298,7 +296,7 @@ BOOL CAboutDlg::OnInitDialog()
 	// logfont.lfQuality = ANTIALIASED_QUALITY;
 	logfont.lfOutPrecision = OUT_TT_PRECIS;
 	logfont.lfWeight = FW_NORMAL;
-	logfont.lfHeight = -MulDiv(6, GetDeviceCaps(::GetDC(NULL), LOGPIXELSY), 72);
+	logfont.lfHeight = -MulDiv(6, GetDeviceCaps(::GetDC(nullptr), LOGPIXELSY), 72);
 	_tcscpy_s(logfont.lfFaceName, LF_FACESIZE, _T("Tahoma"));
 	VERIFY(m_fontCourier.CreateFontIndirect(&logfont));
 
@@ -331,7 +329,7 @@ void CIntelliTaskApp::OnAppAbout()
 
 void CIntelliTaskApp::PreLoadState()
 {
-	BOOL bNameValid;
+	bool bNameValid;
 	CString strName;
 	bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);

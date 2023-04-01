@@ -65,5 +65,5 @@ protected:
 	afx_msg void OnOptions();
 	DECLARE_MESSAGE_MAP()
 
-	BOOL CreateCaptionBar();
+	bool CreateCaptionBar();
 };
