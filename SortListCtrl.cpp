@@ -38,23 +38,145 @@ END_MESSAGE_MAP()
 
 int CSortListCtrl::OnCompareItems(LPARAM lParam1, LPARAM lParam2, int iColumn)
 {
-	UNREFERENCED_PARAMETER(iColumn);
-	if (m_pSystemSnapshot != nullptr)
+	if ((-1 == iColumn) || (1 == iColumn))
 	{
-		CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
-		CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
-		if ((pParam1 != nullptr) && (pParam2 != nullptr))
+		if (m_pSystemSnapshot != nullptr)
 		{
-			CString strFileName1 = pParam1->GetFileName();
-			CString strFileName2 = pParam2->GetFileName();
-			const int nRetVal = strFileName1.CompareNoCase(strFileName2);
-			if (nRetVal == 0)
+			CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+			CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+			if ((pParam1 != nullptr) && (pParam2 != nullptr))
 			{
-				return (pParam1->GetProcessID() - pParam2->GetProcessID());
+				CString strFileName1 = pParam1->GetFileName();
+				CString strFileName2 = pParam2->GetFileName();
+				const int nRetVal = strFileName1.CompareNoCase(strFileName2);
+				if (nRetVal == 0)
+				{
+					return (pParam1->GetProcessID() - pParam2->GetProcessID());
+				}
+				else
+				{
+					return nRetVal;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (0 == iColumn)
+		{
+			if (m_pSystemSnapshot != nullptr)
+			{
+				CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+				CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+				if ((pParam1 != nullptr) && (pParam2 != nullptr))
+				{
+					return (pParam1->GetProcessID() - pParam2->GetProcessID());
+				}
+			}
+		}
+		else
+		{
+			if (2 == iColumn)
+			{
+				if (m_pSystemSnapshot != nullptr)
+				{
+					CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+					CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+					if ((pParam1 != nullptr) && (pParam2 != nullptr))
+					{
+						return (int)(pParam1->GetProcessorUsage() - pParam2->GetProcessorUsage());
+					}
+				}
 			}
 			else
 			{
-				return nRetVal;
+				if (3 == iColumn)
+				{
+					if (m_pSystemSnapshot != nullptr)
+					{
+						CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+						CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+						if ((pParam1 != nullptr) && (pParam2 != nullptr))
+						{
+							return (pParam1->GetMemoryUsage() - pParam2->GetMemoryUsage());
+						}
+					}
+				}
+				else
+				{
+					if (4 == iColumn)
+					{
+						if (m_pSystemSnapshot != nullptr)
+						{
+							CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+							CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+							if ((pParam1 != nullptr) && (pParam2 != nullptr))
+							{
+								CString strDescription1 = pParam1->GetDescription();
+								CString strDescription2 = pParam2->GetDescription();
+								const int nRetVal = strDescription1.CompareNoCase(strDescription2);
+								if (nRetVal == 0)
+								{
+									return (pParam1->GetProcessID() - pParam2->GetProcessID());
+								}
+								else
+								{
+									return nRetVal;
+								}
+							}
+						}
+					}
+					else
+					{
+						if (5 == iColumn)
+						{
+							if (m_pSystemSnapshot != nullptr)
+							{
+								CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+								CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+								if ((pParam1 != nullptr) && (pParam2 != nullptr))
+								{
+									CString strCompany1 = pParam1->GetCompany();
+									CString strCompany2 = pParam2->GetCompany();
+									const int nRetVal = strCompany1.CompareNoCase(strCompany2);
+									if (nRetVal == 0)
+									{
+										return (pParam1->GetProcessID() - pParam2->GetProcessID());
+									}
+									else
+									{
+										return nRetVal;
+									}
+								}
+							}
+						}
+						else
+						{
+							if (6 == iColumn)
+							{
+								if (m_pSystemSnapshot != nullptr)
+								{
+									CProcessData* pParam1 = m_pSystemSnapshot->GetProcessID((DWORD)lParam1);
+									CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
+									if ((pParam1 != nullptr) && (pParam2 != nullptr))
+									{
+										CString strVersion1 = pParam1->GetVersion();
+										CString strVersion2 = pParam2->GetVersion();
+										const int nRetVal = strVersion1.CompareNoCase(strVersion2);
+										if (nRetVal == 0)
+										{
+											return (pParam1->GetProcessID() - pParam2->GetProcessID());
+										}
+										else
+										{
+											return nRetVal;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}

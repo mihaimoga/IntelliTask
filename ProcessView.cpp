@@ -176,7 +176,9 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 			}
 		}
 		arrProcessID.RemoveAll();
-		GetListCtrl().Sort(1, TRUE, FALSE);
+		const int nSortColumn = GetListCtrl().GetHeaderCtrl().GetSortColumn();
+		const bool bIsAscending = GetListCtrl().GetHeaderCtrl().IsAscending();
+		GetListCtrl().Sort(nSortColumn, bIsAscending, FALSE);
 		GetListCtrl().SetItemState(nOldListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		GetListCtrl().SetRedraw(TRUE);
 		GetListCtrl().UpdateWindow();
@@ -289,7 +291,9 @@ bool CProcessView::Refresh()
 		GetListCtrl().SetItemText(nNewListItem, 6, pProcessData->GetVersion());
 		GetListCtrl().SetItemData(nNewListItem, pProcessData->GetProcessID());
 	}
-	GetListCtrl().Sort(1, TRUE, FALSE);
+	const int nSortColumn = GetListCtrl().GetHeaderCtrl().GetSortColumn();
+	const bool bIsAscending = GetListCtrl().GetHeaderCtrl().IsAscending();
+	GetListCtrl().Sort(nSortColumn, bIsAscending, FALSE);
 	GetListCtrl().SetItemState(nOldListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	GetListCtrl().SetRedraw(TRUE);
 	GetListCtrl().UpdateWindow();
