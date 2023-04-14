@@ -88,8 +88,9 @@ public:
 	CProcessData* GetAt(int nIndex) { return m_arrProcessList.GetAt(nIndex); }
 
 	bool Refresh();
-	bool InsertProcess(PROCESSENTRY32& pe32);
+	CProcessData* InsertProcess(PROCESSENTRY32& pe32);
 	CProcessData* UpdateProcess(DWORD dwProcessID);
+	bool RemoveProcess(DWORD dwProcessID);
 	CProcessData* GetProcessID(DWORD dwProcessID);
 
 protected:

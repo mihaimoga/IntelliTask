@@ -107,7 +107,7 @@ bool CSystemSnapshot::Refresh()
 	return true;
 }
 
-bool CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
+CProcessData* CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 {
 	HANDLE hProcess = nullptr;
 	PROCESS_MEMORY_COUNTERS pmc = { 0 };
@@ -141,7 +141,7 @@ bool CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 		}
 		VERIFY(CloseHandle(hProcess));
 	}
-	return true;
+	return pProcessData;
 }
 
 CProcessData* CSystemSnapshot::UpdateProcess(DWORD dwProcessID)
@@ -165,6 +165,24 @@ CProcessData* CSystemSnapshot::UpdateProcess(DWORD dwProcessID)
 		return pProcessData;
 	}
 	return nullptr;
+}
+
+bool CSystemSnapshot::RemoveProcess(DWORD dwProcessID)
+{
+	const int nSize = (int)m_arrProcessList.GetSize();
+	for (int nIndex = 0; nIndex < nSize; nIndex++)
+	{
+		CProcessData* pProcessData = m_arrProcessList.GetAt(nIndex);
+		ASSERT(pProcessData != nullptr);
+		if (pProcessData->GetProcessID() == dwProcessID)
+		{
+			delete pProcessData;
+			pProcessData = nullptr;
+			m_arrProcessList.RemoveAt(nIndex);
+			return true;
+		}
+	}
+	return false;
 }
 
 CProcessData* CSystemSnapshot::GetProcessID(DWORD dwProcessID)

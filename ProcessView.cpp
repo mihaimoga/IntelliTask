@@ -107,6 +107,9 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 
 	if (nIDEvent == m_nRefreshTimerID)
 	{
+		KillTimer(m_nRefreshTimerID);
+		const int nOldListItem = GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+		GetListCtrl().SetRedraw(FALSE);
 		if ((hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) != INVALID_HANDLE_VALUE)
 		{
 			pe32.dwSize = sizeof(PROCESSENTRY32);
@@ -127,17 +130,58 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 								strListItem.Format(_T("%.2f%%"), pProcessData->GetProcessorUsage());
 								GetListCtrl().SetItemText(nListItem, 2, strListItem);
 								GetListCtrl().SetItemText(nListItem, 3, FormatSize(pProcessData->GetMemoryUsage()));
+								break;
 							}
 						}
 					}
 					else // new process
 					{
+						pProcessData = m_pSystemSnapshot.InsertProcess(pe32);
+						if (pProcessData != nullptr)
+						{
+							strListItem.Format(_T("%d"), pProcessData->GetProcessID());
+							const int nNewListItem = GetListCtrl().InsertItem(GetListCtrl().GetItemCount(), strListItem);
+							GetListCtrl().SetItemText(nNewListItem, 1, pProcessData->GetFileName());
+							strListItem.Format(_T("%.2f%%"), pProcessData->GetProcessorUsage());
+							GetListCtrl().SetItemText(nNewListItem, 2, strListItem);
+							GetListCtrl().SetItemText(nNewListItem, 3, FormatSize(pProcessData->GetMemoryUsage()));
+							GetListCtrl().SetItemText(nNewListItem, 4, pProcessData->GetDescription());
+							GetListCtrl().SetItemText(nNewListItem, 5, pProcessData->GetCompany());
+							GetListCtrl().SetItemText(nNewListItem, 6, pProcessData->GetVersion());
+							GetListCtrl().SetItemData(nNewListItem, pProcessData->GetProcessID());
+						}
 					}
 				} while (Process32Next(hSnapshot, &pe32));
 			}
 			VERIFY(CloseHandle(hSnapshot));
 		}
+		for (int nOldIndex = 0; nOldIndex < GetListCtrl().GetItemCount(); nOldIndex++)
+		{
+			bool bFound = false;
+			const DWORD nOldProcessID = (DWORD)GetListCtrl().GetItemData(nOldIndex);
+			for (int nNewIndex = 0; nNewIndex < arrProcessID.GetCount(); nNewIndex++)
+			{
+				const DWORD nNewProcessID = arrProcessID.GetAt(nNewIndex);
+				if (nOldProcessID == nNewProcessID)
+				{
+					bFound = true;
+					break;
+				}
+			}
+			if (!bFound)
+			{
+				GetListCtrl().DeleteItem(nOldIndex); // remove process
+				VERIFY(m_pSystemSnapshot.RemoveProcess(nOldProcessID));
+				nOldIndex--;
+			}
+		}
 		arrProcessID.RemoveAll();
+		GetListCtrl().Sort(1, TRUE, FALSE);
+		GetListCtrl().SetItemState(nOldListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		GetListCtrl().SetRedraw(TRUE);
+		GetListCtrl().UpdateWindow();
+		ResizeListCtrl();
+		m_nRefreshTimerID = (UINT)SetTimer(1, 1000, nullptr);
 	}
 
 	CMFCListView::OnTimer(nIDEvent);
@@ -246,7 +290,6 @@ bool CProcessView::Refresh()
 		GetListCtrl().SetItemData(nNewListItem, pProcessData->GetProcessID());
 	}
 	GetListCtrl().Sort(1, TRUE, FALSE);
-	nOldListItem = 0;
 	GetListCtrl().SetItemState(nOldListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	GetListCtrl().SetRedraw(TRUE);
 	GetListCtrl().UpdateWindow();
