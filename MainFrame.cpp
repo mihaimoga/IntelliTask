@@ -38,6 +38,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_VIEW_CAPTION_BAR, &CMainFrame::OnViewCaptionBar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CAPTION_BAR, &CMainFrame::OnUpdateViewCaptionBar)
 	ON_COMMAND(ID_TOOLS_OPTIONS, &CMainFrame::OnOptions)
+	ON_COMMAND(ID_PROPERTIES, &CMainFrame::OnProperties)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES, &CMainFrame::OnUpdateProperties)
+	ON_COMMAND(ID_KILL_PROCESS, &CMainFrame::OnKillProcess)
+	ON_UPDATE_COMMAND_UI(ID_KILL_PROCESS, &CMainFrame::OnUpdateKillProcess)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -62,13 +66,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// set the visual style to be used the by the visual manager
 	CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Silver);
-
-	/* create a view to occupy the client area of the frame
-	if (!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
-	{
-		TRACE0("Failed to create view window\n");
-		return -1;
-	}*/
 
 	m_wndRibbonBar.Create(this);
 	m_wndRibbonBar.LoadFromResource(IDR_RIBBON);
@@ -219,4 +216,69 @@ void CMainFrame::OnOptions()
 
 	pOptionsDlg->DoModal();
 	delete pOptionsDlg;
+}
+
+void CMainFrame::OnProperties()
+{
+	CProcessView* pProcessView = (CProcessView*)GetActiveView();
+	ASSERT_VALID(pProcessView);
+	const int nListItem = pProcessView->GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+	CProcessData* pProcessData = pProcessView->m_pSystemSnapshot.GetProcessID((int)pProcessView->GetListCtrl().GetItemData(nListItem));
+	ASSERT(pProcessData != nullptr);
+	CString sPathName{ pProcessData->GetFilePath() };
+	if (!sPathName.IsEmpty())
+	{
+		TRACE(sPathName);
+		SHELLEXECUTEINFO sei;
+		memset(&sei, 0, sizeof(sei));
+		sei.cbSize = sizeof(sei);
+		sei.hwnd = AfxGetMainWnd()->GetSafeHwnd();
+		sei.nShow = SW_SHOW;
+		sei.lpFile = sPathName.GetBuffer(sPathName.GetLength());
+		sei.lpVerb = _T("properties");
+		sei.fMask = SEE_MASK_INVOKEIDLIST;
+#pragma warning(suppress: 26486)
+		ShellExecuteEx(&sei);
+		sPathName.ReleaseBuffer();
+	}
+}
+
+void CMainFrame::OnUpdateProperties(CCmdUI *pCmdUI)
+{
+	CProcessView* pProcessView = (CProcessView*)GetActiveView();
+	if ((pProcessView != nullptr) && (pProcessView->GetSafeHwnd() != nullptr))
+	{
+		const int nListItem = pProcessView->GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+		pCmdUI->Enable(nListItem != -1);
+	}
+	else
+		pCmdUI->Enable(false);
+}
+
+void CMainFrame::OnKillProcess()
+{
+	CProcessView* pProcessView = (CProcessView*)GetActiveView();
+	ASSERT_VALID(pProcessView);
+	const int nListItem = pProcessView->GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+	CProcessData* pProcessData = pProcessView->m_pSystemSnapshot.GetProcessID((int)pProcessView->GetListCtrl().GetItemData(nListItem));
+	DWORD dwDesiredAccess = PROCESS_TERMINATE;
+	BOOL  bInheritHandle = FALSE;
+	HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, pProcessData->GetProcessID());
+	if (hProcess != NULL)
+	{
+		bool result = TerminateProcess(hProcess, -1);
+		CloseHandle(hProcess);
+	}
+}
+
+void CMainFrame::OnUpdateKillProcess(CCmdUI *pCmdUI)
+{
+	CProcessView* pProcessView = (CProcessView*)GetActiveView();
+	if ((pProcessView != nullptr) && (pProcessView->GetSafeHwnd() != nullptr))
+	{
+		const int nListItem = pProcessView->GetListCtrl().GetNextItem(-1, LVIS_SELECTED | LVIS_FOCUSED);
+		pCmdUI->Enable(nListItem != -1);
+	}
+	else
+		pCmdUI->Enable(false);
 }

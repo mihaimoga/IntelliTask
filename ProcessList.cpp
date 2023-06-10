@@ -131,6 +131,7 @@ CProcessData* CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 		TCHAR lpszFullPath[MAX_PATH] = { 0 };
 		if (GetModuleFileNameEx(hProcess, nullptr, lpszFullPath, MAX_PATH))
 		{
+			pProcessData->SetFilePath(lpszFullPath);
 			CVersionInfo pVersionInfo;
 			if (pVersionInfo.Load(lpszFullPath))
 			{

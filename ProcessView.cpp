@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CProcessView, CMFCListView)
 	ON_WM_SIZE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
+	ON_NOTIFY(NM_DBLCLK, ID_MFCLISTCTRL, OnDblClickEntry)
 END_MESSAGE_MAP()
 
 // CProcessView diagnostics
@@ -69,7 +70,7 @@ void CProcessView::OnInitialUpdate()
 		m_bInitialized = true;
 
 		GetListCtrl().SetExtendedStyle(GetListCtrl().GetExtendedStyle()
-			| LVS_EX_DOUBLEBUFFER |LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+			| LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
 		GetListCtrl().InsertColumn(0, _T("PID"), LVCFMT_LEFT, PID_COLUMN_LENGTH);
 		GetListCtrl().InsertColumn(1, _T("Process"), LVCFMT_LEFT, PROCESS_COLUMN_LENGTH);
@@ -124,7 +125,7 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 						const int nCount = GetListCtrl().GetItemCount();
 						for (int nListItem = 0; nListItem < nCount; nListItem++)
 						{
-							const DWORD nProcessID = (DWORD) GetListCtrl().GetItemData(nListItem);
+							const DWORD nProcessID = (DWORD)GetListCtrl().GetItemData(nListItem);
 							if (nProcessID == pe32.th32ProcessID)
 							{
 								strListItem.Format(_T("%.2f%%"), pProcessData->GetProcessorUsage());
@@ -189,6 +190,16 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 	CMFCListView::OnTimer(nIDEvent);
 }
 
+void CProcessView::OnDblClickEntry(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	if (pResult != nullptr) *pResult = 0;
+	if (pItemActivate->iItem != -1)
+	{
+		DoubleClickEntry(pItemActivate->iItem);
+	}
+}
+
 void CProcessView::ResizeListCtrl()
 {
 	HDITEM hdItem = { 0 };
@@ -217,7 +228,25 @@ void CProcessView::ResizeListCtrl()
 
 void CProcessView::DoubleClickEntry(int nIndex)
 {
-	UNREFERENCED_PARAMETER(nIndex);
+	ASSERT(GetListCtrl().m_hWnd != nullptr);
+	CProcessData* pProcessData = m_pSystemSnapshot.GetProcessID((int)GetListCtrl().GetItemData(nIndex));
+	ASSERT(pProcessData != nullptr);
+	CString sPathName{ pProcessData->GetFilePath() };
+	if (!sPathName.IsEmpty())
+	{
+		TRACE(sPathName);
+		SHELLEXECUTEINFO sei;
+		memset(&sei, 0, sizeof(sei));
+		sei.cbSize = sizeof(sei);
+		sei.hwnd = AfxGetMainWnd()->GetSafeHwnd();
+		sei.nShow = SW_SHOW;
+		sei.lpFile = sPathName.GetBuffer(sPathName.GetLength());
+		sei.lpVerb = _T("properties");
+		sei.fMask = SEE_MASK_INVOKEIDLIST;
+#pragma warning(suppress: 26486)
+		ShellExecuteEx(&sei);
+		sPathName.ReleaseBuffer();
+	}
 }
 
 CString CProcessView::FormatSize(ULONGLONG nFormatSize)
@@ -226,7 +255,7 @@ CString CProcessView::FormatSize(ULONGLONG nFormatSize)
 	ULONGLONG nFormatRest = 0;
 	if (nFormatSize < 1024)
 	{
-		strFormatSize.Format(_T("%d"), (int) nFormatSize);
+		strFormatSize.Format(_T("%d"), (int)nFormatSize);
 	}
 	else
 	{
@@ -235,7 +264,7 @@ CString CProcessView::FormatSize(ULONGLONG nFormatSize)
 		if (nFormatSize < 1024)
 		{
 			if (nFormatRest != 0) nFormatSize++;
-			strFormatSize.Format(_T("%d KB"), (int) nFormatSize);
+			strFormatSize.Format(_T("%d KB"), (int)nFormatSize);
 		}
 		else
 		{
@@ -244,7 +273,7 @@ CString CProcessView::FormatSize(ULONGLONG nFormatSize)
 			if (nFormatSize < 1024)
 			{
 				if (nFormatRest != 0) nFormatSize++;
-				strFormatSize.Format(_T("%d MB"), (int) nFormatSize);
+				strFormatSize.Format(_T("%d MB"), (int)nFormatSize);
 			}
 			else
 			{
@@ -253,14 +282,14 @@ CString CProcessView::FormatSize(ULONGLONG nFormatSize)
 				if (nFormatSize < 1024)
 				{
 					if (nFormatRest != 0) nFormatSize++;
-					strFormatSize.Format(_T("%d GB"), (int) nFormatSize);
+					strFormatSize.Format(_T("%d GB"), (int)nFormatSize);
 				}
 				else
 				{
 					nFormatRest = nFormatSize % 1024;
 					nFormatSize = nFormatSize / 1024;
 					if (nFormatRest != 0) nFormatSize++;
-					strFormatSize.Format(_T("%d TB"), (int) nFormatSize);
+					strFormatSize.Format(_T("%d TB"), (int)nFormatSize);
 				}
 			}
 		}
@@ -291,11 +320,11 @@ bool CProcessView::Refresh()
 		GetListCtrl().SetItemText(nNewListItem, 6, pProcessData->GetVersion());
 		GetListCtrl().SetItemData(nNewListItem, pProcessData->GetProcessID());
 	}
-	const int nSortColumn = GetListCtrl().GetHeaderCtrl().GetSortColumn();
-	const bool bIsAscending = GetListCtrl().GetHeaderCtrl().IsAscending();
-	GetListCtrl().Sort(nSortColumn, bIsAscending, FALSE);
+	// const int nSortColumn = GetListCtrl().GetHeaderCtrl().GetSortColumn();
+	// const bool bIsAscending = GetListCtrl().GetHeaderCtrl().IsAscending();
+	GetListCtrl().Sort(1, true, false);
 	GetListCtrl().SetItemState(nOldListItem, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-	GetListCtrl().SetRedraw(TRUE);
+	GetListCtrl().SetRedraw(true);
 	GetListCtrl().UpdateWindow();
 	ResizeListCtrl();
 	return bRetVal;

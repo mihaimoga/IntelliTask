@@ -66,4 +66,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	bool CreateCaptionBar();
+public:
+	afx_msg void OnProperties();
+	afx_msg void OnUpdateProperties(CCmdUI *pCmdUI);
+	afx_msg void OnKillProcess();
+	afx_msg void OnUpdateKillProcess(CCmdUI *pCmdUI);
 };
