@@ -78,10 +78,11 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 
 #define ID_MFCLISTCTRL (WM_USER+0x1234)
 
-#define PID_COLUMN_LENGTH 40
+#define PID_COLUMN_LENGTH 70
 #define PROCESS_COLUMN_LENGTH 120
 #define CPU_USAGE_COLUMN_LENGTH 70
 #define MEM_USAGE_COLUMN_LENGTH 70
+#define DESCRIPTION_COLUMN_SIZE 120
 #define COMPANY_COLUMN_LENGTH 120
 #define VERSION_COLUMN_LENGTH 120
 

@@ -72,13 +72,26 @@ void CProcessView::OnInitialUpdate()
 		GetListCtrl().SetExtendedStyle(GetListCtrl().GetExtendedStyle()
 			| LVS_EX_DOUBLEBUFFER | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
-		GetListCtrl().InsertColumn(0, _T("PID"), LVCFMT_LEFT, PID_COLUMN_LENGTH);
-		GetListCtrl().InsertColumn(1, _T("Process"), LVCFMT_LEFT, PROCESS_COLUMN_LENGTH);
-		GetListCtrl().InsertColumn(2, _T("CPU Usage"), LVCFMT_CENTER, CPU_USAGE_COLUMN_LENGTH);
-		GetListCtrl().InsertColumn(3, _T("Mem Usage"), LVCFMT_RIGHT, MEM_USAGE_COLUMN_LENGTH);
-		GetListCtrl().InsertColumn(4, _T("Description"), LVCFMT_LEFT, 100); // nDescriptionColumnLength
-		GetListCtrl().InsertColumn(5, _T("Company"), LVCFMT_LEFT, COMPANY_COLUMN_LENGTH);
-		GetListCtrl().InsertColumn(6, _T("Version"), LVCFMT_LEFT, VERSION_COLUMN_LENGTH);
+		CRect rectClient;
+		GetListCtrl().GetClientRect(&rectClient);
+
+		const int nProcessID = theApp.GetInt(_T("ProcessID"), PID_COLUMN_LENGTH);
+		const int nProcessName = theApp.GetInt(_T("ProcessName"), PROCESS_COLUMN_LENGTH);
+		const int nCPU_Usage = theApp.GetInt(_T("CPU_Usage"), CPU_USAGE_COLUMN_LENGTH);
+		const int nMEM_Usage = theApp.GetInt(_T("MEM_Usage"), MEM_USAGE_COLUMN_LENGTH);
+		const int nCompany = theApp.GetInt(_T("Company"), COMPANY_COLUMN_LENGTH);
+		const int nVersion = theApp.GetInt(_T("Version"), VERSION_COLUMN_LENGTH);
+
+		// theApp.GetInt(_T("Description"), DESCRIPTION_COLUMN_SIZE)
+		const int nDescription = rectClient.Width() - (nProcessID + nProcessName + nCPU_Usage + nMEM_Usage + nCompany + nVersion);
+
+		GetListCtrl().InsertColumn(0, _T("PID"), LVCFMT_LEFT, nProcessID);
+		GetListCtrl().InsertColumn(1, _T("Process"), LVCFMT_LEFT, nProcessName);
+		GetListCtrl().InsertColumn(2, _T("CPU Usage"), LVCFMT_CENTER, nCPU_Usage);
+		GetListCtrl().InsertColumn(3, _T("Mem Usage"), LVCFMT_RIGHT, nMEM_Usage);
+		GetListCtrl().InsertColumn(4, _T("Description"), LVCFMT_LEFT, nDescription);
+		GetListCtrl().InsertColumn(5, _T("Company"), LVCFMT_LEFT, nCompany);
+		GetListCtrl().InsertColumn(6, _T("Version"), LVCFMT_LEFT, nVersion);
 
 		VERIFY(Refresh());
 
@@ -203,24 +216,62 @@ void CProcessView::OnDblClickEntry(NMHDR *pNMHDR, LRESULT *pResult)
 void CProcessView::ResizeListCtrl()
 {
 	HDITEM hdItem = { 0 };
-	hdItem.cxy = 0;
-	hdItem.mask = HDI_WIDTH;
 	if (GetListCtrl().GetSafeHwnd() != nullptr)
 	{
 		CRect rectClient;
 		GetListCtrl().GetClientRect(&rectClient);
 
-		const int nDescriptionColumnLength = rectClient.Width() - PID_COLUMN_LENGTH - PROCESS_COLUMN_LENGTH -
-			CPU_USAGE_COLUMN_LENGTH - MEM_USAGE_COLUMN_LENGTH - COMPANY_COLUMN_LENGTH - VERSION_COLUMN_LENGTH;
-
 		CMFCHeaderCtrl& pHeaderCtrl = GetListCtrl().GetHeaderCtrl();
-		if (pHeaderCtrl.GetItem(4, &hdItem))
+		hdItem.mask = HDI_WIDTH;
+		if (pHeaderCtrl.GetItem(0, &hdItem))
 		{
-			hdItem.cxy = nDescriptionColumnLength;
-			if (pHeaderCtrl.SetItem(4, &hdItem))
+			const int nProcessID = hdItem.cxy;
+			theApp.WriteInt(_T("ProcessID"), nProcessID);
+			hdItem.mask = HDI_WIDTH;
+			if (pHeaderCtrl.GetItem(1, &hdItem))
 			{
-				GetListCtrl().Invalidate();
-				GetListCtrl().UpdateWindow();
+				const int nProcessName = hdItem.cxy;
+				theApp.WriteInt(_T("ProcessName"), nProcessName);
+				hdItem.mask = HDI_WIDTH;
+				if (pHeaderCtrl.GetItem(2, &hdItem))
+				{
+					const int nCPU_Usage = hdItem.cxy;
+					theApp.WriteInt(_T("CPU_Usage"), nCPU_Usage);
+					hdItem.mask = HDI_WIDTH;
+					if (pHeaderCtrl.GetItem(3, &hdItem))
+					{
+						const int nMEM_Usage = hdItem.cxy;
+						theApp.WriteInt(_T("MEM_Usage"), nMEM_Usage);
+						hdItem.mask = HDI_WIDTH;
+						if (pHeaderCtrl.GetItem(4, &hdItem))
+						{
+							theApp.WriteInt(_T("Description"), hdItem.cxy);
+							hdItem.mask = HDI_WIDTH;
+							if (pHeaderCtrl.GetItem(5, &hdItem))
+							{
+								const int nCompany = hdItem.cxy;
+								theApp.WriteInt(_T("Company"), nCompany);
+								hdItem.mask = HDI_WIDTH;
+								if (pHeaderCtrl.GetItem(6, &hdItem))
+								{
+									const int nVersion = hdItem.cxy;
+									theApp.WriteInt(_T("Version"), nVersion);
+
+									const int nDescription = rectClient.Width() - (nProcessID + nProcessName + nCPU_Usage + nMEM_Usage + nCompany + nVersion);
+									if (pHeaderCtrl.GetItem(4, &hdItem))
+									{
+										hdItem.cxy = nDescription;
+										if (pHeaderCtrl.SetItem(4, &hdItem))
+										{
+											GetListCtrl().Invalidate();
+											GetListCtrl().UpdateWindow();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}

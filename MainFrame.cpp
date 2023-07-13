@@ -266,7 +266,13 @@ void CMainFrame::OnKillProcess()
 	HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, pProcessData->GetProcessID());
 	if (hProcess != NULL)
 	{
-		bool result = TerminateProcess(hProcess, -1);
+		bool result = TerminateProcess(hProcess, (UINT)-1);
+		if (result)
+		{
+			CString strMessage;
+			strMessage.Format(_T("%s has been terminated!"), static_cast<LPCTSTR>(pProcessData->GetFilePath()));
+			MessageBox(strMessage, _T("IntelliTask"), MB_OK);
+		}
 		CloseHandle(hProcess);
 	}
 }
