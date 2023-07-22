@@ -284,9 +284,6 @@
     <ClInclude Include="ChildView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HyperlinkStatic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VersionInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -308,6 +305,9 @@
     <ClInclude Include="sinstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HLinkCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntelliTask.cpp">
@@ -320,9 +320,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChildView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HyperlinkStatic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VersionInfo.cpp">
@@ -344,6 +341,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sinstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HLinkCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
