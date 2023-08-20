@@ -63,12 +63,20 @@ protected:
 	afx_msg void OnViewCaptionBar();
 	afx_msg void OnUpdateViewCaptionBar(CCmdUI* pCmdUI);
 	afx_msg void OnOptions();
-	DECLARE_MESSAGE_MAP()
-
 	bool CreateCaptionBar();
-public:
 	afx_msg void OnProperties();
 	afx_msg void OnUpdateProperties(CCmdUI *pCmdUI);
 	afx_msg void OnKillProcess();
 	afx_msg void OnUpdateKillProcess(CCmdUI *pCmdUI);
+protected:
+	afx_msg void OnTwitter();
+	afx_msg void OnLinkedin();
+	afx_msg void OnFacebook();
+	afx_msg void OnInstagram();
+	afx_msg void OnIssues();
+	afx_msg void OnDiscussions();
+	afx_msg void OnWiki();
+
+	DECLARE_MESSAGE_MAP()
+
 };

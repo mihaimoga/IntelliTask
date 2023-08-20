@@ -42,6 +42,13 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES, &CMainFrame::OnUpdateProperties)
 	ON_COMMAND(ID_KILL_PROCESS, &CMainFrame::OnKillProcess)
 	ON_UPDATE_COMMAND_UI(ID_KILL_PROCESS, &CMainFrame::OnUpdateKillProcess)
+	ON_COMMAND(IDC_TWITTER, &CMainFrame::OnTwitter)
+	ON_COMMAND(IDC_LINKEDIN, &CMainFrame::OnLinkedin)
+	ON_COMMAND(IDC_FACEBOOK, &CMainFrame::OnFacebook)
+	ON_COMMAND(IDC_INSTAGRAM, &CMainFrame::OnInstagram)
+	ON_COMMAND(IDC_ISSUES, &CMainFrame::OnIssues)
+	ON_COMMAND(IDC_DISCUSSIONS, &CMainFrame::OnDiscussions)
+	ON_COMMAND(IDC_WIKI, &CMainFrame::OnWiki)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -287,4 +294,39 @@ void CMainFrame::OnUpdateKillProcess(CCmdUI *pCmdUI)
 	}
 	else
 		pCmdUI->Enable(false);
+}
+
+void CMainFrame::OnTwitter()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://twitter.com/stefanmihaimoga"), nullptr, nullptr, SW_SHOW);
+}
+
+void CMainFrame::OnLinkedin()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://www.linkedin.com/in/stefanmihaimoga/"), nullptr, nullptr, SW_SHOW);
+}
+
+void CMainFrame::OnFacebook()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://www.facebook.com/stefanmihaimoga"), nullptr, nullptr, SW_SHOW);
+}
+
+void CMainFrame::OnInstagram()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://www.instagram.com/stefanmihaimoga/"), nullptr, nullptr, SW_SHOW);
+}
+
+void CMainFrame::OnIssues()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://github.com/mihaimoga/IntelliTask/issues"), nullptr, nullptr, SW_SHOW);
+}
+
+void CMainFrame::OnDiscussions()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://github.com/mihaimoga/IntelliTask/discussions"), nullptr, nullptr, SW_SHOW);
+}
+
+void CMainFrame::OnWiki()
+{
+	::ShellExecute(GetSafeHwnd(), _T("open"), _T("https://github.com/mihaimoga/IntelliTask/wiki"), nullptr, nullptr, SW_SHOW);
 }
