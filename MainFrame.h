@@ -68,7 +68,8 @@ protected:
 	afx_msg void OnUpdateProperties(CCmdUI *pCmdUI);
 	afx_msg void OnKillProcess();
 	afx_msg void OnUpdateKillProcess(CCmdUI *pCmdUI);
-protected:
+	afx_msg void OnDevices();
+	afx_msg void OnPrograms();
 	afx_msg void OnTwitter();
 	afx_msg void OnLinkedin();
 	afx_msg void OnFacebook();
@@ -78,5 +79,4 @@ protected:
 	afx_msg void OnWiki();
 
 	DECLARE_MESSAGE_MAP()
-
 };

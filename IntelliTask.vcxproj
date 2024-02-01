@@ -438,6 +438,7 @@ echo.
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="ReadMe.txt" />
+    <None Include="ReleaseNotes.html" />
     <None Include="res\buttons.bmp" />
     <None Include="res\filelarge.bmp" />
     <None Include="res\filesmall.bmp" />
@@ -451,10 +452,13 @@ echo.
     <None Include="res\Toolbar256.bmp" />
     <None Include="res\writelarge.bmp" />
     <None Include="res\writesmall.bmp" />
+    <None Include="SoftwareContextRegister.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="CpuUsage.h" />
+    <ClInclude Include="EnumDevicesDlg.h" />
+    <ClInclude Include="EnumProgramsDlg.h" />
     <ClInclude Include="HLinkCtrl.h" />
     <ClInclude Include="IntelliTask.h" />
     <ClInclude Include="MainFrame.h" />
@@ -548,6 +552,8 @@ makehm /h /a afxhh.h IDW_,HIDW_,0x50000 "%(FullPath)" &gt;&gt; "hlp\HTMLDefines.
   <ItemGroup>
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="CpuUsage.cpp" />
+    <ClCompile Include="EnumDevicesDlg.cpp" />
+    <ClCompile Include="EnumProgramsDlg.cpp" />
     <ClCompile Include="HLinkCtrl.cpp" />
     <ClCompile Include="IntelliTask.cpp" />
     <ClCompile Include="MainFrame.cpp" />

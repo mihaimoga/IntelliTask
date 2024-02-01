@@ -267,6 +267,8 @@
     <None Include="res\IntelliTask.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ReleaseNotes.html" />
+    <None Include="SoftwareContextRegister.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntelliTask.h">
@@ -308,6 +310,12 @@
     <ClInclude Include="HLinkCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnumDevicesDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumProgramsDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntelliTask.cpp">
@@ -344,6 +352,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HLinkCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumDevicesDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumProgramsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

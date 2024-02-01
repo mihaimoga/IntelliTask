@@ -18,6 +18,8 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #include "IntelliTask.h"
 
 #include "MainFrame.h"
+#include "EnumDevicesDlg.h"
+#include "EnumProgramsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,6 +44,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES, &CMainFrame::OnUpdateProperties)
 	ON_COMMAND(ID_KILL_PROCESS, &CMainFrame::OnKillProcess)
 	ON_UPDATE_COMMAND_UI(ID_KILL_PROCESS, &CMainFrame::OnUpdateKillProcess)
+	ON_COMMAND(ID_DEVICES, &CMainFrame::OnDevices)
+	ON_COMMAND(ID_PROGRAMS, &CMainFrame::OnPrograms)
 	ON_COMMAND(IDC_TWITTER, &CMainFrame::OnTwitter)
 	ON_COMMAND(IDC_LINKEDIN, &CMainFrame::OnLinkedin)
 	ON_COMMAND(IDC_FACEBOOK, &CMainFrame::OnFacebook)
@@ -294,6 +298,18 @@ void CMainFrame::OnUpdateKillProcess(CCmdUI *pCmdUI)
 	}
 	else
 		pCmdUI->Enable(false);
+}
+
+void CMainFrame::OnDevices()
+{
+	CEnumDevicesDlg pEnumDevicesDlg(this);
+	pEnumDevicesDlg.DoModal();
+}
+
+void CMainFrame::OnPrograms()
+{
+	CEnumProgramsDlg pEnumProgramsDlg(this);
+	pEnumProgramsDlg.DoModal();
 }
 
 void CMainFrame::OnTwitter()
