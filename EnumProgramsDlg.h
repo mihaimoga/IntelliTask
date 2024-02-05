@@ -45,6 +45,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
 	void BuildList();
+	afx_msg void OnBnClickedVersion();
 
 	DECLARE_MESSAGE_MAP()
 };

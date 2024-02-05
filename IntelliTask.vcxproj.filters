@@ -316,6 +316,9 @@
     <ClInclude Include="EnumProgramsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dtwinver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntelliTask.cpp">
@@ -358,6 +361,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnumProgramsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dtwinver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
