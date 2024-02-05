@@ -7,8 +7,6 @@
 #define HID_WRITE_PASTEASHYPERLINK              0x18002
 #define HID_PROPERTIES                          0x18003
 #define HID_KILL_PROCESS                        0x18004
-#define HID_DEVICES                             0x1800C
-#define HID_PROGRAMS                            0x1800D
  
 // Prompts (IDP_*) 
 #define HIDP_OLE_INIT_FAILED                    0x30064
