@@ -310,6 +310,7 @@ void CEnumProgramsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CEnumProgramsDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_OS_VERSION, &CEnumProgramsDlg::OnBnClickedVersion)
+    ON_BN_CLICKED(IDC_REFRESH, &CEnumProgramsDlg::OnClickedRefresh)
 END_MESSAGE_MAP()
 
 // CEnumProgramsDlg message handlers
@@ -318,7 +319,7 @@ BOOL CEnumProgramsDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	BuildList();
+    OnClickedRefresh();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -359,53 +360,57 @@ BOOL CSortStringArray::CompareAndSwap(int pos)
 	return FALSE;
 }
 
-void CEnumProgramsDlg::BuildList()
+void CEnumProgramsDlg::OnClickedRefresh()
 {
-	// Build a list of installed applications by enumerating
-	//	HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
-	//	and fetching "DisplayName" entry
+    CWaitCursor pWaitCursor;
+    m_arrPrograms.RemoveAll();
+    m_ctrlPrograms.DeleteAllItems();
 
-	HKEY hKey;
-	if (::RegOpenKeyEx(HKEY_LOCAL_MACHINE, IS_KEY, 0, KEY_READ, &hKey) != ERROR_SUCCESS)
-		return;
+    // Build a list of installed applications by enumerating
+    //	HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
+    //	and fetching "DisplayName" entry
 
-	DWORD dwIndex = 0;
-	LONG lRet;
-	DWORD cbName = IS_KEY_LEN;
-	TCHAR szSubKeyName[IS_KEY_LEN];
+    HKEY hKey;
+    if (::RegOpenKeyEx(HKEY_LOCAL_MACHINE, IS_KEY, 0, KEY_READ, &hKey) != ERROR_SUCCESS)
+        return;
 
-	while ((lRet = ::RegEnumKeyEx(hKey, dwIndex, szSubKeyName, &cbName, NULL,
-		NULL, NULL, NULL)) != ERROR_NO_MORE_ITEMS)
-	{
-		// Do we have a key to open?
-		if (lRet == ERROR_SUCCESS)
-		{
-			// Open the key and get the value
-			HKEY hItem;
-			if (::RegOpenKeyEx(hKey, szSubKeyName, 0, KEY_READ, &hItem) != ERROR_SUCCESS)
-				continue;
-			// Opened - look for "DisplayName"
-			TCHAR szDisplayName[IS_KEY_LEN];
-			DWORD dwSize = sizeof(szDisplayName);
-			DWORD dwType;
+    DWORD dwIndex = 0;
+    LONG lRet;
+    DWORD cbName = IS_KEY_LEN;
+    TCHAR szSubKeyName[IS_KEY_LEN];
 
-			if (::RegQueryValueEx(hItem, IS_DISPLAY, NULL, &dwType,
-				(LPBYTE)&szDisplayName, &dwSize) == ERROR_SUCCESS)
-			{
-				// Add to the main array
-				m_arrPrograms.Add(szDisplayName);
-			}
-			::RegCloseKey(hItem);
-		}
-		dwIndex++;
-		cbName = IS_KEY_LEN;
-	}
-	::RegCloseKey(hKey);
+    while ((lRet = ::RegEnumKeyEx(hKey, dwIndex, szSubKeyName, &cbName, NULL,
+        NULL, NULL, NULL)) != ERROR_NO_MORE_ITEMS)
+    {
+        // Do we have a key to open?
+        if (lRet == ERROR_SUCCESS)
+        {
+            // Open the key and get the value
+            HKEY hItem;
+            if (::RegOpenKeyEx(hKey, szSubKeyName, 0, KEY_READ, &hItem) != ERROR_SUCCESS)
+                continue;
+            // Opened - look for "DisplayName"
+            TCHAR szDisplayName[IS_KEY_LEN];
+            DWORD dwSize = sizeof(szDisplayName);
+            DWORD dwType;
 
-	m_arrPrograms.Sort();
+            if (::RegQueryValueEx(hItem, IS_DISPLAY, NULL, &dwType,
+                (LPBYTE)&szDisplayName, &dwSize) == ERROR_SUCCESS)
+            {
+                // Add to the main array
+                m_arrPrograms.Add(szDisplayName);
+            }
+            ::RegCloseKey(hItem);
+        }
+        dwIndex++;
+        cbName = IS_KEY_LEN;
+    }
+    ::RegCloseKey(hKey);
 
-	for (int nIndex = 0; nIndex <= m_arrPrograms.GetUpperBound(); nIndex++)
-		m_ctrlPrograms.InsertItem(m_ctrlPrograms.GetItemCount(), m_arrPrograms[nIndex], 0);
+    m_arrPrograms.Sort();
+
+    for (int nIndex = 0; nIndex <= m_arrPrograms.GetUpperBound(); nIndex++)
+        m_ctrlPrograms.InsertItem(m_ctrlPrograms.GetItemCount(), m_arrPrograms[nIndex], 0);
 }
 
 void CEnumProgramsDlg::OnBnClickedVersion()
