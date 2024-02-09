@@ -39,10 +39,13 @@ CEnumDevicesDlg::~CEnumDevicesDlg()
 void CEnumDevicesDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_DEVICES, m_ctrlDevices);
+	DDX_Control(pDX, IDC_DETAILS, m_ctrlDetails);
 }
 
 BEGIN_MESSAGE_MAP(CEnumDevicesDlg, CDialogEx)
 	ON_WM_DESTROY()
+	ON_NOTIFY(TVN_SELCHANGED, IDC_DEVICES, &CEnumDevicesDlg::OnSelchangedDevices)
 END_MESSAGE_MAP()
 
 // CEnumDevicesDlg message handlers
@@ -69,7 +72,7 @@ void ConvertGUIDToString(const GUID guid, TCHAR* pData)
 {
 	TCHAR szData[30] = { 0 };
 	TCHAR szTmp[3] = { 0 };
-	short wLoop;
+	DWORD wLoop;
 	//
 	_stprintf(pData, _T("%04X-%02X-%02X-"), guid.Data1, guid.Data2, guid.Data3);
 	for (wLoop = 0; wLoop < 8; wLoop++)
@@ -79,7 +82,7 @@ void ConvertGUIDToString(const GUID guid, TCHAR* pData)
 		_stprintf(szTmp, _T("%02X"), guid.Data4[wLoop]);
 		_tcscat(szData, szTmp);
 	};
-	memcpy(pData + _tcslen(pData), szData, _tcslen(szData));
+	_tcscpy(pData + _tcslen(pData), szData);
 };
 
 void ShowErrorMsg(HWND hWnd, const DWORD dwErrorCode, const TCHAR* szFunctionName)
@@ -101,7 +104,7 @@ void ShowErrorMsg(HWND hWnd, const DWORD dwErrorCode, const TCHAR* szFunctionNam
 	LocalFree(lpMsgBuf);
 };
 
-void ListViewDeleteItem(HWND hList, const short wItem)
+void ListViewDeleteItem(HWND hList, const DWORD wItem)
 {
 	if (wItem == -1)
 		SendMessage(hList, LVM_DELETEALLITEMS, 0, 0);
@@ -118,19 +121,17 @@ void ListViewSetExtStyle(HWND hListView, const DWORD dwStyle)
 	SendMessage(hListView, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, (LPARAM)style);
 };
 
-void ListViewSetSelectItem(HWND hListView, const short iItem)
+void ListViewSetSelectItem(HWND hListView, const DWORD iItem)
 {
 	LVITEM lvItem;
-	short i;
-	//
 	lvItem.iItem = iItem;
 	lvItem.mask = LVIF_STATE;
 	lvItem.state = LVIS_SELECTED;
-	i = (short)SendMessage(hListView, LVM_SETITEMSTATE, iItem, (LPARAM)&lvItem);
+	SendMessage(hListView, LVM_SETITEMSTATE, iItem, (LPARAM)&lvItem);
 };
 
-void ListViewInsertColumnText(HWND hListView, const short wIdx,
-	int wFmt, TCHAR* pszText, const BOOL bFinal, HWND hDlg)
+void ListViewInsertColumnText(HWND hListView, const DWORD wIdx,
+	int wFmt, const TCHAR* pszText, const BOOL bFinal, HWND hDlg)
 {
 	LVCOLUMN   column;
 	TEXTMETRIC text;
@@ -145,7 +146,7 @@ void ListViewInsertColumnText(HWND hListView, const short wIdx,
 	if (!wFmt)
 		wFmt = LVCFMT_LEFT;
 	column.mask = LVCF_TEXT | LVCF_FMT | LVCF_WIDTH;
-	column.pszText = pszText;
+	column.pszText = (LPWSTR)pszText;
 	column.fmt = wFmt;
 	if (!bFinal)
 		column.cx = nWidth;
@@ -155,7 +156,7 @@ void ListViewInsertColumnText(HWND hListView, const short wIdx,
 		ShowErrorMsg(hDlg, GetLastError(), _T("InitialListView"));
 };
 
-void ListViewAddColumnImageText(HWND hWnd, const UINT nID, const short wIdx,
+void ListViewAddColumnImageText(HWND hWnd, const UINT nID, const DWORD wIdx,
 	int wFmt, TCHAR* pszText, const BOOL bFinal)
 {
 	LVCOLUMN   column;
@@ -263,8 +264,8 @@ UINT IsListViewClkEvent(const UINT nID, NMHDR* pnmh)
 
 void ListViewRemoveAllItems(HWND hListView)
 {
-	short wCnt = (short)SendMessage(hListView, LVM_GETITEMCOUNT, 0, 0);
-	short wLoop;
+	LRESULT wCnt = SendMessage(hListView, LVM_GETITEMCOUNT, 0, 0);
+	DWORD wLoop;
 	//
 	for (wLoop = 0; wLoop < wCnt; wLoop++)
 		SendMessage(hListView, LVM_DELETEITEM, 0, 0);
@@ -281,22 +282,11 @@ void ListViewRemoveColumn(HWND hDlg, const UINT nID, const int iCol)
 	SendMessage(GetDlgItem(hDlg, nID), LVM_DELETECOLUMN, (WPARAM)iCol, 0);
 };
 
-/*BOOL UnicodeToAnsi(const wchar_t* Source, const short wLen, char* Destination, const short sLen)
-{
-	return WideCharToMultiByte(CP_ACP,
-		WC_COMPOSITECHECK,
-		Source,
-		wLen,
-		Destination,
-		sLen,
-		0L, 0L);
-};*/
-
 void TreeViewRemoveAllNodes(HWND hDlg, const UINT nIdTree)
 {
 	HWND  hTree = GetDlgItem(hDlg, nIdTree);
-	short wCnt = (short)SendMessage(hDlg, TVM_GETCOUNT, 0, 0);
-	short wLoop;
+	LRESULT wCnt = SendMessage(hDlg, TVM_GETCOUNT, 0, 0);
+	DWORD wLoop;
 	for (wLoop = 0; wLoop < wCnt; wLoop)
 		SendMessage(hTree, TVM_DELETEITEM, 0, (LPARAM)TVI_ROOT);
 	SendMessage(hTree, TVM_DELETEITEM, 0, (LPARAM)TVI_ROOT);
@@ -372,16 +362,16 @@ char AddNewDeviceOrderNode(const TCHAR* szDevName, HWND hDlg)
 	//
 	if (!pAdd)
 		return 0;
-	memcpy(pAdd->szDevName, szDevName, _tcslen(szDevName));
+	_tcscpy(pAdd->szDevName, szDevName);
 	pAdd->pNext = _pOrderHead->pNext;
 	_pOrderHead->pNext = pAdd;
 	return 1;
 };
 
-short FindDeviceOrder(const TCHAR* szName)
+DWORD FindDeviceOrder(const TCHAR* szName)
 {
 	DEVICE_ORDER* pList = _pOrderHead->pNext;
-	short        wOrder = 0;
+	DWORD        wOrder = 0;
 	//
 	while (pList)
 	{
@@ -426,8 +416,8 @@ DEVICE_LIST* AllocNewDeviceNode(HWND hDlg)
 	RtlZeroMemory(pNew->szInstallID, sizeof(char) * LINE_LEN);
 	RtlZeroMemory(pNew->szName, sizeof(char) * MAX_PATH);
 	RtlZeroMemory(pNew->szPath, sizeof(char) * MAX_PATH);
-	pNew->wOrder = -1;
-	pNew->wIndex = -1;
+	pNew->wOrder = (DWORD) - 1;
+	pNew->wIndex = (DWORD) - 1;
 	pNew->pNext = 0L;
 	return pNew;
 };
@@ -436,8 +426,8 @@ char AddNewDeviceNode(const GUID guid,
 	const TCHAR* szName,
 	const TCHAR* szInstallID,
 	const TCHAR* szPath,
-	const short wIndex,
-	const short wOrder,
+	const DWORD wIndex,
+	const DWORD wOrder,
 	HWND hDlg)
 {
 	DEVICE_LIST* pAdd = AllocNewDeviceNode(hDlg);
@@ -445,33 +435,16 @@ char AddNewDeviceNode(const GUID guid,
 	if (!pAdd)
 		return 0;
 	memcpy(&pAdd->guid, &guid, sizeof(GUID));
-	memcpy(pAdd->szInstallID, szInstallID, _tcslen(szInstallID));
-	memcpy(pAdd->szName, szName, _tcslen(szName));
-	memcpy(pAdd->szPath, szPath, _tcslen(szPath));
+	_tcscpy(pAdd->szInstallID, szInstallID);
+	_tcscpy(pAdd->szName, szName);
+	_tcscpy(pAdd->szPath, szPath);
 	pAdd->wIndex = wIndex;
 	pAdd->wOrder = wOrder;
 	pAdd->pNext = _pHead->pNext;
 	_pHead->pNext = pAdd;
 	return 1;
 };
-//
-char FindDeviceName(const TCHAR* szName, const UINT nIDList1, const UINT nIDList2, HWND hDlg)
-{
-	DEVICE_LIST* pList = _pHead->pNext;
-	//
-	while (pList)
-	{
-		if (!_tcscmp(pList->szName, szName))
-		{
-			GetOtherInfo(pList->guid, pList->wOrder, nIDList1, nIDList2, hDlg);
-			GetDeviceDetailInfo(pList, hDlg);
-			return 1;
-		};
-		pList = pList->pNext;
-	};
-	return 0;
-};
-//
+
 void FreeAllocDeviceNode()
 {
 	DEVICE_LIST* pDel = _pHead->pNext;
@@ -629,7 +602,7 @@ char EnumWDMDriver(const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 {
 	HDEVINFO        hDevInfo = 0L;
 	SP_DEVINFO_DATA spDevInfoData = { 0 };
-	short           wIndex = 0;
+	DWORD           wIndex = 0;
 	HTREEITEM       hTreeChild = 0L;
 	//
 	hTreeChild = MakeDeviceRootTree(_spImageData, nIdTree, nIdBmp, hDlg);
@@ -657,7 +630,7 @@ char EnumWDMDriver(const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 		{
 			TCHAR szBuf[MAX_PATH] = { 0 };
 			int wImageIdx = 0;
-			// short wItem = 0;
+			// DWORD wItem = 0;
 
 			if (!SetupDiGetDeviceRegistryProperty(hDevInfo,
 				&spDevInfoData,
@@ -682,7 +655,7 @@ char EnumWDMDriver(const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 				TCHAR                  szPath[MAX_PATH] = { 0 };
 				HTREEITEM              hItem;
 				DWORD                  dwRequireSize;
-				short                  wOrder;
+				DWORD                  wOrder;
 				//
 				if (!SetupDiGetClassDescription(&spDevInfoData.ClassGuid,
 					szBuf,
@@ -754,8 +727,8 @@ void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWN
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	short wLoop = 0;
-	short wCnt = (short)ListViewGetItemCount(hListView);
+	DWORD wLoop = 0;
+	DWORD wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%08X - "), (unsigned int)pMemDes->MD_Alloc_Base);
 	_stprintf(szBuf + _tcslen(szBuf), _T("%08X"), (unsigned int)pMemDes->MD_Alloc_End);
@@ -764,7 +737,7 @@ void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWN
 
 	if (pMemDes->MD_Count)
 	{
-		for (wLoop = 0; wLoop < (short)(ulSize -
+		for (wLoop = 0; wLoop < (ulSize -
 			(LONG)(sizeof(MEM_DES) / pMemDes->MD_Type)); wLoop++)
 		{
 			MEM_RANGE* pMemRange = (MEM_RANGE*)(pMemDes + 1);// + pMemDes->MD_Type);
@@ -779,13 +752,13 @@ void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWN
 		};
 	};
 };
-//
+
 void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	short wLoop = 0;
-	short wCnt = (short)ListViewGetItemCount(hListView);
+	DWORD wLoop = 0;
+	DWORD wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%04X - "), (unsigned int)pIODes->IOD_Alloc_Base);
 	_stprintf(szBuf + _tcslen(szBuf), _T("%04X"), (unsigned int)pIODes->IOD_Alloc_End);
@@ -794,7 +767,7 @@ void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg
 
 	if (pIODes->IOD_Count)
 	{
-		for (wLoop = 0; wLoop < (short)(ulSize -
+		for (wLoop = 0; wLoop < (ulSize -
 			(ULONG)(sizeof(IO_DES) / pIODes->IOD_Type)); wLoop++)
 		{
 			IO_RANGE* pIORange = (IO_RANGE*)(pIODes + 1); // + (wLoop * pIODes->IOD_Type));
@@ -809,13 +782,13 @@ void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg
 		};
 	};
 };
-//
+
 void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	short wLoop = 0;
-	short wCnt = (short)ListViewGetItemCount(hListView);
+	DWORD wLoop = 0;
+	DWORD wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%02d"), pDMADes->DD_Alloc_Chan);
 	ListViewInsertItemText(hListView, wCnt, 0, _T("DMA"));
@@ -823,7 +796,7 @@ void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND h
 
 	if (pDMADes->DD_Count)
 	{
-		for (wLoop = 0; wLoop < (short)(ulSize -
+		for (wLoop = 0; wLoop < (ulSize -
 			(ULONG)(sizeof(DMA_DES) / pDMADes->DD_Type)); wLoop++)
 		{
 			DMA_RANGE* pDMARange = (DMA_RANGE*)(pDMADes + 1); // + (wLoop * pIODes->IOD_Type));
@@ -838,13 +811,13 @@ void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND h
 		};
 	};
 };
-//
+
 void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	short wLoop = 0;
-	short wCnt = (short)ListViewGetItemCount(hListView);
+	DWORD wLoop = 0;
+	DWORD wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%02d"), pIRQDes->IRQD_Alloc_Num);
 	ListViewInsertItemText(hListView, wCnt, 0, _T("IRQ"));
@@ -852,7 +825,7 @@ void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND h
 
 	if (pIRQDes->IRQD_Count)
 	{
-		for (wLoop = 0; wLoop < (short)(ulSize -
+		for (wLoop = 0; wLoop < (ulSize -
 			(ULONG)(sizeof(IRQ_DES) / pIRQDes->IRQD_Type)); wLoop++)
 		{
 			IRQ_RANGE* pIRQRange = (IRQ_RANGE*)(pIRQDes + 1); // + (wLoop * pIODes->IOD_Type));
@@ -867,12 +840,12 @@ void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND h
 		};
 	};
 };
-//
+
 void FindSpecResource(const DEVINST DevInst, const DWORD dwResType,
-	const short /*wOrder*/, const UINT nID, HWND hDlg)
+	const DWORD /*wOrder*/, const UINT nID, HWND hDlg)
 {
 	char* pBuf = 0L;
-	short wHeaderSize;
+	DWORD wHeaderSize;
 	ULONG ulSize;
 	//
 	CONFIGRET cmRet;
@@ -974,38 +947,39 @@ void FindSpecResource(const DEVINST DevInst, const DWORD dwResType,
 	};
 	CM_Free_Res_Des_Handle(nextLogConf);
 };
-//
-void GetOtherInfo(GUID guid, const short wOrder,
-	const UINT nIDList1, const UINT nIDList2, HWND hDlg)
+
+void GetOtherInfo(GUID guid, const DWORD wOrder, const UINT nIDList1, HWND hDlg)
 {
 	HDEVINFO         hDevInfo = 0L;
 	SP_DEVINFO_DATA  spDevInfoData = { 0 };
-	//
+
 	hDevInfo = SetupDiGetClassDevs(&guid, 0L, hDlg, DIGCF_PRESENT);
 	if (hDevInfo == (void*)-1)
 	{
 		ShowErrorMsg(hDlg, GetLastError(), _T("SetupDiGetClassDevs"));
 		return;
 	};
-	//
-	//    wIndex = 0;
+
+	RtlZeroMemory(&spDevInfoData, sizeof(spDevInfoData));
 	spDevInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
 	if (SetupDiEnumDeviceInfo(hDevInfo,
 		wOrder,
 		&spDevInfoData))
 	{
 		SP_DRVINFO_DATA        spDrvInfoData = { 0 };
-		SP_DRVINFO_DETAIL_DATA spDrvInfoDetail = { 0 };
-		TCHAR                  szHardware[128] = { 0 };
+		SP_DRVINFO_DETAIL_DATA spDrvInfoDetail[2] = {0};
+		TCHAR                  HardwareID[256] = { 0 };
 		HWND                   hList = GetDlgItem(hDlg, nIDList1);
 		DWORD                  dwRequireSize;
-		short                  wIdx;
-		//
-		GetMoreInformation(hDevInfo, spDevInfoData, nIDList1, hDlg);
-		// Show Resource Information  
+		DWORD                  wIdx;
+		
+		RtlZeroMemory(&spDrvInfoData, sizeof(spDrvInfoData));
+		// RtlZeroMemory(&spDrvInfoDetail, sizeof(spDrvInfoDetail));
+		GetMoreInformation(hDevInfo, &spDevInfoData, nIDList1, hDlg);
+		/* Show Resource Information
 		for (wIdx = ResType_Mem; wIdx <= ResType_IRQ; wIdx++)
 			FindSpecResource(spDevInfoData.DevInst,
-				wIdx, wOrder, nIDList2, hDlg);
+				wIdx, wOrder, nIDList2, hDlg);*/
 		//
 		if (!SetupDiBuildDriverInfoList(hDevInfo,
 			&spDevInfoData,
@@ -1021,24 +995,22 @@ void GetOtherInfo(GUID guid, const short wOrder,
 				wIdx++,
 				&spDrvInfoData))
 			{
-				char szBuf[2048] = { 0 };
-				//
-				memcpy(&spDrvInfoDetail, szBuf, sizeof(SP_DRVINFO_DETAIL_DATA));
-				spDrvInfoDetail.cbSize = sizeof(SP_DRVINFO_DETAIL_DATA);
+				// BYTE szBuf[2048] = { 0 };
+				// RtlZeroMemory(szBuf, sizeof(szBuf));
+				RtlZeroMemory(&spDrvInfoDetail, sizeof(spDrvInfoDetail));
+				spDrvInfoDetail[0].cbSize = sizeof(SP_DRVINFO_DETAIL_DATA);
 				dwRequireSize = 0;
 				if (SetupDiGetDriverInfoDetail(hDevInfo,
 					&spDevInfoData,
 					&spDrvInfoData,
-					&spDrvInfoDetail,
-					2048,
+					&spDrvInfoDetail[0],
+					sizeof(spDrvInfoDetail),
 					&dwRequireSize))
 				{
-					SYSTEMTIME sysTime = { 0 };
+					SYSTEMTIME sysTime = {0};
 					TCHAR      szTmp[64] = { 0 };
-					//
-					memcpy(szHardware, spDrvInfoDetail.HardwareID,
-						_tcslen(spDrvInfoDetail.HardwareID));
-					ListViewInsertItemText(hList, 1, 1, szHardware);
+					_tcscpy(HardwareID, spDrvInfoDetail[0].HardwareID);
+					ListViewInsertItemText(hList, 1, 1, HardwareID);
 					ListViewInsertItemText(hList, 3, 1, spDrvInfoData.MfgName);
 					ListViewInsertItemText(hList, 4, 1, spDrvInfoData.ProviderName);
 					ListViewInsertItemText(hList, 5, 1, spDrvInfoData.Description);
@@ -1046,16 +1018,15 @@ void GetOtherInfo(GUID guid, const short wOrder,
 					_stprintf(szTmp, _T("%02d/%02d/%04d"), sysTime.wMonth,
 						sysTime.wDay, sysTime.wYear);
 					ListViewInsertItemText(hList, 7, 1, szTmp);
-					ListViewInsertItemText(hList, 6, 1, spDrvInfoDetail.SectionName);
-					ListViewInsertItemText(hList, 8, 1, spDrvInfoDetail.InfFileName);
+					ListViewInsertItemText(hList, 6, 1, spDrvInfoDetail[0].SectionName);
+					ListViewInsertItemText(hList, 8, 1, spDrvInfoDetail[0].InfFileName);
 				}
 				else
-					RtlZeroMemory(szHardware, sizeof(char) * 128);
+					RtlZeroMemory(HardwareID, sizeof(HardwareID));
 			}
 			else
 			{
 				DWORD dwError = GetLastError();
-				//
 				if (dwError != ERROR_NO_MORE_ITEMS)
 					ShowErrorMsg(hDlg, dwError, _T("SetupDiEnumDriverInfo"));
 				break;
@@ -1065,7 +1036,7 @@ void GetOtherInfo(GUID guid, const short wOrder,
 		SetupDiDestroyDeviceInfoList(hDevInfo);
 	};
 };
-//
+
 void GetDeviceInterfaceInfo(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, TCHAR* szPath, HWND hDlg)
 {
 	SP_DEVICE_INTERFACE_DATA spDevInterfaceData = { 0 };
@@ -1116,9 +1087,7 @@ void GetDeviceInterfaceInfo(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, TC
 		}
 		else
 		{
-			memcpy(szPath, pspDevInterfaceDetail->DevicePath,
-				_tcslen(pspDevInterfaceDetail->DevicePath));
-			//            switch(spDevInterfaceData.                    
+			_tcscpy(szPath, pspDevInterfaceDetail->DevicePath);
 		};
 		//
 		if (pspDevInterfaceDetail)
@@ -1128,7 +1097,7 @@ void GetDeviceInterfaceInfo(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, TC
 
 void ShowDevPropertyInfo(HWND hListView, const TCHAR* szItemName, const TCHAR* szValue)
 {
-	short  wCount = (short)ListViewGetItemCount(hListView);
+	DWORD  wCount = ListViewGetItemCount(hListView);
 	TCHAR  szTmp[64] = { 0 };
 	LVITEM lvItem = { 0 };
 	//
@@ -1242,34 +1211,34 @@ void GetDriverName(HWND hListView, const TCHAR* szServiceName)
 	RegCloseKey(hKey);
 };
 
-void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const UINT nIDList1, HWND hDlg)
+void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA* spDevInfoData, const UINT nIDList1, HWND hDlg)
 {
 	HWND  hListView = GetDlgItem(hDlg, nIDList1);
 	GUID  guid = { 0 };
-	short wCount = (short)ListViewGetItemCount(hListView);
+	DWORD wCount = ListViewGetItemCount(hListView);
 	TCHAR szName[64] = { 0 };
 	DWORD dwAddr;
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_BUSNUMBER,
 		0L,
 		(PBYTE)&dwAddr, //szName,
-		63,
+		sizeof(dwAddr),
 		0))
 	{
 		_stprintf(szName, _T("%X"), dwAddr);
-		wCount = (short)ListViewGetItemCount(hListView);
+		wCount = ListViewGetItemCount(hListView);
 		ListViewInsertItemText(hListView, wCount, 0, _T("BUS Number"));
 		ListViewInsertItemText(hListView, wCount, 1, szName);
 	};
 	//
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_CAPABILITIES,
 		0L,
 		(PBYTE)&dwAddr, //szName,
-		63,
+		sizeof(dwAddr),
 		0))
 	{
 		if (dwAddr)
@@ -1300,11 +1269,11 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_CHARACTERISTICS,
 		0L,
 		(PBYTE)&dwAddr, //szName,
-		63,
+		sizeof(dwAddr),
 		0))
 	{
 		if (dwAddr)
@@ -1333,11 +1302,11 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_DEVTYPE,
 		0L,
 		(PBYTE)&dwAddr, //szName,
-		63,
+		sizeof(dwAddr),
 		0))
 	{
 		if (dwAddr)
@@ -1462,7 +1431,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_DRIVER,
 		0L,
 		(PBYTE)szName,
@@ -1473,7 +1442,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_ENUMERATOR_NAME,
 		0L,
 		(PBYTE)szName,
@@ -1484,7 +1453,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_HARDWAREID,
 		0L,
 		(PBYTE)szName,
@@ -1502,7 +1471,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_LOCATION_INFORMATION,
 		0L,
 		(PBYTE)szName,
@@ -1513,7 +1482,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_LOWERFILTERS,
 		0L,
 		(PBYTE)szName,
@@ -1524,7 +1493,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_UPPERFILTERS,
 		0L,
 		(PBYTE)szName,
@@ -1535,7 +1504,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_PHYSICAL_DEVICE_OBJECT_NAME,
 		0L,
 		(PBYTE)szName,
@@ -1546,7 +1515,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 	};
 
 	if (SetupDiGetDeviceRegistryProperty(hDevInfo,
-		&spDevInfoData,
+		spDevInfoData,
 		SPDRP_SERVICE,
 		0L,
 		(PBYTE)szName,
@@ -1574,9 +1543,66 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, const 
 
 void CEnumDevicesDlg::EnumDevices()
 {
+	CWaitCursor pWaitCursor;
+	m_ctrlDevices.SetRedraw(FALSE);
+	m_ctrlDetails.SetRedraw(FALSE);
 	InitialDeviceList(GetSafeHwnd());
 	InitialDeviceOrder(GetSafeHwnd());
 	TreeViewRemoveAllNodes(GetSafeHwnd(), IDC_DEVICES);
 	InitialImageData();
 	EnumWDMDriver(IDC_DEVICES, IDB_COMPUTER, GetSafeHwnd());
+	m_ctrlDevices.SetRedraw(TRUE);
+	m_ctrlDetails.SetRedraw(TRUE);
+	m_ctrlDevices.UpdateWindow();
+	m_ctrlDetails.UpdateWindow();
+}
+
+char FindDeviceName(const TCHAR* szName, const UINT nIDList1, HWND hDlg)
+{
+	DEVICE_LIST* pList = _pHead->pNext;
+	//
+	while (pList)
+	{
+		if (!_tcscmp(pList->szName, szName))
+		{
+			GetOtherInfo(pList->guid, pList->wOrder, nIDList1, hDlg);
+			GetDeviceDetailInfo(pList, hDlg);
+			return 1;
+		};
+		pList = pList->pNext;
+	};
+	return 0;
+};
+
+void CEnumDevicesDlg::OnSelchangedDevices(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	TVITEM tvItem = { 0 };
+	TreeViewGetSelectText(GetDlgItem(IDC_DEVICES)->GetSafeHwnd(), pNMHDR, &tvItem);
+	if (tvItem.pszText)
+	{
+		TCHAR szData[LINE_LEN] = { 0 };
+		_tcscpy(szData, tvItem.pszText/*, _tcslen(tvItem.pszText)*/);
+		ListViewRemoveAllItems(GetDlgItem(IDC_DETAILS)->GetSafeHwnd());
+		// ListViewRemoveAllItems(GetDlgItem(GetSafeHwnd(), IDC_LIST2));
+		ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("Field"), 0, GetSafeHwnd());
+		ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Descritption"), 1, GetSafeHwnd());
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("GUID"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Hardware ID"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 2, 0, _T("Install ID"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 3, 0, _T("Manufacturer"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 4, 0, _T("Provider"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 5, 0, _T("Driver Description"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 6, 0, _T("Section Name"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 7, 0, _T("INF Date"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 8, 0, _T("INF Path"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 9, 0, _T("Image Path"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 10, 0, _T("Index"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 11, 0, _T("Device Path"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 12, 0, _T("Group"));
+		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 13, 0, _T("Start"));
+		// SetCharSet(IDC_LIST1, IDC_LIST2);
+		FindDeviceName(szData, IDC_DETAILS, GetSafeHwnd());
+	};
+	*pResult = 0;
 }

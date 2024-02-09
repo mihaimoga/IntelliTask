@@ -363,6 +363,7 @@ BOOL CSortStringArray::CompareAndSwap(int pos)
 void CEnumProgramsDlg::OnClickedRefresh()
 {
     CWaitCursor pWaitCursor;
+    m_ctrlPrograms.SetRedraw(FALSE);
     m_arrPrograms.RemoveAll();
     m_ctrlPrograms.DeleteAllItems();
 
@@ -411,6 +412,9 @@ void CEnumProgramsDlg::OnClickedRefresh()
 
     for (int nIndex = 0; nIndex <= m_arrPrograms.GetUpperBound(); nIndex++)
         m_ctrlPrograms.InsertItem(m_ctrlPrograms.GetItemCount(), m_arrPrograms[nIndex], 0);
+
+    m_ctrlPrograms.SetRedraw(TRUE);
+    m_ctrlPrograms.UpdateWindow();
 }
 
 void CEnumProgramsDlg::OnBnClickedVersion()

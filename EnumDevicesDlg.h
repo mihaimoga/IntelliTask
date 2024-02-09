@@ -116,8 +116,8 @@ typedef struct _tagDEVICE_ORDER
 typedef struct _tagDEVLIST
 {
 	GUID               guid;
-	short              wOrder;
-	short              wIndex;
+	DWORD              wOrder;
+	DWORD              wIndex;
 	TCHAR              szInstallID[LINE_LEN];
 	TCHAR              szName[MAX_PATH];
 	TCHAR              szPath[MAX_PATH];
@@ -130,21 +130,21 @@ char EnumWDMDriver(const UINT, const UINT);
 // void GetDriverDetialInfo(HTREEITEM, const UINT, const TCHAR*, const int, const int);
 void GetDeviceInstanceID(HDEVINFO, SP_DEVINFO_DATA*, TCHAR*, HWND hDlg);
 void GetDeviceInterfaceInfo(HDEVINFO, SP_DEVINFO_DATA, TCHAR*, HWND hDlg);
-void GetOtherInfo(GUID, const short, const UINT, const UINT, HWND hDlg);
-void FindSpecResource(const DEVINST, const DWORD, const short, const UINT, HWND hDlg);
+void GetOtherInfo(GUID, const DWORD, const UINT, HWND hDlg);
+void FindSpecResource(const DEVINST, const DWORD, const DWORD, const UINT, HWND hDlg);
 
 HTREEITEM MakeRootTree();
 
 char InitialDeviceOrder();
 DEVICE_ORDER* AllocNewDeviceOrderNode();
 char AddNewDeviceOrderNode(const char*);
-short FindDeviceOrder(const char*);
+DWORD FindDeviceOrder(const char*);
 void FreeAllDeviceOrderNode();
 
 char InitialDeviceList();
 DEVICE_LIST* AllocNewDeviceNode(HWND hDlg);
 char AddNewDeviceNode(const GUID, const char*, const char*,
-	const char*, const short, const short, HWND hDlg);
+	const char*, const DWORD, const DWORD, HWND hDlg);
 char FindDeviceName(const char*, const UINT, const UINT, HWND hDlg);
 void GetDeviceDetailInfo(DEVICE_LIST*, HWND hDlg);
 void DisplayDriverDetailInfo(HTREEITEM, const UINT,
@@ -156,7 +156,7 @@ void GetIOResource(IO_DES*, const ULONG, const UINT, HWND hDlg);
 void GetDMAResource(DMA_DES*, const ULONG, const UINT, HWND hDlg);
 void GetIRQResource(IRQ_DES*, const ULONG, const UINT, HWND hDlg);
 
-void GetMoreInformation(HDEVINFO, SP_DEVINFO_DATA, const UINT, HWND hDlg);
+void GetMoreInformation(HDEVINFO, SP_DEVINFO_DATA*, const UINT, HWND hDlg);
 
 // CEnumDevicesDlg dialog
 
@@ -172,6 +172,8 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ENUMDEVICES_DIALOG };
 #endif
+	CTreeCtrl m_ctrlDevices;
+	CListCtrl m_ctrlDetails;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -180,6 +182,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
 	void EnumDevices();
+	afx_msg void OnSelchangedDevices(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
 };
