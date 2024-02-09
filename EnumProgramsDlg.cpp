@@ -321,6 +321,22 @@ BOOL CEnumProgramsDlg::OnInitDialog()
 
     OnClickedRefresh();
 
+    VERIFY(m_pWindowResizer.Hook(this));
+    VERIFY(m_pWindowResizer.SetAnchor(IDC_PROGRAMS, ANCHOR_LEFT | ANCHOR_RIGHT | ANCHOR_TOP | ANCHOR_BOTTOM));
+    VERIFY(m_pWindowResizer.SetAnchor(IDC_OS_VERSION, ANCHOR_LEFT | ANCHOR_BOTTOM));
+    VERIFY(m_pWindowResizer.SetAnchor(IDC_REFRESH, ANCHOR_LEFT | ANCHOR_BOTTOM));
+    VERIFY(m_pWindowResizer.SetAnchor(IDCANCEL, ANCHOR_RIGHT | ANCHOR_BOTTOM));
+
+    const int nWidth = theApp.GetInt(_T("Width"), -1);
+    const int nHeight = theApp.GetInt(_T("Height"), -1);
+    if ((-1 != nWidth) && (-1 != nHeight))
+    {
+        CRect pWndRect(0, 0, nWidth, nHeight);
+        MoveWindow(pWndRect, FALSE);
+        CenterWindow();
+        UpdateWindow();
+    }
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -329,7 +345,12 @@ void CEnumProgramsDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
-	// TODO: Add your message handler code here
+    RECT pWndRect;
+    GetWindowRect(&pWndRect);
+    const int nWidth = pWndRect.right - pWndRect.left;
+    const int nHeight = pWndRect.bottom - pWndRect.top;
+    theApp.WriteInt(_T("Width"), nWidth);
+    theApp.WriteInt(_T("Height"), nHeight);
 }
 
 void CSortStringArray::Sort()

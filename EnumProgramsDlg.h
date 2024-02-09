@@ -13,6 +13,8 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 
 #pragma once
 
+#include "WndResizer.h"
+
 // CEnumProgramsDlg dialog
 
 class CSortStringArray : public CStringArray
@@ -35,6 +37,7 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ENUMPROGRAMS_DIALOG };
 #endif
+	CWndResizer m_pWindowResizer;
 	CSortStringArray m_arrPrograms;
 	CListCtrl m_ctrlPrograms;
 

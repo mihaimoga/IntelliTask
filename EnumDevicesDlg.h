@@ -18,6 +18,8 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #include <newdev.h>
 #include <setupapi.h>
 
+#include "WndResizer.h"
+
 #define FILE_REMOVABLE_MEDIA            0x00000001
 #define FILE_READ_ONLY_DEVICE           0x00000002
 #define FILE_FLOPPY_DISKETTE            0x00000004
@@ -172,6 +174,7 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ENUMDEVICES_DIALOG };
 #endif
+	CWndResizer m_pWindowResizer;
 	CTreeCtrl m_ctrlDevices;
 	CListCtrl m_ctrlDetails;
 

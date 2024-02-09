@@ -319,6 +319,9 @@
     <ClInclude Include="Dtwinver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WndResizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntelliTask.cpp">
@@ -364,6 +367,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dtwinver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WndResizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
