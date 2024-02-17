@@ -1,0 +1,165 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 429, 310
+STYLE DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Driver Install Tool"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Manual Setting(Do not use INF file)",IDC_RADIO1,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,69,281,136,8
+    CONTROL         "Use INF file",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,
+                    225,281,64,8
+    PUSHBUTTON      "Add",IDC_ADDBTN,7,294,42,9,BS_FLAT
+    PUSHBUTTON      "Delete",IDC_DELBTN,76,294,42,9,BS_FLAT
+    PUSHBUTTON      "Refresh",IDC_REFBTN,155,294,42,9,BS_FLAT
+    PUSHBUTTON      "Exit",IDC_EXIT,380,294,42,9,BS_FLAT
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_DISABLEDRAGDROP | TVS_FULLROWSELECT | 
+                    WS_BORDER | WS_TABSTOP,7,7,112,271
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,122,7,300,203
+    CONTROL         "List2",IDC_LIST2,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,122,212,300,66
+    PUSHBUTTON      "Copy Path",IDC_COPYPATHBTN,309,294,42,9,BS_FLAT
+    PUSHBUTTON      "Disable",IDC_DISABLEBTN,235,294,42,9,BS_FLAT
+END
+
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 238, 191
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "...",IDC_OPENINFBTN,216,7,15,14,BS_FLAT
+    CONTROL         "CRITICAL ERROR",IDC_PARAMOPT1,"Button",
+                    BS_AUTORADIOBUTTON | BS_FLAT | WS_GROUP,19,51,86,8
+    CONTROL         "IGNORE ERROR",IDC_PARAMOPT2,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,19,74,84,8
+    CONTROL         "NORMAL ERROR",IDC_PARAMOPT3,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,19,101,86,8
+    CONTROL         "SEVERE ERROR",IDC_PARAMOPT4,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,19,129,88,10
+    CONTROL         "BOOT START",IDC_PARAMOPT5,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT | WS_GROUP,131,51,86,8
+    CONTROL         "SYSTEM START",IDC_PARAMOPT6,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,131,70,88,8
+    CONTROL         "AUTO START",IDC_PARAMOPT7,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,131,89,88,8
+    CONTROL         "DEMAND START",IDC_PARAMOPT8,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,131,108,88,8
+    CONTROL         "DISABLED",IDC_PARAMOPT9,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,131,129,88,8
+    EDITTEXT        IDC_DRVNAMETXT,58,152,166,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Install",IDC_INSTALLBTN,7,170,50,14,BS_FLAT
+    PUSHBUTTON      "Reset",IDC_RESETBTN,93,170,50,14,BS_FLAT
+    PUSHBUTTON      "Exit",IDC_IEXIT,181,170,50,14,BS_FLAT
+    LTEXT           "INF File:",IDC_STATIC,7,7,32,9
+    LTEXT           "",IDC_INFLBL,41,7,173,14,WS_BORDER
+    GROUPBOX        "Parameter Setting",IDC_STATIC,7,25,224,143,BS_FLAT
+    GROUPBOX        "Error Control",IDC_STATIC,13,34,100,116
+    GROUPBOX        "Start Type",IDC_STATIC,125,34,100,116
+    LTEXT           "Driver Name:",IDC_STATIC,13,155,44,11
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 422
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 303
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_MYCOMP              BITMAP  DISCARDABLE     "MYCOMP.BMP"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
