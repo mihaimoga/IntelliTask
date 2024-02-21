@@ -51,12 +51,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6D16224F3EF4E51D908910DB620314C8"
-        "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_74EDEB39B693A615F6517FB1AD07202C"
         "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
         "MsmSig" = "8:_UNDEFINED"
@@ -94,12 +88,6 @@
         "Entry"
         {
         "MsmKey" = "8:_BABF6A82817366E6CF3B4A236AD6DA7A"
-        "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E81DA65B95F90198641C4ABE5133E1C0"
         "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -310,26 +298,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D16224F3EF4E51D908910DB620314C8"
-            {
-            "SourcePath" = "8:CFGMGR32.dll"
-            "TargetName" = "8:CFGMGR32.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_D69C22F60FC44A54A948C3C599B11B18"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74EDEB39B693A615F6517FB1AD07202C"
             {
             "SourcePath" = "8:gdiplus.dll"
@@ -450,26 +418,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E81DA65B95F90198641C4ABE5133E1C0"
-            {
-            "SourcePath" = "8:RPCRT4.dll"
-            "TargetName" = "8:RPCRT4.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_D69C22F60FC44A54A948C3C599B11B18"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -526,15 +474,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:IntelliTask"
-        "ProductCode" = "8:{6F80867E-32C9-47AB-BEF9-B1AECEB14E07}"
-        "PackageCode" = "8:{14E5CD4C-893F-4FCB-A3FE-1BCB271DAB5E}"
+        "ProductCode" = "8:{FA6E1200-68A6-4C6E-BD74-061F5200FAA4}"
+        "PackageCode" = "8:{D7CD2488-98C7-4BDE-A233-CC9E199CD9CA}"
         "UpgradeCode" = "8:{A1D627D3-9FDB-40D4-B332-88CF1E72CD38}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.21"
+        "ProductVersion" = "8:1.22"
         "Manufacturer" = "8:Stefan-Mihai MOGA"
         "ARPHELPTELEPHONE" = "8:+40745497982"
         "ARPHELPLINK" = "8:https://www.moga.doctor/"
