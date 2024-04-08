@@ -380,6 +380,7 @@ public:
 	_Success_(return != FALSE) BOOL IsWindows11Version21H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11Version22H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11Version23H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindows11Version24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	_Success_(return != FALSE) BOOL IsWebWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);

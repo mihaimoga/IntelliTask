@@ -506,6 +506,7 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
                           5. Provided a new IsEnterpriseWindowsServer2025 method.
                           6. Provided a new IsDatacenterWindowsServer2025 method.
                           7. Provided a new IsDomainControllerWindowsServer2025 method.
+         PJN / 07-04-2024 1. Provided a new IsWindows11Version24H2 method.
 
 Copyright (c) 1997 - 2024 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
@@ -1807,25 +1808,25 @@ COSVersion::OS_PLATFORM COSVersion::MapWin32PlatformId(_In_ DWORD dwPlatformId)
 	//Explicitly map the win32 dwPlatformId to our own values
 	switch (dwPlatformId)
 	{
-	case VER_PLATFORM_WIN32_WINDOWS:
-	{
-		osPlatform = Windows9x;
-		break;
-	}
-	case VER_PLATFORM_WIN32_NT:
-	{
-		osPlatform = WindowsNT;
-		break;
-	}
-	case VER_PLATFORM_WIN32_CE:
-	{
-		osPlatform = WindowsCE;
-		break;
-	}
-	default:
-	{
-		break;
-	}
+		case VER_PLATFORM_WIN32_WINDOWS:
+		{
+			osPlatform = Windows9x;
+			break;
+		}
+		case VER_PLATFORM_WIN32_NT:
+		{
+			osPlatform = WindowsNT;
+			break;
+		}
+		case VER_PLATFORM_WIN32_CE:
+		{
+			osPlatform = WindowsCE;
+			break;
+		}
+		default:
+		{
+			break;
+		}
 	}
 
 	return osPlatform;
@@ -4836,12 +4837,20 @@ _Success_(return != FALSE) BOOL COSVersion::IsWindows11Version23H2(_In_ LPCOS_VE
 		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 22621) && (lpVersionInformation->dwEmulatedBuildNumber <= 22631);
 }
 
+_Success_(return != FALSE) BOOL COSVersion::IsWindows11Version24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
+{
+	if (bCheckUnderlying)
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 22631) && (lpVersionInformation->dwUnderlyingBuildNumber <= 26100);
+	else
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 22631) && (lpVersionInformation->dwEmulatedBuildNumber <= 26100);
+}
+
 _Success_(return != FALSE) BOOL COSVersion::IsWindows11ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
 {
 	if (bCheckUnderlying)
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 22631);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26100);
 	else
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 22631);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26100);
 }
 
 _Success_(return != FALSE) BOOL COSVersion::IsWindows8Point1(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
