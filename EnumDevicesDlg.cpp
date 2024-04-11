@@ -1,4 +1,5 @@
-﻿/* This file is part of IntelliTask application developed by Stefan-Mihai MOGA.
+﻿/* Copyright (C) 2012-2024 Stefan-Mihai MOGA
+This file is part of IntelliTask application developed by Stefan-Mihai MOGA.
 
 IntelliTask is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Open
