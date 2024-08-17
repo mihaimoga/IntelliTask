@@ -272,6 +272,7 @@
     <None Include="CODE_OF_CONDUCT.md" />
     <None Include="CONTRIBUTING.md" />
     <None Include="README.md" />
+    <None Include="IntelliTask.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntelliTask.h">
@@ -399,5 +400,6 @@
     <Image Include="res\Computer.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="IntelliTask.png" />
   </ItemGroup>
 </Project>
