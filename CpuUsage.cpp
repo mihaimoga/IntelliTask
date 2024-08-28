@@ -1,5 +1,6 @@
 /* Copyright (C) 2012-2024 Stefan-Mihai MOGA
 This file is part of IntelliTask application developed by Stefan-Mihai MOGA.
+IntelliTask is an alternative Windows version to the famous Task Manager!
 
 IntelliTask is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Open
@@ -26,6 +27,10 @@ CpuUsage::CpuUsage(void)
 	ZeroMemory(&m_ftPrevSysUser, sizeof(FILETIME));
 	ZeroMemory(&m_ftPrevProcKernel, sizeof(FILETIME));
 	ZeroMemory(&m_ftPrevProcUser, sizeof(FILETIME));
+
+	SYSTEM_INFO sysInfo;
+	GetSystemInfo(&sysInfo);
+	m_nProcessors = sysInfo.dwNumberOfProcessors;
 }
 
 /**********************************************
@@ -69,19 +74,19 @@ DOUBLE CpuUsage::GetUsage()
 			the system has operated since the last measurement 
 			(made up of kernel + user) and the total
 			amount of time the process has run (kernel + user) */
-			// ULONGLONG ftSysIdleDiff = SubtractTimes(ftSysIdle, m_ftPrevSysIdle);
+			ULONGLONG ftSysIdleDiff = SubtractTimes(ftSysIdle, m_ftPrevSysIdle);
 			ULONGLONG ftSysKernelDiff = SubtractTimes(ftSysKernel, m_ftPrevSysKernel);
 			ULONGLONG ftSysUserDiff = SubtractTimes(ftSysUser, m_ftPrevSysUser);
 
 			ULONGLONG ftProcKernelDiff = SubtractTimes(ftProcKernel, m_ftPrevProcKernel);
 			ULONGLONG ftProcUserDiff = SubtractTimes(ftProcUser, m_ftPrevProcUser);
 
-			ULONGLONG nTotalSys =  ftSysKernelDiff + ftSysUserDiff;
+			ULONGLONG nTotalSys =  ftSysKernelDiff + ftSysUserDiff - ftSysIdleDiff;
 			ULONGLONG nTotalProc = ftProcKernelDiff + ftProcUserDiff;
 
 			if (nTotalSys > 0)
 			{
-				m_nCpuUsage = ((100.0 * nTotalProc) / nTotalSys);
+				m_nCpuUsage = ((100.0 * (DOUBLE)nTotalProc) / (DOUBLE)nTotalSys) / (DOUBLE)m_nProcessors;
 			}
 
 			m_ftPrevSysIdle = ftSysIdle;
@@ -111,7 +116,7 @@ ULONGLONG CpuUsage::SubtractTimes(const FILETIME& ftA, const FILETIME& ftB)
 
 bool CpuUsage::EnoughTimePassed()
 {
-	const int minElapsedMS = 250; //milliseconds
+	const int minElapsedMS = 250; // milliseconds
 	ULONGLONG dwCurrentTickCount = GetTickCount64();
 	return (dwCurrentTickCount - m_dwLastRun) > minElapsedMS;
 }
