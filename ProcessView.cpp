@@ -128,6 +128,7 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 		GetListCtrl().SetRedraw(FALSE);
 		if ((hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) != INVALID_HANDLE_VALUE)
 		{
+			DOUBLE nProcessorTotalUsage = 0.0;
 			pe32.dwSize = sizeof(PROCESSENTRY32);
 			if (Process32First(hSnapshot, &pe32))
 			{
@@ -141,8 +142,9 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 						for (int nListItem = 0; nListItem < nCount; nListItem++)
 						{
 							const DWORD nProcessID = (DWORD)GetListCtrl().GetItemData(nListItem);
-							if (nProcessID == pe32.th32ProcessID)
+							if ((nProcessID != 0) && (nProcessID == pe32.th32ProcessID))
 							{
+								nProcessorTotalUsage += pProcessData->GetProcessorUsage();
 								strListItem.Format(_T("%.2f%%"), pProcessData->GetProcessorUsage());
 								GetListCtrl().SetItemText(nListItem, 2, strListItem);
 								GetListCtrl().SetItemText(nListItem, 3, FormatSize(pProcessData->GetMemoryUsage()));
@@ -158,6 +160,7 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 							strListItem.Format(_T("%d"), pProcessData->GetProcessID());
 							const int nNewListItem = GetListCtrl().InsertItem(GetListCtrl().GetItemCount(), strListItem);
 							GetListCtrl().SetItemText(nNewListItem, 1, pProcessData->GetFileName());
+							nProcessorTotalUsage += pProcessData->GetProcessorUsage();
 							strListItem.Format(_T("%.2f%%"), pProcessData->GetProcessorUsage());
 							GetListCtrl().SetItemText(nNewListItem, 2, strListItem);
 							GetListCtrl().SetItemText(nNewListItem, 3, FormatSize(pProcessData->GetMemoryUsage()));
@@ -170,6 +173,23 @@ void CProcessView::OnTimer(UINT_PTR nIDEvent)
 				} while (Process32Next(hSnapshot, &pe32));
 			}
 			VERIFY(CloseHandle(hSnapshot));
+			// TRACE(_T("nProcessorTotalUsage = %.2f%%\n"), nProcessorTotalUsage);
+			const int nCount = GetListCtrl().GetItemCount();
+			for (int nListItem = 0; nListItem < nCount; nListItem++)
+			{
+				const DWORD nProcessID = (DWORD)GetListCtrl().GetItemData(nListItem);
+				if (nProcessID == 0)
+				{
+					DOUBLE nIdleUsage = 100.0 - nProcessorTotalUsage;
+					strListItem.Format(_T("%.2f%%"), nIdleUsage);
+					GetListCtrl().SetItemText(nListItem, 2, strListItem);
+					CProcessData* pProcessData = m_pSystemSnapshot.GetProcessID(0);
+					if (pProcessData != nullptr)
+					{
+						pProcessData->SetProcessorUsage(nIdleUsage);
+					}
+				}
+			}
 		}
 		for (int nOldIndex = 0; nOldIndex < GetListCtrl().GetItemCount(); nOldIndex++)
 		{

@@ -86,7 +86,8 @@ int CSortListCtrl::OnCompareItems(LPARAM lParam1, LPARAM lParam2, int iColumn)
 					CProcessData* pParam2 = m_pSystemSnapshot->GetProcessID((DWORD)lParam2);
 					if ((pParam1 != nullptr) && (pParam2 != nullptr))
 					{
-						return (int)(pParam1->GetProcessorUsage() - pParam2->GetProcessorUsage());
+						// return (int)(pParam1->GetProcessorUsage() - pParam2->GetProcessorUsage());
+						return (pParam1->GetProcessorUsage() < pParam2->GetProcessorUsage()) ? -1 : 1;
 					}
 				}
 			}
