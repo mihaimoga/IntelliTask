@@ -29,6 +29,15 @@ These instructions will allow you to run a portable or mini-portable (also calle
 
 The portable zip edition of _IntelliTask_ can be removed by deleting the directory they came in. If you manually set up file associations or context-menu entries in the OS, it is your responsibility to remove them yourself.
 
+## Application's menu
+
+The  _IntelliTask_  menu features the application's most important functions:
+
+- **Properties**: Shows file properties.
+- **Kill process**: Kills selectedd process.
+- **Device Manager**: Shows local computer devices.
+- **Installed Programs**: Shows computer installed programs.
+
 ## Create and Submit your Pull Request
 
 As noted in the [Contributing Rules](https://github.com/mihaimoga/IntelliTask/blob/main/CONTRIBUTING.md) for _IntelliTask_, all Pull Requests need to be attached to a issue on GitHub. So the first step is to create an issue which requests that the functionality be improved (if it was already there) or added (if it was not yet there); in your issue, be sure to explain that you have the functionality definition ready, and will be submitting a Pull Request. The second step is to use the GitHub interface to create the Pull Request from your fork into the main repository. The final step is to wait for and respond to feedback from the developers as needed, until such time as your PR is accepted or rejected.
