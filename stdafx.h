@@ -94,3 +94,7 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #include <iomanip>
 #include <atlsync.h>
 #include <vector>
+
+#define INSTALLER_URL _T("https://www.moga.doctor/freeware/IntelliTaskSetup.msi")
+#define APPLICATION_URL _T("https://www.moga.doctor/freeware/IntelliTask.xml")
+#define USER_MANUAL_URL _T("https://www.moga.doctor/freeware/IntelliTask.html")

@@ -7,6 +7,7 @@
 #define HID_WRITE_PASTEASHYPERLINK              0x18002
 #define HID_PROPERTIES                          0x18003
 #define HID_KILL_PROCESS                        0x18004
+#define HID_BUTTON3                             0x18013
  
 // Prompts (IDP_*) 
 #define HIDP_OLE_INIT_FAILED                    0x30064
@@ -27,6 +28,8 @@
 #define HIDD_MFCLISTVIEW                        0x20136
 #define HIDD_ENUMDEVICES_DIALOG                 0x20139
 #define HIDD_ENUMPROGRAMS_DIALOG                0x2013A
+#define HIDD_WebBrowserDlg                      0x2013C
+#define HIDD_CheckForUpdatesDlg                 0x2013D
  
 // Frame Controls (IDW_*) 
 // This is a part of the Microsoft Foundation Classes C++ library.
