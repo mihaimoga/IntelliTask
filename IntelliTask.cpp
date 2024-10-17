@@ -272,10 +272,10 @@ BOOL CAboutDlg::OnInitDialog()
 	TCHAR lpszDirectory[_MAX_DIR];
 	TCHAR lpszFilename[_MAX_FNAME];
 	TCHAR lpszExtension[_MAX_EXT];
-	TCHAR lpszFullPath[_MAX_PATH];
+	TCHAR lpszFullPath[0x1000 /* _MAX_PATH */];
 
 	VERIFY(0 == _tsplitpath_s(AfxGetApp()->m_pszHelpFilePath, lpszDrive, _MAX_DRIVE, lpszDirectory, _MAX_DIR, lpszFilename, _MAX_FNAME, lpszExtension, _MAX_EXT));
-	VERIFY(0 == _tmakepath_s(lpszFullPath, _MAX_PATH, lpszDrive, lpszDirectory, lpszFilename, _T(".exe")));
+	VERIFY(0 == _tmakepath_s(lpszFullPath, 0x1000 /* _MAX_PATH */, lpszDrive, lpszDirectory, lpszFilename, _T(".exe")));
 
 	if (m_pVersionInfo.Load(lpszFullPath))
 	{

@@ -36,6 +36,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=nullptr*/)
 {
 	m_nUpdateThreadID = 0;
 	m_hUpdateThread = nullptr;
+	m_nTimerID = 0;
 }
 
 CCheckForUpdatesDlg::~CCheckForUpdatesDlg()
@@ -75,7 +76,7 @@ DWORD WINAPI UpdateThreadProc(LPVOID lpParam)
 	{
 		g_dlgCheckForUpdates->m_ctrlProgress.SetMarquee(TRUE, 30);
 	}
-	const DWORD nLength = _MAX_PATH;
+	const DWORD nLength = 0x1000 /* _MAX_PATH */;
 	TCHAR lpszFilePath[nLength] = { 0, };
 	GetModuleFileName(nullptr, lpszFilePath, nLength);
 	g_bNewUpdateFound = CheckForUpdates(lpszFilePath, APPLICATION_URL, UI_Callback);
@@ -86,7 +87,7 @@ DWORD WINAPI UpdateThreadProc(LPVOID lpParam)
 	g_bThreadRunning = false;
 
 	::ExitThread(0);
-	return 0;
+	// return 0;
 }
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
@@ -94,7 +95,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 #ifdef _DEBUG
-	const DWORD nLength = _MAX_PATH;
+	const DWORD nLength = 0x1000 /* _MAX_PATH */;
 	TCHAR lpszFilePath[nLength] = { 0, };
 	GetModuleFileName(nullptr, lpszFilePath, nLength);
 	WriteConfigFile(lpszFilePath, INSTALLER_URL);
@@ -123,6 +124,7 @@ void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		if (!g_bThreadRunning)
 		{
+			VERIFY(KillTimer(m_nTimerID));
 			CDialogEx::OnCancel();
 			if (g_bNewUpdateFound)
 			{
