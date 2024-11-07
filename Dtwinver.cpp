@@ -507,6 +507,8 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
                           6. Provided a new IsDatacenterWindowsServer2025 method.
                           7. Provided a new IsDomainControllerWindowsServer2025 method.
          PJN / 07-04-2024 1. Provided a new IsWindows11Version24H2 method.
+         PJN / 07-11-2024 1. Provided a new IsWindowsServer2025ActiveDevelopmentBranch method.
+                          2. Provided a new IsWindowsServerVersion24H2 method.
 
 Copyright (c) 1997 - 2024 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
@@ -4666,6 +4668,22 @@ _Success_(return != FALSE) BOOL COSVersion::IsWindowsServer2025(_In_ LPCOS_VERSI
 				((lpVersionInformation->dwEmulatedMajorVersion == 6) && lpVersionInformation->dwEmulatedMinorVersion >= 4)) &&
 			(lpVersionInformation->dwEmulatedBuildNumber >= 25921) &&
 			((lpVersionInformation->OSType == Server) || ((lpVersionInformation->OSType == DomainController))));
+}
+
+_Success_(return != FALSE) BOOL COSVersion::IsWindowsServer2025ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
+{
+	if (bCheckUnderlying)
+		return IsWindowsServer2025(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26100);
+	else
+		return IsWindowsServer2025(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26100);
+}
+
+_Success_(return != FALSE) BOOL COSVersion::IsWindowsServerVersion24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
+{
+	if (bCheckUnderlying)
+		return IsWindowsServer2025(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber == 26100) && !IsAzure(lpVersionInformation);
+	else
+		return IsWindowsServer2025(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber == 26100) && !IsAzure(lpVersionInformation);
 }
 
 _Success_(return != FALSE) BOOL COSVersion::IsWindows10(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)

@@ -455,6 +455,8 @@ public:
 	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2025ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServerVersion24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	_Success_(return != FALSE) BOOL IsHomeBasic(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsHomeBasicPremium(_In_ LPCOS_VERSION_INFO lpVersionInformation);

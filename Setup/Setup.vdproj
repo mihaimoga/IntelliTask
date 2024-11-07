@@ -46,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_2E1059533FEF067494EB5F0330BA14B0"
-        "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
+        "OwnerKey" = "8:_382C3029C3924F7CA06F08BDC759F127"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2E1059533FEF067494EB5F0330BA14B0"
-        "OwnerKey" = "8:_382C3029C3924F7CA06F08BDC759F127"
+        "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -850,15 +850,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:IntelliTask"
-        "ProductCode" = "8:{30676FCF-11FC-4AF0-953C-935EDB7D4CA1}"
-        "PackageCode" = "8:{6A62E29E-4E7C-4557-BF7D-BCFBE84582D0}"
+        "ProductCode" = "8:{32FEECB7-AFB7-4962-9311-1B32CDE3F5DA}"
+        "PackageCode" = "8:{342C33CB-A36C-4A0D-9EC3-9471F448420D}"
         "UpgradeCode" = "8:{A1D627D3-9FDB-40D4-B332-88CF1E72CD38}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.24.1"
+        "ProductVersion" = "8:1.25"
         "Manufacturer" = "8:Stefan-Mihai MOGA"
         "ARPHELPTELEPHONE" = "8:+40745497982"
         "ARPHELPLINK" = "8:https://www.moga.doctor/"
