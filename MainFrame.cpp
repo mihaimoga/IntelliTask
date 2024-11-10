@@ -93,7 +93,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_MainButton->SetVisible(FALSE);
 	m_wndRibbonBar.SetApplicationButton(m_MainButton, CSize());
 
-	if (!m_wndStatusBar.Create(this))
+	/* if (!m_wndStatusBar.Create(this))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -105,14 +105,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(
 		ID_STATUSBAR_PANE1, strTitlePane, TRUE, nullptr,
-		_T("012345678901234567890123456789012345678901234567890123456789")), strTitlePane);
+		_T("012345678901234567890123456789012345678901234567890123456789")), strTitlePane); */
 
-	// Create a caption bar:
+	/* Create a caption bar :
 	if (!CreateCaptionBar())
 	{
 		TRACE0("Failed to create caption bar\n");
 		return -1;      // fail to create
-	}
+	} */
 
 	return 0;
 }

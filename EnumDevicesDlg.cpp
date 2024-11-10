@@ -52,10 +52,15 @@ END_MESSAGE_MAP()
 
 // CEnumDevicesDlg message handlers
 
+void ListViewInsertColumnText(HWND hListView, const DWORD wIdx,
+	int wFmt, const TCHAR* pszText, const BOOL bFinal, HWND hDlg);
+
 BOOL CEnumDevicesDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("Field"), 0, GetSafeHwnd());
+	ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Descritption"), 1, GetSafeHwnd());
 	EnumDevices();
 
 	VERIFY(m_pWindowResizer.Hook(this));
@@ -175,7 +180,7 @@ void ListViewInsertColumnText(HWND hListView, const DWORD wIdx,
 	if (!bFinal)
 		column.cx = nWidth;
 	else
-		column.cx = nWidth * 100;
+		column.cx = nWidth * 20;
 	if (SendMessage(hListView, LVM_INSERTCOLUMN, wIdx, (LPARAM)(LPLVCOLUMN)&column) == -1)
 		ShowErrorMsg(hDlg, GetLastError(), _T("InitialListView"));
 };
@@ -1609,8 +1614,8 @@ void CEnumDevicesDlg::OnSelchangedDevices(NMHDR* pNMHDR, LRESULT* pResult)
 		_tcscpy(szData, tvItem.pszText/*, _tcslen(tvItem.pszText)*/);
 		ListViewRemoveAllItems(GetDlgItem(IDC_DETAILS)->GetSafeHwnd());
 		// ListViewRemoveAllItems(GetDlgItem(GetSafeHwnd(), IDC_LIST2));
-		ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("Field"), 0, GetSafeHwnd());
-		ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Descritption"), 1, GetSafeHwnd());
+		// ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("Field"), 0, GetSafeHwnd());
+		// ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Descritption"), 0, GetSafeHwnd());
 		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("GUID"));
 		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Hardware ID"));
 		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 2, 0, _T("Install ID"));
@@ -1626,7 +1631,10 @@ void CEnumDevicesDlg::OnSelchangedDevices(NMHDR* pNMHDR, LRESULT* pResult)
 		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 12, 0, _T("Group"));
 		ListViewInsertItemText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 13, 0, _T("Start"));
 		// SetCharSet(IDC_LIST1, IDC_LIST2);
-		FindDeviceName(szData, IDC_DETAILS, GetSafeHwnd());
+		if (!FindDeviceName(szData, IDC_DETAILS, GetSafeHwnd()))
+		{
+			ListViewRemoveAllItems(GetDlgItem(IDC_DETAILS)->GetSafeHwnd());
+		};
 	};
 	*pResult = 0;
 }
