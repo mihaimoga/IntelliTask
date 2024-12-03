@@ -31,7 +31,7 @@ The portable zip edition of _IntelliTask_ can be removed by deleting the directo
 
 ## Application's menu
 
-The  _IntelliTask_  menu features the application's most important functions:
+The _IntelliTask_ menu features the application's most important functions:
 
 - **Properties**: Shows file properties.
 - **Kill process**: Kills selectedd process.
