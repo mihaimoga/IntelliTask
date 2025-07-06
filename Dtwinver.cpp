@@ -509,8 +509,10 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
          PJN / 07-04-2024 1. Provided a new IsWindows11Version24H2 method.
          PJN / 07-11-2024 1. Provided a new IsWindowsServer2025ActiveDevelopmentBranch method.
                           2. Provided a new IsWindowsServerVersion24H2 method.
+         PJN / 27-06-2025 1. Provided a new IsWindows11Version25H2 method.
+                          2. Updated copyright details.
 
-Copyright (c) 1997 - 2024 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 1997 - 2025 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -1676,7 +1678,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetProcessorType(_Inout_ LPOS_VERSIO
 	{
 		bSuccess = TRUE;
 
-		lpfnGetNativeSystemInfo pGetNativeSystemInfo = (lpfnGetNativeSystemInfo)GetProcAddress(hKernel32, "GetNativeSystemInfo"); //NOLINT(modernize-use-auto)
+		lpfnGetNativeSystemInfo pGetNativeSystemInfo = (lpfnGetNativeSystemInfo)GetProcAddress(hKernel32, "GetNativeSystemInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 		if (pGetNativeSystemInfo)
 		{
 			pGetNativeSystemInfo(&UnderlyingSI);
@@ -2805,9 +2807,9 @@ void COSVersion::GetProductInfo(_Inout_ LPOS_VERSION_INFO lpVersionInformation)
 	if (hKernel32 != NULL) //NOLINT(modernize-use-nullptr)
 	{
 #if defined(COSVERSION_CE)
-		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, L"GetProductInfo"); //NOLINT(modernize-use-auto)
+		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, L"GetProductInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, "GetProductInfo"); //NOLINT(modernize-use-auto)
+		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, "GetProductInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #endif //#if defined(COSVERSION_CE)
 		if (pGetProductInfo)
 			pGetProductInfo(lpVersionInformation->dwUnderlyingMajorVersion, lpVersionInformation->dwUnderlyingMinorVersion, lpVersionInformation->wUnderlyingServicePackMajor,
@@ -4035,9 +4037,9 @@ _Success_(return != FALSE) BOOL COSVersion::GetNTRTLVersion(_Inout_ LPOS_VERSION
 
 	//Get the function pointer to the native mode API "RtlGetVersion"
 #if defined(COSVERSION_CE)
-	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, L"RtlGetVersion"); //NOLINT(modernize-use-auto)
+	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, L"RtlGetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, "RtlGetVersion"); //NOLINT(modernize-use-auto)
+	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, "RtlGetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #endif //#if defined(COSVERSION_CE)
 	if (lpRtlGetVersion == NULL) //NOLINT(modernize-use-nullptr)
 		return FALSE;
@@ -4088,9 +4090,9 @@ _Success_(return != FALSE) BOOL COSVersion::GetDeviceFamilyInfo(_Inout_ LPOS_VER
 
 	//Get the function pointer to the native mode API "RtlGetDeviceFamilyInfo"
 #if defined(COSVERSION_CE)
-	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, L"RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto)
+	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, L"RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, "RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto)
+	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, "RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #endif //#if defined(COSVERSION_CE)
 	if (lpRtlGetDeviceFamilyInfo == NULL) //NOLINT(modernize-use-nullptr)
 		return FALSE;
@@ -4863,12 +4865,20 @@ _Success_(return != FALSE) BOOL COSVersion::IsWindows11Version24H2(_In_ LPCOS_VE
 		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 22631) && (lpVersionInformation->dwEmulatedBuildNumber <= 26100);
 }
 
+_Success_(return != FALSE) BOOL COSVersion::IsWindows11Version25H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
+{
+	if (bCheckUnderlying)
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26100) && (lpVersionInformation->dwUnderlyingBuildNumber <= 26200);
+	else
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26100) && (lpVersionInformation->dwEmulatedBuildNumber <= 26200);
+}
+
 _Success_(return != FALSE) BOOL COSVersion::IsWindows11ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
 {
 	if (bCheckUnderlying)
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26100);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26200);
 	else
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26100);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26200);
 }
 
 _Success_(return != FALSE) BOOL COSVersion::IsWindows8Point1(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
@@ -5847,7 +5857,7 @@ _Success_(return != FALSE) BOOL COSVersion::IsDatacenterServerCoreAzureEdition(_
 	return ((lpVersionInformation->dwSuiteMask4 & COSVERSION_SUITE4_DATACENTER_SERVER_CORE_AZURE_EDITION) != 0);
 }
 
-_Success_(return != FALSE) BOOL COSVersion::IsAzureServerCloudhost(_In_ LPCOS_VERSION_INFO lpVersionInformation)
+_Success_(return != FALSE) BOOL COSVersion::IsAzureServerCloudHost(_In_ LPCOS_VERSION_INFO lpVersionInformation)
 {
 	return ((lpVersionInformation->dwSuiteMask4 & COSVERSION_SUITE4_AZURE_SERVER_CLOUDHOST) != 0);
 }
@@ -5945,9 +5955,9 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersion(_Out_ DWORD & dwVersion)
 
 	//Get the function pointer to "GetVersion"
 #if defined(COSVERSION_CE)
-	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, L"GetVersion"); //NOLINT(modernize-use-auto)
+	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, L"GetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, "GetVersion"); //NOLINT(modernize-use-auto)
+	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, "GetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #endif //#if defined(COSVERSION_CE)
 	if (lpGetVersion == NULL) //NOLINT(modernize-use-nullptr)
 		return FALSE;
@@ -5986,12 +5996,12 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersionEx(_Inout_ LPOSVERSIONINFO
 	//Get the function pointer to "GetVersionEx"
 #if defined(_UNICODE)
 #if defined(COSVERSION_CE)
-	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, L"GetVersionExW"); //NOLINT(modernize-use-auto)
+	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, L"GetVersionExW"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExW"); //NOLINT(modernize-use-auto)
+	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExW"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #endif //#if defined(COSVERSION_CE)
 #else
-	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExA"); //NOLINT(modernize-use-auto)
+	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExA"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #endif //#if defined(_UNICODE)
 
 	if (lpGetVersionEx)

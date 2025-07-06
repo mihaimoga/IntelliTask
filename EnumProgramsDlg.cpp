@@ -500,7 +500,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				else if (os.IsWindows98SE(&osvi, FALSE))
 					_stprintf(sBuf, _T("Windows 98 Second Edition"));
 				else if (os.IsWindowsME(&osvi, FALSE))
-					_stprintf(sBuf, _T("Windows Millenium Edition"));
+					_stprintf(sBuf, _T("Windows Millennium Edition"));
 				else
 					_stprintf(sBuf, _T("Windows \?\?"));
 				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -834,6 +834,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 23H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11Version24H2(&osvi, FALSE))
 						_tcscat(sText, _T(", (version 24H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					else if (os.IsWindows11Version25H2(&osvi, FALSE))
+						_tcscat(sText, _T(", (version 25H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11ActiveDevelopmentBranch(&osvi, FALSE))
 						_tcscat(sText, _T(", (Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
@@ -1098,7 +1100,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				else if (os.IsWindows98SE(&osvi, TRUE))
 					_stprintf(sBuf, _T("Windows 98 Second Edition"));
 				else if (os.IsWindowsME(&osvi, TRUE))
-					_stprintf(sBuf, _T("Windows Millenium Edition"));
+					_stprintf(sBuf, _T("Windows Millennium Edition"));
 				else
 					_stprintf(sBuf, _T("Windows \?\?"));
 				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1432,6 +1434,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 23H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11Version24H2(&osvi, TRUE))
 						_tcscat(sText, _T(", (version 24H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					else if (os.IsWindows11Version25H2(&osvi, TRUE))
+						_tcscat(sText, _T(", (version 25H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11ActiveDevelopmentBranch(&osvi, TRUE))
 						_tcscat(sText, _T(", (Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
@@ -1606,390 +1610,390 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				_tcscat(sText, _T(", (Unknown Processor)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				break;
 			}
-		}
+			}
 #endif //#ifndef UNDER_CE
-		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion));
-		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (osvi.dwUnderlyingMinorVersion % 10)
-		{
-			if (osvi.dwUnderlyingMinorVersion > 9)
-				_stprintf(sBuf, _T("%02d"), (int)(osvi.dwUnderlyingMinorVersion));
-			else
-				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion));
-		}
-		else
-			_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10));
-		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (osvi.dwUnderlyingBuildNumber)
-		{
-			//Report the UBR on Windows 10 / Server 2016 and later
-			if (os.IsWindows10OrWindowsServer2016(&osvi, TRUE) || os.IsWindows11(&osvi, TRUE) || os.IsWindowsServer2019(&osvi, TRUE) || os.IsWindowsServer2022(&osvi, TRUE) || os.IsWindowsServer2025(&osvi, TRUE))
-				_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR));
-			else
-				_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber));
+			_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion));
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		}
-		if (osvi.wUnderlyingServicePackMajor)
-		{
-			if (osvi.wUnderlyingServicePackMinor)
+			if (osvi.dwUnderlyingMinorVersion % 10)
 			{
-				//Handle the special case of NT 4 SP 6a which Dtwinver treats as SP 6.1
-				if (os.IsNTPreWin2k(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 6) && (osvi.wUnderlyingServicePackMinor == 1))
-					_stprintf(sBuf, _T(" Service Pack: 6a"));
-				//Handle the special case of XP SP 1a which Dtwinver treats as SP 1.1
-				else if (os.IsWindowsXP(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 1) && (osvi.wUnderlyingServicePackMinor == 1))
-					_stprintf(sBuf, _T(" Service Pack: 1a"));
+				if (osvi.dwUnderlyingMinorVersion > 9)
+					_stprintf(sBuf, _T("%02d"), (int)(osvi.dwUnderlyingMinorVersion));
 				else
-					_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wUnderlyingServicePackMajor), (int)(osvi.wUnderlyingServicePackMinor));
+					_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion));
 			}
 			else
-				_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wUnderlyingServicePackMajor));
+				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10));
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		}
-		else
-		{
-			if (osvi.wUnderlyingServicePackMinor)
-				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor));
-		}
-#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-		if (osvi.ullUAPInfo)
-		{
-			_stprintf(sBuf, _T(", RtlGetDeviceFamilyInfo UAPInfo:%u.%u.%u.%u"), (DWORD)((osvi.ullUAPInfo & 0xFFFF000000000000ui64) >> 48), (DWORD)((osvi.ullUAPInfo & 0x0000FFFF00000000ui64) >> 32), (DWORD)((osvi.ullUAPInfo & 0x00000000FFFF0000ui64) >> 16), (DWORD)(osvi.ullUAPInfo & 0x000000000000FFFFui64)); //NOLINT(clang-diagnostic-format)
-			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		}
-#endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-		if (osvi.ulDeviceFamily)
-		{
-			_stprintf(sBuf, _T(", Device Family:0x%08X"), osvi.ulDeviceFamily); //NOLINT(clang-diagnostic-format)
-			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			switch (osvi.ulDeviceFamily)
+			if (osvi.dwUnderlyingBuildNumber)
 			{
-				case DEVICEFAMILYINFOENUM_WINDOWS_8X:
+				//Report the UBR on Windows 10 / Server 2016 and later
+				if (os.IsWindows10OrWindowsServer2016(&osvi, TRUE) || os.IsWindows11(&osvi, TRUE) || os.IsWindowsServer2019(&osvi, TRUE) || os.IsWindowsServer2022(&osvi, TRUE) || os.IsWindowsServer2025(&osvi, TRUE))
+					_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR));
+				else
+					_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber));
+				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			}
+			if (osvi.wUnderlyingServicePackMajor)
+			{
+				if (osvi.wUnderlyingServicePackMinor)
 				{
-					_tcscat(sText, _T(", Windows 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
+					//Handle the special case of NT 4 SP 6a which Dtwinver treats as SP 6.1
+					if (os.IsNTPreWin2k(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 6) && (osvi.wUnderlyingServicePackMinor == 1))
+						_stprintf(sBuf, _T(" Service Pack: 6a"));
+					//Handle the special case of XP SP 1a which Dtwinver treats as SP 1.1
+					else if (os.IsWindowsXP(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 1) && (osvi.wUnderlyingServicePackMinor == 1))
+						_stprintf(sBuf, _T(" Service Pack: 1a"));
+					else
+						_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wUnderlyingServicePackMajor), (int)(osvi.wUnderlyingServicePackMinor));
 				}
-				case DEVICEFAMILYINFOENUM_WINDOWS_PHONE_8X:
+				else
+					_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wUnderlyingServicePackMajor));
+				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			}
+			else
+			{
+				if (osvi.wUnderlyingServicePackMinor)
+					_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor));
+			}
+#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
+			if (osvi.ullUAPInfo)
+			{
+				_stprintf(sBuf, _T(", RtlGetDeviceFamilyInfo UAPInfo:%u.%u.%u.%u"), (DWORD)((osvi.ullUAPInfo & 0xFFFF000000000000ui64) >> 48), (DWORD)((osvi.ullUAPInfo & 0x0000FFFF00000000ui64) >> 32), (DWORD)((osvi.ullUAPInfo & 0x00000000FFFF0000ui64) >> 16), (DWORD)(osvi.ullUAPInfo & 0x000000000000FFFFui64)); //NOLINT(clang-diagnostic-format)
+				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			}
+#endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
+			if (osvi.ulDeviceFamily)
+			{
+				_stprintf(sBuf, _T(", Device Family:0x%08X"), osvi.ulDeviceFamily); //NOLINT(clang-diagnostic-format)
+				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+				switch (osvi.ulDeviceFamily)
 				{
-					_tcscat(sText, _T(", Windows Phone 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_DESKTOP:
-				{
-					_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_MOBILE:
-				{
-					_tcscat(sText, _T(", Mobile")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_XBOX:
-				{
-					_tcscat(sText, _T(", Xbox")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_TEAM:
-				{
-					_tcscat(sText, _T(", Team")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_IOT:
-				{
-					_tcscat(sText, _T(", IoT")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_IOT_HEADLESS:
-				{
-					_tcscat(sText, _T(", IoT Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_SERVER:
-				{
-					_tcscat(sText, _T(", Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_HOLOGRAPHIC:
-				{
-					_tcscat(sText, _T(", Holographic")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_XBOXSRA:
-				{
-					_tcscat(sText, _T(", Xbox SRA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_XBOXERA:
-				{
-					_tcscat(sText, _T(", Xbox ERA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_SERVER_NANO:
-				{
-					_tcscat(sText, _T(", Server Nano")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_8828080:
-				{
-					_tcscat(sText, _T(", \"8828080\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_7067329:
-				{
-					_tcscat(sText, _T(", \"7067329\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_WINDOWS_CORE:
-				{
-					_tcscat(sText, _T(", Windows Core")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYINFOENUM_WINDOWS_CORE_HEADLESS:
-				{
-					_tcscat(sText, _T(", Windows Core Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				default:
-				{
-					break;
+					case DEVICEFAMILYINFOENUM_WINDOWS_8X:
+					{
+						_tcscat(sText, _T(", Windows 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_WINDOWS_PHONE_8X:
+					{
+						_tcscat(sText, _T(", Windows Phone 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_DESKTOP:
+					{
+						_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_MOBILE:
+					{
+						_tcscat(sText, _T(", Mobile")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_XBOX:
+					{
+						_tcscat(sText, _T(", Xbox")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_TEAM:
+					{
+						_tcscat(sText, _T(", Team")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_IOT:
+					{
+						_tcscat(sText, _T(", IoT")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_IOT_HEADLESS:
+					{
+						_tcscat(sText, _T(", IoT Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_SERVER:
+					{
+						_tcscat(sText, _T(", Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_HOLOGRAPHIC:
+					{
+						_tcscat(sText, _T(", Holographic")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_XBOXSRA:
+					{
+						_tcscat(sText, _T(", Xbox SRA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_XBOXERA:
+					{
+						_tcscat(sText, _T(", Xbox ERA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_SERVER_NANO:
+					{
+						_tcscat(sText, _T(", Server Nano")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_8828080:
+					{
+						_tcscat(sText, _T(", \"8828080\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_7067329:
+					{
+						_tcscat(sText, _T(", \"7067329\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_WINDOWS_CORE:
+					{
+						_tcscat(sText, _T(", Windows Core")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYINFOENUM_WINDOWS_CORE_HEADLESS:
+					{
+						_tcscat(sText, _T(", Windows Core Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					default:
+					{
+						break;
+					}
 				}
 			}
-		}
-		if (osvi.ulDeviceForm)
-		{
-			_stprintf(sBuf, _T(", Device Form:0x%08X"), osvi.ulDeviceForm); //NOLINT(clang-diagnostic-format)
-			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			switch (osvi.ulDeviceForm)
+			if (osvi.ulDeviceForm)
 			{
-				case DEVICEFAMILYDEVICEFORM_PHONE:
+				_stprintf(sBuf, _T(", Device Form:0x%08X"), osvi.ulDeviceForm); //NOLINT(clang-diagnostic-format)
+				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+				switch (osvi.ulDeviceForm)
 				{
-					_tcscat(sText, _T(", Phone")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_TABLET:
-				{
-					_tcscat(sText, _T(", Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_DESKTOP:
-				{
-					_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_NOTEBOOK:
-				{
-					_tcscat(sText, _T(", Notebook")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_CONVERTIBLE:
-				{
-					_tcscat(sText, _T(", Convertible")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_DETACHABLE:
-				{
-					_tcscat(sText, _T(", Detachable")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_ALLINONE:
-				{
-					_tcscat(sText, _T(", All In One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_STICKPC:
-				{
-					_tcscat(sText, _T(", Stick PC")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_PUCK:
-				{
-					_tcscat(sText, _T(", Puck")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_LARGESCREEN:
-				{
-					_tcscat(sText, _T(", Large Screen")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_HMD:
-				{
-					_tcscat(sText, _T(", Head Mounted Display")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_INDUSTRY_HANDHELD:
-				{
-					_tcscat(sText, _T(", Handheld")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_INDUSTRY_TABLET:
-				{
-					_tcscat(sText, _T(", Industry Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_BANKING:
-				{
-					_tcscat(sText, _T(", Banking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_BUILDING_AUTOMATION:
-				{
-					_tcscat(sText, _T(", Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_DIGITAL_SIGNAGE:
-				{
-					_tcscat(sText, _T(", Digital Signage")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_GAMING:
-				{
-					_tcscat(sText, _T(", Gaming")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_HOME_AUTOMATION:
-				{
-					_tcscat(sText, _T(", Home Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_INDUSTRIAL_AUTOMATION:
-				{
-					_tcscat(sText, _T(", Industrial Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_KIOSK:
-				{
-					_tcscat(sText, _T(", Kiosk")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_MAKER_BOARD:
-				{
-					_tcscat(sText, _T(", Maker Board")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_MEDICAL:
-				{
-					_tcscat(sText, _T(", Medical")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_NETWORKING:
-				{
-					_tcscat(sText, _T(", Networking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_POINT_OF_SERVICE:
-				{
-					_tcscat(sText, _T(", Point Of Service")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_PRINTING:
-				{
-					_tcscat(sText, _T(", Printing")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_THIN_CLIENT:
-				{
-					_tcscat(sText, _T(", Thin Client")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_TOY:
-				{
-					_tcscat(sText, _T(", Toy")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_VENDING:
-				{
-					_tcscat(sText, _T(", Vending")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_INDUSTRY_OTHER:
-				{
-					_tcscat(sText, _T(", Other Industry")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_ONE:
-				{
-					_tcscat(sText, _T(", XBox One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_ONE_S:
-				{
-					_tcscat(sText, _T(", XBox One S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X:
-				{
-					_tcscat(sText, _T(", XBox One X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X_DEVKIT:
-				{
-					_tcscat(sText, _T(", XBox One X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X:
-				{
-					_tcscat(sText, _T(", XBox Series X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X_DEVKIT:
-				{
-					_tcscat(sText, _T(", XBox Series X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_S:
-				{
-					_tcscat(sText, _T(", XBox Series S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_01:
-				{
-					_tcscat(sText, _T(", XBox Reserved 01")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_02:
-				{
-					_tcscat(sText, _T(", XBox Reserved 02")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_03:
-				{
-					_tcscat(sText, _T(", XBox Reserved 03")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_04:
-				{
-					_tcscat(sText, _T(", XBox Reserved 04")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_05:
-				{
-					_tcscat(sText, _T(", XBox Reserved 05")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_06:
-				{
-					_tcscat(sText, _T(", XBox Reserved 06")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_07:
-				{
-					_tcscat(sText, _T(", XBox Reserved 07")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_08:
-				{
-					_tcscat(sText, _T(", XBox Reserved 08")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09:
-				{
-					_tcscat(sText, _T(", XBox Reserved 09")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					break;
-				}
-				default:
-				{
-					break;
-				}
+					case DEVICEFAMILYDEVICEFORM_PHONE:
+					{
+						_tcscat(sText, _T(", Phone")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_TABLET:
+					{
+						_tcscat(sText, _T(", Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_DESKTOP:
+					{
+						_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_NOTEBOOK:
+					{
+						_tcscat(sText, _T(", Notebook")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_CONVERTIBLE:
+					{
+						_tcscat(sText, _T(", Convertible")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_DETACHABLE:
+					{
+						_tcscat(sText, _T(", Detachable")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_ALLINONE:
+					{
+						_tcscat(sText, _T(", All In One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_STICKPC:
+					{
+						_tcscat(sText, _T(", Stick PC")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_PUCK:
+					{
+						_tcscat(sText, _T(", Puck")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_LARGESCREEN:
+					{
+						_tcscat(sText, _T(", Large Screen")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_HMD:
+					{
+						_tcscat(sText, _T(", Head Mounted Display")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_INDUSTRY_HANDHELD:
+					{
+						_tcscat(sText, _T(", Handheld")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_INDUSTRY_TABLET:
+					{
+						_tcscat(sText, _T(", Industry Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_BANKING:
+					{
+						_tcscat(sText, _T(", Banking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_BUILDING_AUTOMATION:
+					{
+						_tcscat(sText, _T(", Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_DIGITAL_SIGNAGE:
+					{
+						_tcscat(sText, _T(", Digital Signage")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_GAMING:
+					{
+						_tcscat(sText, _T(", Gaming")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_HOME_AUTOMATION:
+					{
+						_tcscat(sText, _T(", Home Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_INDUSTRIAL_AUTOMATION:
+					{
+						_tcscat(sText, _T(", Industrial Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_KIOSK:
+					{
+						_tcscat(sText, _T(", Kiosk")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_MAKER_BOARD:
+					{
+						_tcscat(sText, _T(", Maker Board")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_MEDICAL:
+					{
+						_tcscat(sText, _T(", Medical")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_NETWORKING:
+					{
+						_tcscat(sText, _T(", Networking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_POINT_OF_SERVICE:
+					{
+						_tcscat(sText, _T(", Point Of Service")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_PRINTING:
+					{
+						_tcscat(sText, _T(", Printing")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_THIN_CLIENT:
+					{
+						_tcscat(sText, _T(", Thin Client")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_TOY:
+					{
+						_tcscat(sText, _T(", Toy")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_VENDING:
+					{
+						_tcscat(sText, _T(", Vending")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_INDUSTRY_OTHER:
+					{
+						_tcscat(sText, _T(", Other Industry")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_ONE:
+					{
+						_tcscat(sText, _T(", XBox One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_ONE_S:
+					{
+						_tcscat(sText, _T(", XBox One S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X:
+					{
+						_tcscat(sText, _T(", XBox One X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X_DEVKIT:
+					{
+						_tcscat(sText, _T(", XBox One X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X:
+					{
+						_tcscat(sText, _T(", XBox Series X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X_DEVKIT:
+					{
+						_tcscat(sText, _T(", XBox Series X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_S:
+					{
+						_tcscat(sText, _T(", XBox Series S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_01:
+					{
+						_tcscat(sText, _T(", XBox Reserved 01")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_02:
+					{
+						_tcscat(sText, _T(", XBox Reserved 02")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_03:
+					{
+						_tcscat(sText, _T(", XBox Reserved 03")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_04:
+					{
+						_tcscat(sText, _T(", XBox Reserved 04")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_05:
+					{
+						_tcscat(sText, _T(", XBox Reserved 05")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_06:
+					{
+						_tcscat(sText, _T(", XBox Reserved 06")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_07:
+					{
+						_tcscat(sText, _T(", XBox Reserved 07")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_08:
+					{
+						_tcscat(sText, _T(", XBox Reserved 08")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09:
+					{
+						_tcscat(sText, _T(", XBox Reserved 09")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						break;
+					}
+					default:
+					{
+						break;
+					}
 			}
 		}
 		_stprintf(sBuf, _T(", ProductType:0x%08X"), osvi.dwProductType); //NOLINT(clang-diagnostic-format)
@@ -2168,7 +2172,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, _T(", (Datacenter Server Azure Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsDatacenterServerCoreAzureEdition(&osvi))
 			_tcscat(sText, _T(", (Datacenter Server Core Azure Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (os.IsAzureServerCloudhost(&osvi))
+		if (os.IsAzureServerCloudHost(&osvi))
 			_tcscat(sText, _T(", (Azure Server Cloud Host)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsAzureServerCloudMOS(&osvi))
 			_tcscat(sText, _T(", (Azure Server Cloud MOS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)

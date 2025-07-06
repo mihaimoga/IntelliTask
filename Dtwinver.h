@@ -3,7 +3,7 @@ Module : Dtwinver.h
 Purpose: Declaration of a comprehensive class to perform OS version detection
 Created: PJN / 11-05-1996
 
-Copyright (c) 1997 - 2024 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 1997 - 2025 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -381,6 +381,7 @@ public:
 	_Success_(return != FALSE) BOOL IsWindows11Version22H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11Version23H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11Version24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindows11Version25H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	_Success_(return != FALSE) BOOL IsWebWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
@@ -570,7 +571,7 @@ public:
 	_Success_(return != FALSE) BOOL IsAzureStackHCIServerCore(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsDatacenterServerAzureEdition(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsDatacenterServerCoreAzureEdition(_In_ LPCOS_VERSION_INFO lpVersionInformation);
-	_Success_(return != FALSE) BOOL IsAzureServerCloudhost(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsAzureServerCloudHost(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsAzureServerCloudMOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsWindows365(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsUnlicensed(_In_ LPCOS_VERSION_INFO lpVersionInformation);
