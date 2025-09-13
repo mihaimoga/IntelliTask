@@ -467,7 +467,7 @@ echo.
     <None Include="res\Toolbar256.bmp" />
     <None Include="res\writelarge.bmp" />
     <None Include="res\writesmall.bmp" />
-    <None Include="SoftwareContextRegister.html" />
+    <None Include="SoftwareContentRegister.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CheckForUpdatesDlg.h" />

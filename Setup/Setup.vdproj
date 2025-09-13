@@ -87,6 +87,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_59453D0D1DBE4E5081DBC8D98961A2F9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_70F5ECFB0BDA0F0D2FD5A92A7C661486"
         "OwnerKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
         "MsmSig" = "8:_UNDEFINED"
@@ -124,12 +130,6 @@
         "Entry"
         {
         "MsmKey" = "8:_996218DA50FD45CB8BA4F8476A318FCB"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9F8B0D3E1F7845F8BB23ADF0023CC94D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -468,6 +468,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_59453D0D1DBE4E5081DBC8D98961A2F9"
+            {
+            "SourcePath" = "8:..\\SoftwareContentRegister.html"
+            "TargetName" = "8:SoftwareContentRegister.html"
+            "Tag" = "8:"
+            "Folder" = "8:_D69C22F60FC44A54A948C3C599B11B18"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70F5ECFB0BDA0F0D2FD5A92A7C661486"
             {
             "SourcePath" = "8:WebView2Loader.dll"
@@ -586,26 +606,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F8B0D3E1F7845F8BB23ADF0023CC94D"
-            {
-            "SourcePath" = "8:..\\SoftwareContextRegister.html"
-            "TargetName" = "8:SoftwareContextRegister.html"
-            "Tag" = "8:"
-            "Folder" = "8:_D69C22F60FC44A54A948C3C599B11B18"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A96B3879C63B4EDB8A25FE4C10E5E743"
