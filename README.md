@@ -51,4 +51,4 @@ This open source project uses the following libraries:
 - PJ Naughter's [CInstanceChecker](https://www.naughter.com/sinstance.html)
 - PJ Naughter's [CVersionInfo](https://www.naughter.com/versioninfo.html)
 - PJ Naughter's [DtWinVer](https://www.naughter.com/dtwinver.html)
-- Mizan Rahman's [CWndResizer](https://www.codeproject.com/Articles/125068/MFC-C-Helper-Class-for-Window-Resizing)
+- Mizan Rahman's [CWndResizer](https://www.codeproject.com/articles/MFC-C-Helper-Class-for-Window-Resizing)
