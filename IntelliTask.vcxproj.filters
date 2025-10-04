@@ -273,9 +273,7 @@
     <None Include="README.md" />
     <None Include="IntelliTask.html" />
     <None Include="packages.config" />
-    <None Include="SoftwareContentRegister.html">
-      <Filter>HTML Help Topics</Filter>
-    </None>
+    <None Include="SoftwareContentRegister.html" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntelliTask.h">
