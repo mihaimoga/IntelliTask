@@ -62,117 +62,122 @@ to maintain a single distribution point for the source code.
 
 ////////////////////////////////// Defines ////////////////////////////////////
 
-#define COSVERSION_SUITE_SMALLBUSINESS                         0x00000001 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_ENTERPRISE                            0x00000002 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_PRIMARY_DOMAIN_CONTROLLER             0x00000004 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_BACKUP_DOMAIN_CONTROLLER              0x00000008 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_TERMINAL                              0x00000010 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_DATACENTER                            0x00000020 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_PERSONAL                              0x00000040 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_WEBEDITION                            0x00000080 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_EMBEDDED                              0x00000100 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_REMOTEADMINMODE_TERMINAL              0x00000200 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_UNIPROCESSOR_FREE                     0x00000400 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_UNIPROCESSOR_CHECKED                  0x00000800 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_MULTIPROCESSOR_FREE                   0x00001000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_MULTIPROCESSOR_CHECKED                0x00002000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_MEDIACENTER                           0x00004000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_TABLETPC                              0x00008000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_STARTER_EDITION                       0x00010000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_R2_EDITION                            0x00020000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_COMPUTE_SERVER                        0x00040000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_STORAGE_SERVER                        0x00080000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_SECURITY_APPLIANCE                    0x00100000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_BACKOFFICE                            0x00200000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_ULTIMATE                              0x00400000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_N                                     0x00800000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_HOME_BASIC                            0x01000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_HOME_PREMIUM                          0x02000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_HYPERV_TOOLS                          0x04000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_BUSINESS                              0x08000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_HOME_SERVER                           0x10000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_SERVER_CORE                           0x20000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_ESSENTIAL_BUSINESS_SERVER_MANAGEMENT  0x40000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE_ESSENTIAL_BUSINESS_SERVER_MESSAGING   0x80000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_SMALLBUSINESS                            0x00000001 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_ENTERPRISE                               0x00000002 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_PRIMARY_DOMAIN_CONTROLLER                0x00000004 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_BACKUP_DOMAIN_CONTROLLER                 0x00000008 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_TERMINAL                                 0x00000010 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_DATACENTER                               0x00000020 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_PERSONAL                                 0x00000040 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_WEBEDITION                               0x00000080 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_EMBEDDED                                 0x00000100 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_REMOTEADMINMODE_TERMINAL                 0x00000200 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_UNIPROCESSOR_FREE                        0x00000400 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_UNIPROCESSOR_CHECKED                     0x00000800 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_MULTIPROCESSOR_FREE                      0x00001000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_MULTIPROCESSOR_CHECKED                   0x00002000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_MEDIACENTER                              0x00004000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_TABLETPC                                 0x00008000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_STARTER_EDITION                          0x00010000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_R2_EDITION                               0x00020000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_COMPUTE_SERVER                           0x00040000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_STORAGE_SERVER                           0x00080000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_SECURITY_APPLIANCE                       0x00100000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_BACKOFFICE                               0x00200000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_ULTIMATE                                 0x00400000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_N                                        0x00800000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_HOME_BASIC                               0x01000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_HOME_PREMIUM                             0x02000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_HYPERV_TOOLS                             0x04000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_BUSINESS                                 0x08000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_HOME_SERVER                              0x10000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_SERVER_CORE                              0x20000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_ESSENTIAL_BUSINESS_SERVER_MANAGEMENT     0x40000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE_ESSENTIAL_BUSINESS_SERVER_MESSAGING      0x80000000 //NOLINT(modernize-macro-to-enum)
 
-#define COSVERSION_SUITE2_ESSENTIAL_BUSINESS_SERVER_SECURITY   0x00000001 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_CLUSTER_SERVER                       0x00000002 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_SMALLBUSINESS_PREMIUM                0x00000004 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_STORAGE_EXPRESS_SERVER               0x00000008 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_STORAGE_WORKGROUP_SERVER             0x00000010 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_STANDARD                             0x00000020 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_E                                    0x00000040 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_PROFESSIONAL                         0x00000080 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_FOUNDATION                           0x00000100 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_MULTIPOINT                           0x00000200 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_HYPERV_SERVER                        0x00000400 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_HOME_SERVER_PREMIUM                  0x00000800 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_STORAGE_SERVER_ESSENTIALS            0x00001000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_PRERELEASE                           0x00002000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_EVALUATION                           0x00004000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_PREMIUM                              0x00008000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_MULTIPOINT_SERVER_PREMIUM            0x00010000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_THINPC                               0x00020000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_AUTOMOTIVE                           0x00040000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_CHINA                                0x00080000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_SINGLE_LANGUAGE                      0x00100000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_WIN32S                               0x00200000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_WINDOWS812012R2UPDATE                0x00400000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_CORECONNECTED                        0x00800000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_EDUCATION                            0x01000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_INDUSTRY                             0x02000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_CORE                                 0x04000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_STUDENT                              0x08000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_MOBILE                               0x10000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_IOTUAP                               0x20000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_LTSB                                 0x40000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE2_NANO_SERVER                          0x80000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_ESSENTIAL_BUSINESS_SERVER_SECURITY      0x00000001 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_CLUSTER_SERVER                          0x00000002 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_SMALLBUSINESS_PREMIUM                   0x00000004 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_STORAGE_EXPRESS_SERVER                  0x00000008 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_STORAGE_WORKGROUP_SERVER                0x00000010 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_STANDARD                                0x00000020 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_E                                       0x00000040 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_PROFESSIONAL                            0x00000080 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_FOUNDATION                              0x00000100 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_MULTIPOINT                              0x00000200 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_HYPERV_SERVER                           0x00000400 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_HOME_SERVER_PREMIUM                     0x00000800 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_STORAGE_SERVER_ESSENTIALS               0x00001000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_PRERELEASE                              0x00002000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_EVALUATION                              0x00004000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_PREMIUM                                 0x00008000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_MULTIPOINT_SERVER_PREMIUM               0x00010000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_THINPC                                  0x00020000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_AUTOMOTIVE                              0x00040000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_CHINA                                   0x00080000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_SINGLE_LANGUAGE                         0x00100000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_WIN32S                                  0x00200000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_WINDOWS812012R2UPDATE                   0x00400000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_CORECONNECTED                           0x00800000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_EDUCATION                               0x01000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_INDUSTRY                                0x02000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_CORE                                    0x04000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_STUDENT                                 0x08000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_MOBILE                                  0x10000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_IOTUAP                                  0x20000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_LTSB                                    0x40000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE2_NANO_SERVER                             0x80000000 //NOLINT(modernize-macro-to-enum)
 
-#define COSVERSION_SUITE3_CLOUD_STORAGE_SERVER                 0x00000001 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_ARM64_SERVER                         0x00000002 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_PPI_PRO                              0x00000004 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_CONNECTED_CAR                        0x00000008 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_HANDHELD                             0x00000010 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_CLOUD_HOST_INFRASTRUCTURE_SERVER     0x00000020 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_HOLOGRAPHIC                          0x00000040 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_SUBSCRIPTION                         0x00000080 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_UTILITY_VM                           0x00000100 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_PRO_WORKSTATIONS                     0x00000200 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_AZURE                                0x00000400 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_IOTCOMMERCIAL                        0x00000800 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_ENTERPRISEG                          0x00001000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_S                                    0x00002000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_SERVERRDSH                           0x00004000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_HUBOS                                0x00008000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_COMMUNICATIONS_SERVER                0x00010000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_RESTRICTED                           0x00020000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_ONECOREUPDATEOS                      0x00040000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_ANDROMEDA                            0x00080000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_XBOX_SYSTEMOS                        0x00100000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_IOTOS                                0x00200000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_IOTEDGEOS                            0x00400000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_IOTENTERPRISE                        0x00800000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_LITE                                 0x01000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_XBOX_NATIVEOS                        0x02000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_XBOX_GAMEOS                          0x04000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_XBOX_ERAOS                           0x08000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_XBOX_DURANGOHOSTOS                   0x10000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_XBOX_SCARLETTHOSTOS                  0x20000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_AZURESTACKHCI_SERVER_CORE            0x40000000 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE3_DATACENTER_SERVER_AZURE_EDITION      0x80000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_CLOUD_STORAGE_SERVER                    0x00000001 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_ARM64_SERVER                            0x00000002 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_PPI_PRO                                 0x00000004 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_CONNECTED_CAR                           0x00000008 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_HANDHELD                                0x00000010 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_CLOUD_HOST_INFRASTRUCTURE_SERVER        0x00000020 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_HOLOGRAPHIC                             0x00000040 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_SUBSCRIPTION                            0x00000080 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_UTILITY_VM                              0x00000100 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_PRO_WORKSTATIONS                        0x00000200 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_AZURE                                   0x00000400 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_IOTCOMMERCIAL                           0x00000800 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_ENTERPRISEG                             0x00001000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_S                                       0x00002000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_SERVERRDSH                              0x00004000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_HUBOS                                   0x00008000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_COMMUNICATIONS_SERVER                   0x00010000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_RESTRICTED                              0x00020000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_ONECOREUPDATEOS                         0x00040000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_ANDROMEDA                               0x00080000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_XBOX_SYSTEMOS                           0x00100000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_IOTOS                                   0x00200000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_IOTEDGEOS                               0x00400000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_IOTENTERPRISE                           0x00800000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_LITE                                    0x01000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_XBOX_NATIVEOS                           0x02000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_XBOX_GAMEOS                             0x04000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_XBOX_ERAOS                              0x08000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_XBOX_DURANGOHOSTOS                      0x10000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_XBOX_SCARLETTHOSTOS                     0x20000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_AZURESTACKHCI_SERVER_CORE               0x40000000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE3_DATACENTER_SERVER_AZURE_EDITION         0x80000000 //NOLINT(modernize-macro-to-enum)
 
-#define COSVERSION_SUITE4_DATACENTER_SERVER_CORE_AZURE_EDITION 0x00000001 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_AZURE_SERVER_CLOUDHOST               0x00000002 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_AZURE_SERVER_CLOUDMOS                0x00000004 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_WINDOWS365                           0x00000008 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_XBOX_KEYSTONE                        0x00000010 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_WNC                                  0x00000020 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_VALIDATION                           0x00000040 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_SERVER_FOR_SB_SOLUTIONS              0x00000080 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_SERVER_SOLUTIONS                     0x00000100 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_UNLICENSED                           0x00000200 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_AZURE_SERVER_AGENTBRIDGE             0x00000400 //NOLINT(modernize-macro-to-enum)
-#define COSVERSION_SUITE4_AZURE_SERVER_NANOHOST                0x00000800 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_DATACENTER_SERVER_CORE_AZURE_EDITION    0x00000001 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_AZURE_SERVER_CLOUDHOST                  0x00000002 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_AZURE_SERVER_CLOUDMOS                   0x00000004 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_SE                                      0x00000008 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_XBOX_KEYSTONE                           0x00000010 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_WNC                                     0x00000020 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_VALIDATION                              0x00000040 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_SERVER_FOR_SB_SOLUTIONS                 0x00000080 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_SERVER_SOLUTIONS                        0x00000100 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_UNLICENSED                              0x00000200 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_AZURE_SERVER_AGENTBRIDGE                0x00000400 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_AZURE_SERVER_NANOHOST                   0x00000800 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_DATACENTER_WS_SERVER_CORE_AZURE_EDITION 0x00001000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_HYPERV_NOT_INCLUDED                     0x00002000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_ESSENTIALBUSINESS_SERVER_MGMTSVC        0x00004000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_ESSENTIALBUSINESS_SERVER_ADDL           0x00008000 //NOLINT(modernize-macro-to-enum)
+#define COSVERSION_SUITE4_ESSENTIALBUSINESS_SERVER_ADDLSVC        0x00010000 //NOLINT(modernize-macro-to-enum)
 
 #ifndef _Success_
 #define _Success_(expr)
@@ -332,7 +337,6 @@ public:
 	_Success_(return != FALSE) BOOL IsWindows8OrWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows8Point1OrWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows10OrWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	//Returns the various flavors of the "os" that is installed. Note that these
 	//functions are not completely mutually exclusive
@@ -382,50 +386,51 @@ public:
 	_Success_(return != FALSE) BOOL IsWindows11Version23H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11Version24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11Version25H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindows11Version26H1(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindows11ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2003(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2003R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2003R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2003R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2003R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2003R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2003R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003R2Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003R2Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003R2Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003R2Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2003R2DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2008R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2008R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2008R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2008R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2008R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2008R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008R2Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008R2Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008R2Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008R2Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008R2DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2012(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012R2Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2012R2Update(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2012R2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012R2Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012R2Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012R2Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2012R2DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2016(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2016Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2016Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2016Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2016Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2016DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion1709(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion1803(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion1809(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
@@ -434,28 +439,29 @@ public:
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion2004(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion20H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2019(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2019Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2019Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2019Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2019Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2019DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2019ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	_Success_(return != FALSE) BOOL IsWindowsServer2022(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2022(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2022(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2022(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2022(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2022(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2022Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2022Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2022Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2022Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2022DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2022ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion23H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	_Success_(return != FALSE) BOOL IsWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2025(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2025Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2025Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2025Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2025Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2025DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2025ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServerVersion24H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
@@ -467,12 +473,12 @@ public:
 	_Success_(return != FALSE) BOOL IsUltimate(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsPersonal(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 
-	_Success_(return != FALSE) BOOL IsWebWindowsServer2008(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 	_Success_(return != FALSE) BOOL IsWindowsServer2008(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsStandardWindowsServer2008(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsEnterpriseWindowsServer2008(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDatacenterWindowsServer2008(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
-	_Success_(return != FALSE) BOOL IsDomainControllerWindowsServer2008(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008Web(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008Standard(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008Enterprise(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008Datacenter(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
+	_Success_(return != FALSE) BOOL IsWindowsServer2008DomainController(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying);
 
 	_Success_(return != FALSE) BOOL IsTerminalServices(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsSmallBusiness(_In_ LPCOS_VERSION_INFO lpVersionInformation);
@@ -533,7 +539,7 @@ public:
 	_Success_(return != FALSE) BOOL IsNanoServer(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsCloudStorageServer(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsARM64Server(_In_ LPCOS_VERSION_INFO lpVersionInformation);
-	_Success_(return != FALSE) BOOL IsPPIPro(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsWindows10Team(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsConnectedCar(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsHandheld(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsHolographic(_In_ LPCOS_VERSION_INFO lpVersionInformation);
@@ -556,7 +562,7 @@ public:
 	_Success_(return != FALSE) BOOL IsIoTEnterpriseSK(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsIoTEnterpriseK(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsIoTEnterpriseEvaluation(_In_ LPCOS_VERSION_INFO lpVersionInformation);
-	_Success_(return != FALSE) BOOL IsWNC(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsWindowsCPC(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsValidation(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsAzureServerAgentBridge(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsAzureServerNanoHost(_In_ LPCOS_VERSION_INFO lpVersionInformation);
@@ -565,18 +571,24 @@ public:
 	_Success_(return != FALSE) BOOL IsXBoxNativeOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsXBoxGamesOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsXBoxEraOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
-	_Success_(return != FALSE) BOOL IsXBoxDurangoHostOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
-	_Success_(return != FALSE) BOOL IsXBoxScarlettHostOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsXBoxOneHostOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsXBoxSeriesXSHostOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsXBoxKeystone(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsAzureStackHCIServerCore(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsDatacenterServerAzureEdition(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsDatacenterServerCoreAzureEdition(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsDatacenterWSServerCoreAzureEdition(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsAzureServerCloudHost(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsAzureServerCloudMOS(_In_ LPCOS_VERSION_INFO lpVersionInformation);
-	_Success_(return != FALSE) BOOL IsWindows365(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsWindows11SE(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsUnlicensed(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsServerForSBSolutions(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 	_Success_(return != FALSE) BOOL IsServerSolutions(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsHyperVNotIncluded(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsEssentialBusinessServerManagementSvc(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsEssentialBusinessServerAdditional(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsEssentialBusinessServerAdditionalSvc(_In_ LPCOS_VERSION_INFO lpVersionInformation);
+	_Success_(return != FALSE) BOOL IsProfessionalForStudent(_In_ LPCOS_VERSION_INFO lpVersionInformation);
 
 protected:
 	//Defines / typedefs

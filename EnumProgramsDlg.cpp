@@ -552,22 +552,22 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows XP (Professional)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2003(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2003")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2003(&osvi, FALSE))
+					else if (os.IsWindowsServer2003DomainController(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2003 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2003R2(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2003 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2003R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2003R2DomainController(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2003 R2 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows XP")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
-					if (os.IsDatacenterWindowsServer2003(&osvi, FALSE) || os.IsDatacenterWindowsServer2003R2(&osvi, FALSE))
+					if (os.IsWindowsServer2003Datacenter(&osvi, FALSE) || os.IsWindowsServer2003R2Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2003(&osvi, FALSE) || os.IsEnterpriseWindowsServer2003R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2003Enterprise(&osvi, FALSE) || os.IsWindowsServer2003R2Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2003(&osvi, FALSE) || os.IsWebWindowsServer2003R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2003Web(&osvi, FALSE) || os.IsWindowsServer2003R2Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2003(&osvi, FALSE) || os.IsStandardWindowsServer2003R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2003Standard(&osvi, FALSE) || os.IsWindowsServer2003R2Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsVistaOrWindowsServer2008(&osvi, FALSE))
@@ -593,19 +593,19 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2008(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2008")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2008(&osvi, FALSE))
+						else if (os.IsWindowsServer2008DomainController(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2008 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2008")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					}
 
-					if (os.IsDatacenterWindowsServer2008(&osvi, FALSE))
+					if (os.IsWindowsServer2008Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2008(&osvi, FALSE))
+					else if (os.IsWindowsServer2008Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2008(&osvi, FALSE))
+					else if (os.IsWindowsServer2008Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2008(&osvi, FALSE))
+					else if (os.IsWindowsServer2008Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows7OrWindowsServer2008R2(&osvi, FALSE))
@@ -633,19 +633,19 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2008R2(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2008 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2008R2(&osvi, FALSE))
+						else if (os.IsWindowsServer2008R2DomainController(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2008 R2 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2008")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					}
 
-					if (os.IsDatacenterWindowsServer2008R2(&osvi, FALSE))
+					if (os.IsWindowsServer2008R2Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2008R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2008R2Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2008R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2008R2Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2008R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2008R2Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows8OrWindowsServer2012(&osvi, FALSE))
@@ -669,19 +669,19 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2012(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2012")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2012(&osvi, FALSE))
+						else if (os.IsWindowsServer2012DomainController(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2012 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2012")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					}
 
-					if (os.IsDatacenterWindowsServer2012(&osvi, FALSE))
+					if (os.IsWindowsServer2012Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2012(&osvi, FALSE))
+					else if (os.IsWindowsServer2012Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2012(&osvi, FALSE))
+					else if (os.IsWindowsServer2012Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2012(&osvi, FALSE))
+					else if (os.IsWindowsServer2012Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows8Point1OrWindowsServer2012R2(&osvi, FALSE))
@@ -694,6 +694,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 							_tcscat(sText, _T("Windows 8.1 RT")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsStarterEdition(&osvi))
 							_tcscat(sText, _T("Windows 8.1 (Starter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						else if (os.IsProfessionalForStudent(&osvi))
+							_tcscat(sText, _T("Windows 8.1 (Pro for Education)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsProfessional(&osvi))
 							_tcscat(sText, _T("Windows 8.1 (Pro)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsEnterprise(&osvi))
@@ -705,7 +707,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2012R2(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2012 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2012R2(&osvi, FALSE))
+						else if (os.IsWindowsServer2012R2DomainController(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2012 R2 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2012 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -716,13 +718,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					if (os.IsWindows8Point1Or2012R2Update(&osvi))
 						_tcscat(sText, _T(", (Update)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
-					if (os.IsDatacenterWindowsServer2012R2(&osvi, FALSE))
+					if (os.IsWindowsServer2012R2Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2012R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2012R2Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2012R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2012R2Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2012R2(&osvi, FALSE))
+					else if (os.IsWindowsServer2012R2Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows10OrWindowsServer2016(&osvi, FALSE))
@@ -756,7 +758,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 							_tcscat(sText, _T("Windows Server 2016 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsARM64Server(&osvi))
 							_tcscat(sText, _T("Windows Server 2016 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2016(&osvi, FALSE))
+						else if (os.IsWindowsServer2016DomainController(&osvi, FALSE))
 							_tcscat(sText, _T("Windows Server 2016 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2016")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -800,13 +802,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					if (os.IsCoreConnected(&osvi))
 						_tcscat(sText, _T(", (with Bing / CoreConnected)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
-					if (os.IsDatacenterWindowsServer2016(&osvi, FALSE))
+					if (os.IsWindowsServer2016Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2016(&osvi, FALSE))
+					else if (os.IsWindowsServer2016Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2016(&osvi, FALSE))
+					else if (os.IsWindowsServer2016Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2016(&osvi, FALSE))
+					else if (os.IsWindowsServer2016Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows11(&osvi, FALSE))
@@ -836,7 +838,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 24H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11Version25H2(&osvi, FALSE))
 						_tcscat(sText, _T(", (version 25H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWindows11ActiveDevelopmentBranch(&osvi, FALSE))
+					else if (os.IsWindows11Version26H1(&osvi, FALSE))
+						_tcscat(sText, _T(", (version 26H1)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					if (os.IsWindows11ActiveDevelopmentBranch(&osvi, FALSE))
 						_tcscat(sText, _T(", (Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsServer2019(&osvi, FALSE))
@@ -845,7 +849,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows Server 2019 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsARM64Server(&osvi))
 						_tcscat(sText, _T("Windows Server 2019 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2019(&osvi, FALSE))
+					else if (os.IsWindowsServer2019DomainController(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2019 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows Server 2019")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -861,13 +865,14 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 20H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2019ActiveDevelopmentBranch(&osvi, FALSE))
 						_tcscat(sText, _T(", (vNext aka Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					if (os.IsDatacenterWindowsServer2019(&osvi, FALSE))
+
+					if (os.IsWindowsServer2019Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2019(&osvi, FALSE))
+					else if (os.IsWindowsServer2019Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2019(&osvi, FALSE))
+					else if (os.IsWindowsServer2019Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2019(&osvi, FALSE))
+					else if (os.IsWindowsServer2019Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsServer2022(&osvi, FALSE))
@@ -876,7 +881,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows Server 2022 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsARM64Server(&osvi))
 						_tcscat(sText, _T("Windows Server 2022 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2022(&osvi, FALSE))
+					else if (os.IsWindowsServer2022DomainController(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2022 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows Server 2022")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -884,13 +889,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 23H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2022ActiveDevelopmentBranch(&osvi, FALSE))
 						_tcscat(sText, _T(", (vNext aka Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					if (os.IsDatacenterWindowsServer2022(&osvi, FALSE))
+					if (os.IsWindowsServer2022Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2022(&osvi, FALSE))
+					else if (os.IsWindowsServer2022Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2022(&osvi, FALSE))
+					else if (os.IsWindowsServer2022Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2022(&osvi, FALSE))
+					else if (os.IsWindowsServer2022Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsServer2025(&osvi, FALSE))
@@ -899,21 +904,22 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows Server 2025 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsARM64Server(&osvi))
 						_tcscat(sText, _T("Windows Server 2025 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2025(&osvi, FALSE))
+					else if (os.IsWindowsServer2025DomainController(&osvi, FALSE))
 						_tcscat(sText, _T("Windows Server 2025 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows Server 2025")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+
 					if (os.IsWindowsServerVersion24H2(&osvi, FALSE))
 						_tcscat(sText, _T(", (version 24H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2025ActiveDevelopmentBranch(&osvi, FALSE))
 						_tcscat(sText, _T(", (vNext aka Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					if (os.IsDatacenterWindowsServer2025(&osvi, FALSE))
+					if (os.IsWindowsServer2025Datacenter(&osvi, FALSE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2025(&osvi, FALSE))
+					else if (os.IsWindowsServer2025Enterprise(&osvi, FALSE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2025(&osvi, FALSE))
+					else if (os.IsWindowsServer2025Web(&osvi, FALSE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2025(&osvi, FALSE))
+					else if (os.IsWindowsServer2025Standard(&osvi, FALSE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				break;
@@ -1152,22 +1158,22 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows XP (Professional)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2003(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2003")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2003(&osvi, TRUE))
+					else if (os.IsWindowsServer2003DomainController(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2003 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2003R2(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2003 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2003R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2003R2DomainController(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2003 R2 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows XP")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
-					if (os.IsDatacenterWindowsServer2003(&osvi, TRUE) || os.IsDatacenterWindowsServer2003R2(&osvi, TRUE))
+					if (os.IsWindowsServer2003Datacenter(&osvi, TRUE) || os.IsWindowsServer2003R2Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2003(&osvi, TRUE) || os.IsEnterpriseWindowsServer2003(&osvi, TRUE))
+					else if (os.IsWindowsServer2003Enterprise(&osvi, TRUE) || os.IsWindowsServer2003Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2003(&osvi, TRUE) || os.IsWebWindowsServer2003R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2003Web(&osvi, TRUE) || os.IsWindowsServer2003R2Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2003(&osvi, TRUE) || os.IsStandardWindowsServer2003R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2003Standard(&osvi, TRUE) || os.IsWindowsServer2003R2Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsVistaOrWindowsServer2008(&osvi, TRUE))
@@ -1193,19 +1199,19 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2008(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2008")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2008(&osvi, TRUE))
+						else if (os.IsWindowsServer2008DomainController(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2008 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2008")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					}
 
-					if (os.IsDatacenterWindowsServer2008(&osvi, TRUE))
+					if (os.IsWindowsServer2008Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2008(&osvi, TRUE))
+					else if (os.IsWindowsServer2008Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2008(&osvi, TRUE))
+					else if (os.IsWindowsServer2008Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2008(&osvi, TRUE))
+					else if (os.IsWindowsServer2008Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows7OrWindowsServer2008R2(&osvi, TRUE))
@@ -1233,19 +1239,19 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2008R2(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2008 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2008R2(&osvi, TRUE))
+						else if (os.IsWindowsServer2008R2DomainController(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2008 R2 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2008 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					}
 
-					if (os.IsDatacenterWindowsServer2008R2(&osvi, TRUE))
+					if (os.IsWindowsServer2008R2Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2008R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2008R2Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2008R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2008R2Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2008R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2008R2Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows8OrWindowsServer2012(&osvi, TRUE))
@@ -1269,19 +1275,19 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2012(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2012")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2012(&osvi, TRUE))
+						else if (os.IsWindowsServer2012DomainController(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2012 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2012")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					}
 
-					if (os.IsDatacenterWindowsServer2012(&osvi, TRUE))
+					if (os.IsWindowsServer2012Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2012(&osvi, TRUE))
+					else if (os.IsWindowsServer2012Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2012(&osvi, TRUE))
+					else if (os.IsWindowsServer2012Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2012(&osvi, TRUE))
+					else if (os.IsWindowsServer2012Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows8Point1OrWindowsServer2012R2(&osvi, TRUE))
@@ -1294,6 +1300,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 							_tcscat(sText, _T("Windows 8.1 RT")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsStarterEdition(&osvi))
 							_tcscat(sText, _T("Windows 8.1 (Starter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+						else if (os.IsProfessionalForStudent(&osvi))
+							_tcscat(sText, _T("Windows 8.1 (Pro for Education)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsProfessional(&osvi))
 							_tcscat(sText, _T("Windows 8.1 (Pro)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsEnterprise(&osvi))
@@ -1305,7 +1313,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					{
 						if (os.IsWindowsServer2012R2(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2012 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2012R2(&osvi, TRUE))
+						else if (os.IsWindowsServer2012R2DomainController(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2012 R2 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2012 R2")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1316,13 +1324,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					if (os.IsWindows8Point1Or2012R2Update(&osvi))
 						_tcscat(sText, _T(", (Update)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
-					if (os.IsDatacenterWindowsServer2012R2(&osvi, TRUE))
+					if (os.IsWindowsServer2012R2Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2012R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2012R2Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2012R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2012R2Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2012R2(&osvi, TRUE))
+					else if (os.IsWindowsServer2012R2Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows10OrWindowsServer2016(&osvi, TRUE))
@@ -1356,7 +1364,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 							_tcscat(sText, _T("Windows Server 2016 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else if (os.IsARM64Server(&osvi))
 							_tcscat(sText, _T("Windows Server 2016 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						else if (os.IsDomainControllerWindowsServer2016(&osvi, TRUE))
+						else if (os.IsWindowsServer2016DomainController(&osvi, TRUE))
 							_tcscat(sText, _T("Windows Server 2016 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 						else
 							_tcscat(sText, _T("Windows Server 2016")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1400,13 +1408,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 					if (os.IsCoreConnected(&osvi))
 						_tcscat(sText, _T(", (with Bing / CoreConnected)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
-					if (os.IsDatacenterWindowsServer2016(&osvi, TRUE))
+					if (os.IsWindowsServer2016Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2016(&osvi, TRUE))
+					else if (os.IsWindowsServer2016Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2016(&osvi, TRUE))
+					else if (os.IsWindowsServer2016Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2016(&osvi, TRUE))
+					else if (os.IsWindowsServer2016Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindows11(&osvi, TRUE))
@@ -1436,7 +1444,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 24H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11Version25H2(&osvi, TRUE))
 						_tcscat(sText, _T(", (version 25H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWindows11ActiveDevelopmentBranch(&osvi, TRUE))
+					else if (os.IsWindows11Version26H1(&osvi, TRUE))
+						_tcscat(sText, _T(", (version 26H1)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					if (os.IsWindows11ActiveDevelopmentBranch(&osvi, TRUE))
 						_tcscat(sText, _T(", (Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsServer2019(&osvi, TRUE))
@@ -1445,7 +1455,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows Server 2019 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsARM64Server(&osvi))
 						_tcscat(sText, _T("Windows Server 2019 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2019(&osvi, TRUE))
+					else if (os.IsWindowsServer2019DomainController(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2019 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows Server 2019")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1461,13 +1471,14 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 20H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2019ActiveDevelopmentBranch(&osvi, TRUE))
 						_tcscat(sText, _T(", (vNext aka Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					if (os.IsDatacenterWindowsServer2019(&osvi, TRUE))
+
+					if (os.IsWindowsServer2019Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2019(&osvi, TRUE))
+					else if (os.IsWindowsServer2019Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2019(&osvi, TRUE))
+					else if (os.IsWindowsServer2019Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2019(&osvi, TRUE))
+					else if (os.IsWindowsServer2019Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsServer2022(&osvi, TRUE))
@@ -1476,7 +1487,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows Server 2022 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsARM64Server(&osvi))
 						_tcscat(sText, _T("Windows Server 2022 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2022(&osvi, TRUE))
+					else if (os.IsWindowsServer2022DomainController(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2022 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows Server 2022")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1484,13 +1495,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 23H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2022ActiveDevelopmentBranch(&osvi, TRUE))
 						_tcscat(sText, _T(", (vNext aka Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					if (os.IsDatacenterWindowsServer2022(&osvi, TRUE))
+					if (os.IsWindowsServer2022Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2022(&osvi, TRUE))
+					else if (os.IsWindowsServer2022Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2022(&osvi, TRUE))
+					else if (os.IsWindowsServer2022Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2022(&osvi, TRUE))
+					else if (os.IsWindowsServer2022Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				else if (os.IsWindowsServer2025(&osvi, TRUE))
@@ -1499,7 +1510,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T("Windows Server 2025 Nano Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsARM64Server(&osvi))
 						_tcscat(sText, _T("Windows Server 2025 ARM64 Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsDomainControllerWindowsServer2025(&osvi, TRUE))
+					else if (os.IsWindowsServer2025DomainController(&osvi, TRUE))
 						_tcscat(sText, _T("Windows Server 2025 (Domain Controller)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else
 						_tcscat(sText, _T("Windows Server 2025")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1507,13 +1518,14 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 24H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindowsServer2025ActiveDevelopmentBranch(&osvi, TRUE))
 						_tcscat(sText, _T(", (vNext aka Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					if (os.IsDatacenterWindowsServer2025(&osvi, TRUE))
+
+					if (os.IsWindowsServer2025Datacenter(&osvi, TRUE))
 						_tcscat(sText, _T(", (Datacenter Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsEnterpriseWindowsServer2025(&osvi, TRUE))
+					else if (os.IsWindowsServer2025Enterprise(&osvi, TRUE))
 						_tcscat(sText, _T(", (Enterprise Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsWebWindowsServer2025(&osvi, TRUE))
+					else if (os.IsWindowsServer2025Web(&osvi, TRUE))
 						_tcscat(sText, _T(", (Web Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-					else if (os.IsStandardWindowsServer2025(&osvi, TRUE))
+					else if (os.IsWindowsServer2025Standard(&osvi, TRUE))
 						_tcscat(sText, _T(", (Standard Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
 				break;
@@ -1610,390 +1622,390 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				_tcscat(sText, _T(", (Unknown Processor)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				break;
 			}
-			}
+		}
 #endif //#ifndef UNDER_CE
-			_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion));
+		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion));
+		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (osvi.dwUnderlyingMinorVersion % 10)
+		{
+			if (osvi.dwUnderlyingMinorVersion > 9)
+				_stprintf(sBuf, _T("%02d"), (int)(osvi.dwUnderlyingMinorVersion));
+			else
+				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion));
+		}
+		else
+			_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10));
+		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (osvi.dwUnderlyingBuildNumber)
+		{
+			//Report the UBR on Windows 10 / Server 2016 and later
+			if (os.IsWindows10OrWindowsServer2016(&osvi, TRUE) || os.IsWindows11(&osvi, TRUE) || os.IsWindowsServer2019(&osvi, TRUE) || os.IsWindowsServer2022(&osvi, TRUE) || os.IsWindowsServer2025(&osvi, TRUE))
+				_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR));
+			else
+				_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber));
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			if (osvi.dwUnderlyingMinorVersion % 10)
+		}
+		if (osvi.wUnderlyingServicePackMajor)
+		{
+			if (osvi.wUnderlyingServicePackMinor)
 			{
-				if (osvi.dwUnderlyingMinorVersion > 9)
-					_stprintf(sBuf, _T("%02d"), (int)(osvi.dwUnderlyingMinorVersion));
+				//Handle the special case of NT 4 SP 6a which Dtwinver treats as SP 6.1
+				if (os.IsNTPreWin2k(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 6) && (osvi.wUnderlyingServicePackMinor == 1))
+					_stprintf(sBuf, _T(" Service Pack: 6a"));
+				//Handle the special case of XP SP 1a which Dtwinver treats as SP 1.1
+				else if (os.IsWindowsXP(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 1) && (osvi.wUnderlyingServicePackMinor == 1))
+					_stprintf(sBuf, _T(" Service Pack: 1a"));
 				else
-					_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion));
+					_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wUnderlyingServicePackMajor), (int)(osvi.wUnderlyingServicePackMinor));
 			}
 			else
-				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10));
+				_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wUnderlyingServicePackMajor));
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			if (osvi.dwUnderlyingBuildNumber)
-			{
-				//Report the UBR on Windows 10 / Server 2016 and later
-				if (os.IsWindows10OrWindowsServer2016(&osvi, TRUE) || os.IsWindows11(&osvi, TRUE) || os.IsWindowsServer2019(&osvi, TRUE) || os.IsWindowsServer2022(&osvi, TRUE) || os.IsWindowsServer2025(&osvi, TRUE))
-					_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR));
-				else
-					_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber));
-				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			}
-			if (osvi.wUnderlyingServicePackMajor)
-			{
-				if (osvi.wUnderlyingServicePackMinor)
-				{
-					//Handle the special case of NT 4 SP 6a which Dtwinver treats as SP 6.1
-					if (os.IsNTPreWin2k(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 6) && (osvi.wUnderlyingServicePackMinor == 1))
-						_stprintf(sBuf, _T(" Service Pack: 6a"));
-					//Handle the special case of XP SP 1a which Dtwinver treats as SP 1.1
-					else if (os.IsWindowsXP(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 1) && (osvi.wUnderlyingServicePackMinor == 1))
-						_stprintf(sBuf, _T(" Service Pack: 1a"));
-					else
-						_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wUnderlyingServicePackMajor), (int)(osvi.wUnderlyingServicePackMinor));
-				}
-				else
-					_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wUnderlyingServicePackMajor));
-				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			}
-			else
-			{
-				if (osvi.wUnderlyingServicePackMinor)
-					_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor));
-			}
+		}
+		else
+		{
+			if (osvi.wUnderlyingServicePackMinor)
+				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor));
+		}
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-			if (osvi.ullUAPInfo)
-			{
-				_stprintf(sBuf, _T(", RtlGetDeviceFamilyInfo UAPInfo:%u.%u.%u.%u"), (DWORD)((osvi.ullUAPInfo & 0xFFFF000000000000ui64) >> 48), (DWORD)((osvi.ullUAPInfo & 0x0000FFFF00000000ui64) >> 32), (DWORD)((osvi.ullUAPInfo & 0x00000000FFFF0000ui64) >> 16), (DWORD)(osvi.ullUAPInfo & 0x000000000000FFFFui64)); //NOLINT(clang-diagnostic-format)
-				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-			}
+		if (osvi.ullUAPInfo)
+		{
+			_stprintf(sBuf, _T(", RtlGetDeviceFamilyInfo UAPInfo:%u.%u.%u.%u"), (DWORD)((osvi.ullUAPInfo & 0xFFFF000000000000ui64) >> 48), (DWORD)((osvi.ullUAPInfo & 0x0000FFFF00000000ui64) >> 32), (DWORD)((osvi.ullUAPInfo & 0x00000000FFFF0000ui64) >> 16), (DWORD)(osvi.ullUAPInfo & 0x000000000000FFFFui64)); //NOLINT(clang-diagnostic-format)
+			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		}
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-			if (osvi.ulDeviceFamily)
+		if (osvi.ulDeviceFamily)
+		{
+			_stprintf(sBuf, _T(", Device Family:0x%08X"), osvi.ulDeviceFamily); //NOLINT(clang-diagnostic-format)
+			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			switch (osvi.ulDeviceFamily)
 			{
-				_stprintf(sBuf, _T(", Device Family:0x%08X"), osvi.ulDeviceFamily); //NOLINT(clang-diagnostic-format)
-				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-				switch (osvi.ulDeviceFamily)
+				case DEVICEFAMILYINFOENUM_WINDOWS_8X:
 				{
-					case DEVICEFAMILYINFOENUM_WINDOWS_8X:
-					{
-						_tcscat(sText, _T(", Windows 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_WINDOWS_PHONE_8X:
-					{
-						_tcscat(sText, _T(", Windows Phone 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_DESKTOP:
-					{
-						_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_MOBILE:
-					{
-						_tcscat(sText, _T(", Mobile")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_XBOX:
-					{
-						_tcscat(sText, _T(", Xbox")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_TEAM:
-					{
-						_tcscat(sText, _T(", Team")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_IOT:
-					{
-						_tcscat(sText, _T(", IoT")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_IOT_HEADLESS:
-					{
-						_tcscat(sText, _T(", IoT Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_SERVER:
-					{
-						_tcscat(sText, _T(", Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_HOLOGRAPHIC:
-					{
-						_tcscat(sText, _T(", Holographic")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_XBOXSRA:
-					{
-						_tcscat(sText, _T(", Xbox SRA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_XBOXERA:
-					{
-						_tcscat(sText, _T(", Xbox ERA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_SERVER_NANO:
-					{
-						_tcscat(sText, _T(", Server Nano")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_8828080:
-					{
-						_tcscat(sText, _T(", \"8828080\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_7067329:
-					{
-						_tcscat(sText, _T(", \"7067329\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_WINDOWS_CORE:
-					{
-						_tcscat(sText, _T(", Windows Core")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYINFOENUM_WINDOWS_CORE_HEADLESS:
-					{
-						_tcscat(sText, _T(", Windows Core Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					default:
-					{
-						break;
-					}
+					_tcscat(sText, _T(", Windows 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_WINDOWS_PHONE_8X:
+				{
+					_tcscat(sText, _T(", Windows Phone 8x")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_DESKTOP:
+				{
+					_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_MOBILE:
+				{
+					_tcscat(sText, _T(", Mobile")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_XBOX:
+				{
+					_tcscat(sText, _T(", Xbox")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_TEAM:
+				{
+					_tcscat(sText, _T(", Team")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_IOT:
+				{
+					_tcscat(sText, _T(", IoT")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_IOT_HEADLESS:
+				{
+					_tcscat(sText, _T(", IoT Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_SERVER:
+				{
+					_tcscat(sText, _T(", Server")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_HOLOGRAPHIC:
+				{
+					_tcscat(sText, _T(", Holographic")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_XBOXSRA:
+				{
+					_tcscat(sText, _T(", Xbox SRA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_XBOXERA:
+				{
+					_tcscat(sText, _T(", Xbox ERA")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_SERVER_NANO:
+				{
+					_tcscat(sText, _T(", Server Nano")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_8828080:
+				{
+					_tcscat(sText, _T(", \"8828080\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_7067329:
+				{
+					_tcscat(sText, _T(", \"7067329\"")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_WINDOWS_CORE:
+				{
+					_tcscat(sText, _T(", Windows Core")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYINFOENUM_WINDOWS_CORE_HEADLESS:
+				{
+					_tcscat(sText, _T(", Windows Core Headless")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				default:
+				{
+					break;
 				}
 			}
-			if (osvi.ulDeviceForm)
+		}
+		if (osvi.ulDeviceForm)
+		{
+			_stprintf(sBuf, _T(", Device Form:0x%08X"), osvi.ulDeviceForm); //NOLINT(clang-diagnostic-format)
+			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			switch (osvi.ulDeviceForm)
 			{
-				_stprintf(sBuf, _T(", Device Form:0x%08X"), osvi.ulDeviceForm); //NOLINT(clang-diagnostic-format)
-				_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-				switch (osvi.ulDeviceForm)
+				case DEVICEFAMILYDEVICEFORM_PHONE:
 				{
-					case DEVICEFAMILYDEVICEFORM_PHONE:
-					{
-						_tcscat(sText, _T(", Phone")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_TABLET:
-					{
-						_tcscat(sText, _T(", Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_DESKTOP:
-					{
-						_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_NOTEBOOK:
-					{
-						_tcscat(sText, _T(", Notebook")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_CONVERTIBLE:
-					{
-						_tcscat(sText, _T(", Convertible")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_DETACHABLE:
-					{
-						_tcscat(sText, _T(", Detachable")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_ALLINONE:
-					{
-						_tcscat(sText, _T(", All In One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_STICKPC:
-					{
-						_tcscat(sText, _T(", Stick PC")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_PUCK:
-					{
-						_tcscat(sText, _T(", Puck")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_LARGESCREEN:
-					{
-						_tcscat(sText, _T(", Large Screen")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_HMD:
-					{
-						_tcscat(sText, _T(", Head Mounted Display")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_INDUSTRY_HANDHELD:
-					{
-						_tcscat(sText, _T(", Handheld")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_INDUSTRY_TABLET:
-					{
-						_tcscat(sText, _T(", Industry Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_BANKING:
-					{
-						_tcscat(sText, _T(", Banking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_BUILDING_AUTOMATION:
-					{
-						_tcscat(sText, _T(", Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_DIGITAL_SIGNAGE:
-					{
-						_tcscat(sText, _T(", Digital Signage")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_GAMING:
-					{
-						_tcscat(sText, _T(", Gaming")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_HOME_AUTOMATION:
-					{
-						_tcscat(sText, _T(", Home Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_INDUSTRIAL_AUTOMATION:
-					{
-						_tcscat(sText, _T(", Industrial Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_KIOSK:
-					{
-						_tcscat(sText, _T(", Kiosk")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_MAKER_BOARD:
-					{
-						_tcscat(sText, _T(", Maker Board")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_MEDICAL:
-					{
-						_tcscat(sText, _T(", Medical")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_NETWORKING:
-					{
-						_tcscat(sText, _T(", Networking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_POINT_OF_SERVICE:
-					{
-						_tcscat(sText, _T(", Point Of Service")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_PRINTING:
-					{
-						_tcscat(sText, _T(", Printing")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_THIN_CLIENT:
-					{
-						_tcscat(sText, _T(", Thin Client")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_TOY:
-					{
-						_tcscat(sText, _T(", Toy")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_VENDING:
-					{
-						_tcscat(sText, _T(", Vending")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_INDUSTRY_OTHER:
-					{
-						_tcscat(sText, _T(", Other Industry")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_ONE:
-					{
-						_tcscat(sText, _T(", XBox One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_ONE_S:
-					{
-						_tcscat(sText, _T(", XBox One S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X:
-					{
-						_tcscat(sText, _T(", XBox One X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X_DEVKIT:
-					{
-						_tcscat(sText, _T(", XBox One X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X:
-					{
-						_tcscat(sText, _T(", XBox Series X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X_DEVKIT:
-					{
-						_tcscat(sText, _T(", XBox Series X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_S:
-					{
-						_tcscat(sText, _T(", XBox Series S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_01:
-					{
-						_tcscat(sText, _T(", XBox Reserved 01")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_02:
-					{
-						_tcscat(sText, _T(", XBox Reserved 02")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_03:
-					{
-						_tcscat(sText, _T(", XBox Reserved 03")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_04:
-					{
-						_tcscat(sText, _T(", XBox Reserved 04")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_05:
-					{
-						_tcscat(sText, _T(", XBox Reserved 05")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_06:
-					{
-						_tcscat(sText, _T(", XBox Reserved 06")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_07:
-					{
-						_tcscat(sText, _T(", XBox Reserved 07")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_08:
-					{
-						_tcscat(sText, _T(", XBox Reserved 08")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09:
-					{
-						_tcscat(sText, _T(", XBox Reserved 09")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-						break;
-					}
-					default:
-					{
-						break;
-					}
+					_tcscat(sText, _T(", Phone")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_TABLET:
+				{
+					_tcscat(sText, _T(", Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_DESKTOP:
+				{
+					_tcscat(sText, _T(", Desktop")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_NOTEBOOK:
+				{
+					_tcscat(sText, _T(", Notebook")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_CONVERTIBLE:
+				{
+					_tcscat(sText, _T(", Convertible")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_DETACHABLE:
+				{
+					_tcscat(sText, _T(", Detachable")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_ALLINONE:
+				{
+					_tcscat(sText, _T(", All In One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_STICKPC:
+				{
+					_tcscat(sText, _T(", Stick PC")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_PUCK:
+				{
+					_tcscat(sText, _T(", Puck")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_LARGESCREEN:
+				{
+					_tcscat(sText, _T(", Large Screen")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_HMD:
+				{
+					_tcscat(sText, _T(", Head Mounted Display")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_INDUSTRY_HANDHELD:
+				{
+					_tcscat(sText, _T(", Handheld")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_INDUSTRY_TABLET:
+				{
+					_tcscat(sText, _T(", Industry Tablet")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_BANKING:
+				{
+					_tcscat(sText, _T(", Banking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_BUILDING_AUTOMATION:
+				{
+					_tcscat(sText, _T(", Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_DIGITAL_SIGNAGE:
+				{
+					_tcscat(sText, _T(", Digital Signage")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_GAMING:
+				{
+					_tcscat(sText, _T(", Gaming")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_HOME_AUTOMATION:
+				{
+					_tcscat(sText, _T(", Home Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_INDUSTRIAL_AUTOMATION:
+				{
+					_tcscat(sText, _T(", Industrial Automation")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_KIOSK:
+				{
+					_tcscat(sText, _T(", Kiosk")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_MAKER_BOARD:
+				{
+					_tcscat(sText, _T(", Maker Board")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_MEDICAL:
+				{
+					_tcscat(sText, _T(", Medical")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_NETWORKING:
+				{
+					_tcscat(sText, _T(", Networking")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_POINT_OF_SERVICE:
+				{
+					_tcscat(sText, _T(", Point Of Service")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_PRINTING:
+				{
+					_tcscat(sText, _T(", Printing")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_THIN_CLIENT:
+				{
+					_tcscat(sText, _T(", Thin Client")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_TOY:
+				{
+					_tcscat(sText, _T(", Toy")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_VENDING:
+				{
+					_tcscat(sText, _T(", Vending")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_INDUSTRY_OTHER:
+				{
+					_tcscat(sText, _T(", Other Industry")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_ONE:
+				{
+					_tcscat(sText, _T(", XBox One")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_ONE_S:
+				{
+					_tcscat(sText, _T(", XBox One S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X:
+				{
+					_tcscat(sText, _T(", XBox One X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_ONE_X_DEVKIT:
+				{
+					_tcscat(sText, _T(", XBox One X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X:
+				{
+					_tcscat(sText, _T(", XBox Series X")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_X_DEVKIT:
+				{
+					_tcscat(sText, _T(", XBox Series X Devkit")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_SERIES_S:
+				{
+					_tcscat(sText, _T(", XBox Series S")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_01:
+				{
+					_tcscat(sText, _T(", XBox Reserved 01")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_02:
+				{
+					_tcscat(sText, _T(", XBox Reserved 02")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_03:
+				{
+					_tcscat(sText, _T(", XBox Reserved 03")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_04:
+				{
+					_tcscat(sText, _T(", XBox Reserved 04")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_05:
+				{
+					_tcscat(sText, _T(", XBox Reserved 05")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_06:
+				{
+					_tcscat(sText, _T(", XBox Reserved 06")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_07:
+				{
+					_tcscat(sText, _T(", XBox Reserved 07")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_08:
+				{
+					_tcscat(sText, _T(", XBox Reserved 08")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				case DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09:
+				{
+					_tcscat(sText, _T(", XBox Reserved 09")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					break;
+				}
+				default:
+				{
+					break;
+				}
 			}
 		}
 		_stprintf(sBuf, _T(", ProductType:0x%08X"), osvi.dwProductType); //NOLINT(clang-diagnostic-format)
@@ -2059,11 +2071,17 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		if (os.IsMultiprocessorChecked(&osvi))
 			_tcscat(sText, _T(", (Multiprocessor Checked)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsEssentialBusinessServerManagement(&osvi))
-			_tcscat(sText, _T(", (Windows Essential Business Server Management Server)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			_tcscat(sText, _T(", (Windows Essential Business Server Management)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsEssentialBusinessServerMessaging(&osvi))
-			_tcscat(sText, _T(", (Windows Essential Business Server Messaging Server)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			_tcscat(sText, _T(", (Windows Essential Business Server Messagin)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsEssentialBusinessServerSecurity(&osvi))
-			_tcscat(sText, _T(", (Windows Essential Business Server Security Server)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			_tcscat(sText, _T(", (Windows Essential Business Server Security)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsEssentialBusinessServerManagementSvc(&osvi))
+			_tcscat(sText, _T(", (Windows Essential Business Server Svc)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsEssentialBusinessServerAdditional(&osvi))
+			_tcscat(sText, _T(", (Windows Essential Business Server Additional)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsEssentialBusinessServerAdditionalSvc(&osvi))
+			_tcscat(sText, _T(", (Windows Essential Business Server Additional Svc)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsClusterServer(&osvi))
 			_tcscat(sText, _T(", (Cluster Server)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsSmallBusiness(&osvi))
@@ -2102,8 +2120,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, _T(", (LTSB / LTSC)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsCloudStorageServer(&osvi))
 			_tcscat(sText, _T(", (Cloud Storage Server)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (os.IsPPIPro(&osvi))
-			_tcscat(sText, _T(", (PPI Pro)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsWindows10Team(&osvi))
+			_tcscat(sText, _T(", (Windows 10 Team)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsConnectedCar(&osvi))
 			_tcscat(sText, _T(", (Connected Car)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsHandheld(&osvi))
@@ -2156,10 +2174,10 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, _T(", (XBox GameOS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsXBoxEraOS(&osvi))
 			_tcscat(sText, _T(", (XBox EraOS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (os.IsXBoxDurangoHostOS(&osvi))
-			_tcscat(sText, _T(", (XBox DurangoHostOS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (os.IsXBoxScarlettHostOS(&osvi))
-			_tcscat(sText, _T(", (XBox ScarlettHostOS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsXBoxOneHostOS(&osvi))
+			_tcscat(sText, _T(", (XBox One Host OS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsXBoxSeriesXSHostOS(&osvi))
+			_tcscat(sText, _T(", (XBox Series X/S Host OS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsXBoxKeystone(&osvi))
 			_tcscat(sText, _T(", (XBox Keystone)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsAzureStackHCIServerCore(&osvi))
@@ -2172,17 +2190,22 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, _T(", (Datacenter Server Azure Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsDatacenterServerCoreAzureEdition(&osvi))
 			_tcscat(sText, _T(", (Datacenter Server Core Azure Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsDatacenterWSServerCoreAzureEdition(&osvi))
+			_tcscat(sText, _T(", (Datacenter WS Server Core Azure Edition)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsAzureServerCloudHost(&osvi))
 			_tcscat(sText, _T(", (Azure Server Cloud Host)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsAzureServerCloudMOS(&osvi))
 			_tcscat(sText, _T(", (Azure Server Cloud MOS)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (os.IsWindows365(&osvi))
-			_tcscat(sText, _T(", (Windows 365)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (os.IsWNC(&osvi))
-			_tcscat(sText, _T(", (WNC)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsWindows11SE(&osvi))
+			_tcscat(sText, _T(", (Windows 11 SE)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (os.IsWindowsCPC(&osvi))
+			_tcscat(sText, _T(", (Windows CPC)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (os.IsUnlicensed(&osvi))
 			_tcscat(sText, _T(", (Unlicensed)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-
+		if (os.IsHyperVNotIncluded(&osvi))
+			_tcscat(sText, _T(", (Hyper-V not included)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (osvi.bSemiAnnual)
+			_tcscat(sText, _T(", (Semi-Annual Channel)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		_tcscat(sText, _T("\n")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 
 		//Some extra info for CE
@@ -2200,9 +2223,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		_stprintf(sText, _T("Failed in call to GetOSVersion\n"));
 
 #ifdef _WINDOWS
-	MessageBox(sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
+	::MessageBox(NULL, sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
 #elif _WIN32_WCE
-	MessageBox(sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
+	MessageBox(NULL, sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
 #else
 	printf("%s", sText);
 #endif //#ifdef _WINDOWS
