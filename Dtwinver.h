@@ -209,11 +209,12 @@ public:
 	enum OS_PLATFORM
 	{
 		UnknownOSPlatform = 0,
-		Dos = 1,
+		DOS = 1,
 		Windows3x = 2,
 		Windows9x = 3,
 		WindowsNT = 4,
 		WindowsCE = 5,
+		ReactOS = 6
 	};
 
 	enum OS_TYPE
@@ -221,7 +222,7 @@ public:
 		UnknownOSType = 0,
 		Workstation = 1,
 		Server = 2,
-		DomainController = 3,
+		DomainController = 3
 	};
 
 	enum PROCESSOR_TYPE
@@ -254,14 +255,14 @@ public:
 		OS_PLATFORM EmulatedPlatform;
 #if !defined(COSVERSION_CE)
 		PROCESSOR_TYPE EmulatedProcessorType; //The emulated processor type
-#endif
+#endif //#if !defined(COSVERSION_CE)
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 		TCHAR szEmulatedCSDVersion[128]; //NOLINT(modernize-avoid-c-arrays)
 #endif //#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 #else
 		char szEmulatedCSDVersion[128]; //NOLINT(modernize-avoid-c-arrays)
-#endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
+#endif //if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 		WORD wEmulatedServicePackMajor;
 		WORD wEmulatedServicePackMinor;
 
@@ -273,7 +274,7 @@ public:
 #if !defined(COSVERSION_CE)
 		PROCESSOR_TYPE UnderlyingProcessorType; //The underlying processor type
 #endif //#if !defined(COSVERSION_CE)
-#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64) 
+#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 		TCHAR szUnderlyingCSDVersion[128]; //NOLINT(modernize-avoid-c-arrays)
 #endif //#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
@@ -282,6 +283,8 @@ public:
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 		WORD wUnderlyingServicePackMajor;
 		WORD wUnderlyingServicePackMinor;
+
+		//Other details
 		DWORD dwSuiteMask; //Bitmask of various OS suites
 		DWORD dwSuiteMask2; //Second bitmask of various OS suites
 		DWORD dwSuiteMask3; //Third bitmask of various OS suites
@@ -293,8 +296,18 @@ public:
 		ULONGLONG ullUAPInfo; //The first value returned from RtlGetDeviceFamilyInfoEnum
 		DWORD ulDeviceFamily; //The second value returned from RtlGetDeviceFamilyInfoEnum
 		DWORD ulDeviceForm; //The third value returned from RtlGetDeviceFamilyInfoEnum
+#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
+#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+		TCHAR szBuildLab[128]; //The "BuildLab" string //NOLINT(modernize-avoid-c-arrays)
+		TCHAR szBuildLabEx[128]; //The "BuildLabEx" string //NOLINT(modernize-avoid-c-arrays)
+#endif //#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+#else
+		char szBuildLab[128]; //NOLINT(modernize-avoid-c-arrays)
+		char szBuildLabEx[128]; //NOLINT(modernize-avoid-c-arrays)
+#endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 
 #if defined(COSVERSION_CE)
+		//CE specific info
 		TCHAR szOEMInfo[256];
 		TCHAR szPlatformType[256];
 #endif //#if defined(COSVERSION_CE)
@@ -744,6 +757,7 @@ protected:
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 	void GetNTSP6aDetailsFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionInformation, _In_ BOOL bUpdateEmulatedAlso);
 	void GetXPSP1aDetailsFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionInformation, _In_ BOOL bUpdateEmulatedAlso);
+	void GetBuildLabDetails(_Inout_ LPOS_VERSION_INFO lpVersionInformation);
 	void GetUBRFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionInformation);
 	void GetSemiAnnualFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionInformation);
 	OS_TYPE GetNTOSTypeFromRegistry();

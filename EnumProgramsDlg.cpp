@@ -462,7 +462,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 
 		switch (osvi.EmulatedPlatform)
 		{
-			case COSVersion::Dos:
+			case COSVersion::DOS:
 			{
 				_tcscat(sText, _T("DOS")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				break;
@@ -470,6 +470,11 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			case COSVersion::Windows3x:
 			{
 				_tcscat(sText, _T("Windows")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+				break;
+			}
+			case COSVersion::ReactOS:
+			{
+				_tcscat(sText, _T("ReactOS")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				break;
 			}
 			case COSVersion::WindowsCE:
@@ -1069,7 +1074,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 
 		switch (osvi.UnderlyingPlatform)
 		{
-			case COSVersion::Dos:
+			case COSVersion::DOS:
 			{
 				_tcscat(sText, _T("DOS")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				break;
@@ -1077,6 +1082,11 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			case COSVersion::Windows3x:
 			{
 				_tcscat(sText, _T("Windows")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+				break;
+			}
+			case COSVersion::ReactOS:
+			{
+				_tcscat(sText, _T("ReactOS")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				break;
 			}
 			case COSVersion::WindowsCE:
@@ -1636,10 +1646,14 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		else
 			_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10));
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-		if (osvi.dwUnderlyingBuildNumber)
+		if (osvi.UnderlyingPlatform == COSVersion::ReactOS)
 		{
-			//Report the UBR on Windows 10 / Server 2016 and later
-			if (os.IsWindows10OrWindowsServer2016(&osvi, TRUE) || os.IsWindows11(&osvi, TRUE) || os.IsWindowsServer2019(&osvi, TRUE) || os.IsWindowsServer2022(&osvi, TRUE) || os.IsWindowsServer2025(&osvi, TRUE))
+			_stprintf(sBuf, _T(".%d"), (int)(osvi.dwUnderlyingBuildNumber));
+			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		}
+		if (osvi.dwUnderlyingBuildNumber && (osvi.UnderlyingPlatform != COSVersion::ReactOS))
+		{
+			if (osvi.dwUBR)
 				_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR));
 			else
 				_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber));
@@ -2008,8 +2022,11 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				}
 			}
 		}
-		_stprintf(sBuf, _T(", ProductType:0x%08X"), osvi.dwProductType); //NOLINT(clang-diagnostic-format)
-		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (osvi.dwProductType)
+		{
+			_stprintf(sBuf, _T(", ProductType:0x%08X"), osvi.dwProductType); //NOLINT(clang-diagnostic-format)
+			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		}
 		if (os.IsEnterpriseStorageServer(&osvi))
 			_tcscat(sText, _T(", (Storage Server Enterprise)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		else if (os.IsExpressStorageServer(&osvi))
@@ -2207,6 +2224,16 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		if (osvi.bSemiAnnual)
 			_tcscat(sText, _T(", (Semi-Annual Channel)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		_tcscat(sText, _T("\n")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		if (_tcslen(osvi.szBuildLab))
+		{
+			_tcscat(sText, _T("BuildLab: ")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			_tcscat(sText, osvi.szBuildLab); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		}
+		if (_tcslen(osvi.szBuildLabEx))
+		{
+			_tcscat(sText, _T("\nBuildLabEx: ")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+			_tcscat(sText, osvi.szBuildLabEx); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+		}
 
 		//Some extra info for CE
 #ifdef UNDER_CE
@@ -2225,7 +2252,7 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 #ifdef _WINDOWS
 	::MessageBox(NULL, sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
 #elif _WIN32_WCE
-	MessageBox(NULL, sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
+	::MessageBox(NULL, sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
 #else
 	printf("%s", sText);
 #endif //#ifdef _WINDOWS
