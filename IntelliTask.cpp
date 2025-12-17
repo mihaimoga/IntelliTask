@@ -1,4 +1,4 @@
-/* Copyright (C) 2012-2025 Stefan-Mihai MOGA
+/* Copyright (C) 2012-2026 Stefan-Mihai MOGA
 This file is part of IntelliTask application developed by Stefan-Mihai MOGA.
 IntelliTask is an alternative Windows version to the famous Task Manager!
 
