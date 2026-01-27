@@ -272,8 +272,8 @@
     <None Include="CONTRIBUTING.md" />
     <None Include="README.md" />
     <None Include="IntelliTask.html" />
-    <None Include="packages.config" />
     <None Include="SoftwareContentRegister.html" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntelliTask.h">
