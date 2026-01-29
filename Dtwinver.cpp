@@ -527,8 +527,10 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
                           14. Renamed "IsXBoxScarlettHostOS" method to "IsXBoxSeriesXSHostOS".
          PJN / 22-11-2025 1. Updated the code to return BuildLab and BuildLabEx strings
                           2. Updated the code to support detecting ReactOS version details.
+         PJN / 28-01-2026 1. Provided a new IsWindows11Version26H2 method.
+                          2. Updated copyright details.
 
-Copyright (c) 1997 - 2025 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 1997 - 2026 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -5025,6 +5027,14 @@ _Success_(return != FALSE) BOOL COSVersion::IsWindows11Version26H1(_In_ LPCOS_VE
 		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber >= 28000);
 	else
 		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber >= 28000);
+}
+
+_Success_(return != FALSE) BOOL COSVersion::IsWindows11Version26H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
+{
+	if (bCheckUnderlying)
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26200) && (lpVersionInformation->dwUnderlyingBuildNumber <= 26300);
+	else
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26200) && (lpVersionInformation->dwEmulatedBuildNumber <= 26300);
 }
 
 _Success_(return != FALSE) BOOL COSVersion::IsWindows8Point1(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)

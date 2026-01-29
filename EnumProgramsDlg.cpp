@@ -32,6 +32,7 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #if defined(COSVERSION_WIN16_OR_DOS)
 #define _tcscat strcat
 #define _stprintf sprintf
+#define _tcslen strlen
 #endif //#if defined(COSVERSION_WIN16_OR_DOS)
 
 #ifndef _In_
@@ -289,6 +290,10 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #ifndef DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09
 #define DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09 0x0000002D
 #endif //#ifndef DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09
+
+#pragma warning(disable: 26485)
+#pragma warning(disable: 26493)
+#pragma warning(disable: 26477)
 
 // CEnumProgramsDlg dialog
 
@@ -845,6 +850,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 25H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11Version26H1(&osvi, FALSE))
 						_tcscat(sText, _T(", (version 26H1)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					else if (os.IsWindows11Version26H2(&osvi, FALSE))
+						_tcscat(sText, _T(", (version 26H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					if (os.IsWindows11ActiveDevelopmentBranch(&osvi, FALSE))
 						_tcscat(sText, _T(", (Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
@@ -1456,6 +1463,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 						_tcscat(sText, _T(", (version 25H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					else if (os.IsWindows11Version26H1(&osvi, TRUE))
 						_tcscat(sText, _T(", (version 26H1)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+					else if (os.IsWindows11Version26H2(&osvi, TRUE))
+						_tcscat(sText, _T(", (version 26H2)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 					if (os.IsWindows11ActiveDevelopmentBranch(&osvi, TRUE))
 						_tcscat(sText, _T(", (Active Development Branch)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 				}
