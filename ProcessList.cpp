@@ -26,7 +26,11 @@ IMPLEMENT_DYNAMIC(CSystemSnapshot, CObject)
 // CProcessData member functions
 ///////////////////////////////////////////////////////////////////////////////
 
-CProcessData::CProcessData()
+/**
+ * @brief Default constructor for CProcessData
+ * Initializes all process data members to zero/default values
+ */
+	CProcessData::CProcessData()
 {
 	m_dwProcessID = 0;
 	m_dwParentProcessID = 0;
@@ -35,8 +39,21 @@ CProcessData::CProcessData()
 	m_memUsage = 0;
 }
 
+/**
+ * @brief Parameterized constructor for CProcessData
+ * @param dwProcessID The process identifier
+ * @param dwParentProcessID The parent process identifier
+ * @param dwPriority The process priority level
+ * @param cpuUsage The CPU usage percentage
+ * @param memUsage The memory usage in bytes
+ * @param strFileName The executable file name
+ * @param strFilePath The full path to the executable
+ * @param strDescription The file description from version info
+ * @param strCompany The company name from version info
+ * @param strVersion The version string from version info
+ */
 CProcessData::CProcessData(DWORD dwProcessID, DWORD dwParentProcessID, DWORD dwPriority, DOUBLE cpuUsage, DWORD memUsage,
-		CString strFileName, CString strFilePath, CString strDescription, CString strCompany, CString strVersion)
+	CString strFileName, CString strFilePath, CString strDescription, CString strCompany, CString strVersion)
 {
 	m_dwProcessID = dwProcessID;
 	m_dwParentProcessID = dwParentProcessID;
@@ -50,6 +67,9 @@ CProcessData::CProcessData(DWORD dwProcessID, DWORD dwParentProcessID, DWORD dwP
 	m_strVersion = strVersion;
 }
 
+/**
+ * @brief Destructor for CProcessData
+ */
 CProcessData::~CProcessData()
 {
 }
@@ -58,18 +78,31 @@ CProcessData::~CProcessData()
 // CSystemSnapshot member functions
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Default constructor for CSystemSnapshot
+ */
 CSystemSnapshot::CSystemSnapshot()
 {
 }
 
+/**
+ * @brief Destructor for CSystemSnapshot
+ * Cleans up all allocated process data objects
+ */
 CSystemSnapshot::~CSystemSnapshot()
 {
 	VERIFY(RemoveAll());
 }
 
+/**
+ * @brief Removes all process data from the snapshot
+ * Deletes all CProcessData objects and clears the array
+ * @return true on success
+ */
 bool CSystemSnapshot::RemoveAll()
 {
 	const int nSize = (int)m_arrProcessList.GetSize();
+	// Iterate through all processes and delete them
 	for (int nIndex = 0; nIndex < nSize; nIndex++)
 	{
 		CProcessData* pProcessData = m_arrProcessList.GetAt(nIndex);
@@ -77,29 +110,42 @@ bool CSystemSnapshot::RemoveAll()
 		delete pProcessData;
 		pProcessData = nullptr;
 	}
+	// Clear the array
 	m_arrProcessList.RemoveAll();
 	return true;
 }
 
+/**
+ * @brief Refreshes the system snapshot by enumerating all running processes
+ * Uses CreateToolhelp32Snapshot to get current process information
+ * @return true if snapshot was successfully created, false otherwise
+ */
 bool CSystemSnapshot::Refresh()
 {
 	HANDLE hSnapshot = nullptr;
 	PROCESSENTRY32 pe32 = { 0 };
 
+	// Clear existing process list
 	VERIFY(RemoveAll());
+
+	// Create a snapshot of all processes in the system
 	if ((hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) != INVALID_HANDLE_VALUE)
 	{
 		pe32.dwSize = sizeof(PROCESSENTRY32);
+
+		// Get the first process information
 		if (!Process32First(hSnapshot, &pe32))
 		{
 			return false;
 		}
 
+		// Iterate through all processes in the snapshot
 		do
 		{
 			VERIFY(InsertProcess(pe32));
 		} while (Process32Next(hSnapshot, &pe32));
 
+		// Close the snapshot handle
 		VERIFY(CloseHandle(hSnapshot));
 	}
 	else
@@ -109,31 +155,47 @@ bool CSystemSnapshot::Refresh()
 	return true;
 }
 
+/**
+ * @brief Inserts a new process into the snapshot
+ * Gathers detailed information about the process including CPU usage, memory, and version info
+ * @param pe32 The PROCESSENTRY32 structure containing basic process information
+ * @return Pointer to the newly created CProcessData object
+ */
 CProcessData* CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 {
 	HANDLE hProcess = nullptr;
 	PROCESS_MEMORY_COUNTERS pmc = { 0 };
 	pmc.cb = sizeof(PROCESS_MEMORY_COUNTERS);
 
+	// Create new process data object and add it to the list
 	CProcessData* pProcessData = new CProcessData();
 	m_arrProcessList.Add(pProcessData);
+
+	// Set basic process information from PROCESSENTRY32
 	pProcessData->SetProcessID(pe32.th32ProcessID);
 	pProcessData->SetParentProcessID(pe32.th32ParentProcessID);
 	pProcessData->SetFileName(pe32.szExeFile);
 
+	// Open process handle to query additional information
 	if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pe32.th32ProcessID)) != nullptr)
 	{
+		// Initialize CPU usage monitoring
 		pProcessData->m_pCpuUsage.SetProcessID(pe32.th32ProcessID);
 		pProcessData->SetProcessorUsage(pProcessData->m_pCpuUsage.GetUsage());
+
+		// Get memory usage information
 		if (GetProcessMemoryInfo(hProcess, &pmc, pmc.cb))
 		{
 			pProcessData->SetMemoryUsage((DWORD)pmc.WorkingSetSize);
 		}
 
+		// Get full path to the executable
 		TCHAR lpszFullPath[MAX_PATH] = { 0 };
 		if (GetModuleFileNameEx(hProcess, nullptr, lpszFullPath, MAX_PATH))
 		{
 			pProcessData->SetFilePath(lpszFullPath);
+
+			// Extract version information from the executable
 			CVersionInfo pVersionInfo;
 			if (pVersionInfo.Load(lpszFullPath))
 			{
@@ -142,27 +204,41 @@ CProcessData* CSystemSnapshot::InsertProcess(PROCESSENTRY32& pe32)
 				pProcessData->SetVersion(pVersionInfo.GetFileVersionAsString().c_str());
 			}
 		}
+
+		// Close the process handle
 		VERIFY(CloseHandle(hProcess));
 	}
 	return pProcessData;
 }
 
+/**
+ * @brief Updates CPU and memory usage for an existing process
+ * @param dwProcessID The process identifier to update
+ * @return Pointer to the updated CProcessData object, or nullptr if process not found
+ */
 CProcessData* CSystemSnapshot::UpdateProcess(DWORD dwProcessID)
 {
 	HANDLE hProcess = nullptr;
 	PROCESS_MEMORY_COUNTERS pmc = { 0 };
 	pmc.cb = sizeof(PROCESS_MEMORY_COUNTERS);
 
+	// Find the process in the snapshot
 	CProcessData* pProcessData = GetProcessID(dwProcessID);
 	if (pProcessData != nullptr)
 	{
+		// Open process handle to query updated information
 		if ((hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, dwProcessID)) != nullptr)
 		{
+			// Update CPU usage
 			pProcessData->SetProcessorUsage(pProcessData->m_pCpuUsage.GetUsage());
+
+			// Update memory usage
 			if (GetProcessMemoryInfo(hProcess, &pmc, pmc.cb))
 			{
 				pProcessData->SetMemoryUsage((DWORD)pmc.WorkingSetSize);
 			}
+
+			// Close the process handle
 			VERIFY(CloseHandle(hProcess));
 		}
 		return pProcessData;
@@ -170,13 +246,21 @@ CProcessData* CSystemSnapshot::UpdateProcess(DWORD dwProcessID)
 	return nullptr;
 }
 
+/**
+ * @brief Removes a process from the snapshot
+ * @param dwProcessID The process identifier to remove
+ * @return true if process was found and removed, false otherwise
+ */
 bool CSystemSnapshot::RemoveProcess(DWORD dwProcessID)
 {
 	const int nSize = (int)m_arrProcessList.GetSize();
+	// Search for the process in the list
 	for (int nIndex = 0; nIndex < nSize; nIndex++)
 	{
 		CProcessData* pProcessData = m_arrProcessList.GetAt(nIndex);
 		ASSERT(pProcessData != nullptr);
+
+		// If process found, delete it and remove from array
 		if (pProcessData->GetProcessID() == dwProcessID)
 		{
 			delete pProcessData;
@@ -188,13 +272,21 @@ bool CSystemSnapshot::RemoveProcess(DWORD dwProcessID)
 	return false;
 }
 
+/**
+ * @brief Retrieves process data by process ID
+ * @param dwProcessID The process identifier to search for
+ * @return Pointer to the CProcessData object if found, nullptr otherwise
+ */
 CProcessData* CSystemSnapshot::GetProcessID(DWORD dwProcessID)
 {
 	const int nSize = (int)m_arrProcessList.GetSize();
+	// Search for the process in the list
 	for (int nIndex = 0; nIndex < nSize; nIndex++)
 	{
 		CProcessData* pProcessData = m_arrProcessList.GetAt(nIndex);
 		ASSERT(pProcessData != nullptr);
+
+		// Return the process data if process ID matches
 		if (pProcessData->GetProcessID() == dwProcessID)
 		{
 			return pProcessData;
