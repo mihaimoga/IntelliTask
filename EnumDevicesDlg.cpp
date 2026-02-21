@@ -21,26 +21,41 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #include "afxdialogex.h"
 #include "EnumDevicesDlg.h"
 
-#pragma comment(lib, "Cfgmgr32.lib")
-#pragma comment(lib, "Setupapi.lib")
-#pragma comment(lib, "Rpcrt4.lib")
+// Link required system libraries for device enumeration
+#pragma comment(lib, "Cfgmgr32.lib")  // Configuration Manager API
+#pragma comment(lib, "Setupapi.lib")  // Setup API for device installation
+#pragma comment(lib, "Rpcrt4.lib")    // RPC runtime for GUID operations
 
-// CEnumDevicesDlg dialog
+/**
+ * @brief Implementation of the Enumerate Devices dialog
+ */
 
 IMPLEMENT_DYNAMIC(CEnumDevicesDlg, CDialogEx)
 
+/**
+ * @brief Constructor for the Enumerate Devices dialog
+ * @param pParent Pointer to the parent window (default: nullptr)
+ */
 CEnumDevicesDlg::CEnumDevicesDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ENUMDEVICES_DIALOG, pParent)
 {
 }
 
+/**
+ * @brief Destructor for the Enumerate Devices dialog
+ */
 CEnumDevicesDlg::~CEnumDevicesDlg()
 {
 }
 
+/**
+ * @brief Exchange data between dialog controls and member variables
+ * @param pDX Pointer to the CDataExchange object
+ */
 void CEnumDevicesDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	// Map tree view and list view controls to member variables
 	DDX_Control(pDX, IDC_DEVICES, m_ctrlDevices);
 	DDX_Control(pDX, IDC_DETAILS, m_ctrlDetails);
 }
@@ -50,24 +65,37 @@ BEGIN_MESSAGE_MAP(CEnumDevicesDlg, CDialogEx)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_DEVICES, &CEnumDevicesDlg::OnSelchangedDevices)
 END_MESSAGE_MAP()
 
-// CEnumDevicesDlg message handlers
-
+/**
+ * @brief Forward declaration for ListView column insertion helper function
+ */
 void ListViewInsertColumnText(HWND hListView, const DWORD wIdx,
 	int wFmt, const TCHAR* pszText, const BOOL bFinal, HWND hDlg);
 
+/**
+ * @brief Initialize the dialog and enumerate all devices
+ * @return TRUE unless focus is set to a control
+ */
 BOOL CEnumDevicesDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	// Set up the details ListView with two columns
 	ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 0, 0, _T("Field"), 0, GetSafeHwnd());
 	ListViewInsertColumnText(GetDlgItem(IDC_DETAILS)->GetSafeHwnd(), 1, 0, _T("Descritption"), 1, GetSafeHwnd());
+
+	// Enumerate all devices and populate the tree view
 	EnumDevices();
 
+	// Set up window resizing behavior for controls
 	VERIFY(m_pWindowResizer.Hook(this));
+	// Devices tree stays on left, resizes vertically
 	VERIFY(m_pWindowResizer.SetAnchor(IDC_DEVICES, ANCHOR_LEFT | ANCHOR_TOP | ANCHOR_BOTTOM));
+	// Details list resizes both horizontally and vertically
 	VERIFY(m_pWindowResizer.SetAnchor(IDC_DETAILS, ANCHOR_LEFT | ANCHOR_RIGHT | ANCHOR_TOP | ANCHOR_BOTTOM));
+	// Cancel button stays at bottom right
 	VERIFY(m_pWindowResizer.SetAnchor(IDCANCEL, ANCHOR_RIGHT | ANCHOR_BOTTOM));
 
+	// Restore previous window size if available
 	const int nWidth = theApp.GetInt(_T("Width"), -1);
 	const int nHeight = theApp.GetInt(_T("Height"), -1);
 	if ((-1 != nWidth) && (-1 != nHeight))
@@ -82,13 +110,19 @@ BOOL CEnumDevicesDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
+/**
+ * @brief Clean up resources and save window size on dialog destruction
+ */
 void CEnumDevicesDlg::OnDestroy()
 {
+	// Free all allocated device list nodes
 	FreeAllocDeviceNode();
+	// Free all device order nodes
 	FreeAllDeviceOrderNode();
 
 	CDialogEx::OnDestroy();
 
+	// Save current window dimensions for next time
 	RECT pWndRect;
 	GetWindowRect(&pWndRect);
 	const int nWidth = pWndRect.right - pWndRect.left;
@@ -97,27 +131,44 @@ void CEnumDevicesDlg::OnDestroy()
 	theApp.WriteInt(_T("Height"), nHeight);
 }
 
+/**
+ * @brief Convert a GUID structure to its string representation
+ * @param guid The GUID to convert
+ * @param pData Output buffer to receive the GUID string
+ */
 void ConvertGUIDToString(const GUID guid, TCHAR* pData)
 {
 	TCHAR szData[30] = { 0 };
 	TCHAR szTmp[3] = { 0 };
 	DWORD wLoop;
-	//
+
+	// Format the first three parts of the GUID (Data1-Data3)
 	_stprintf(pData, _T("%04X-%02X-%02X-"), guid.Data1, guid.Data2, guid.Data3);
+
+	// Format the Data4 array (8 bytes) as hex pairs
 	for (wLoop = 0; wLoop < 8; wLoop++)
 	{
+		// Add separator after the first 2 bytes of Data4
 		if (wLoop == 2)
 			_tcscat(szData, _T("-"));
 		_stprintf(szTmp, _T("%02X"), guid.Data4[wLoop]);
 		_tcscat(szData, szTmp);
 	};
+	// Append the formatted Data4 string to the output
 	_tcscpy(pData + _tcslen(pData), szData);
 };
 
+/**
+ * @brief Display a system error message in a message box
+ * @param hWnd Parent window handle for the message box
+ * @param dwErrorCode System error code to format and display
+ * @param szFunctionName Name of the function where the error occurred
+ */
 void ShowErrorMsg(HWND hWnd, const DWORD dwErrorCode, const TCHAR* szFunctionName)
 {
 	void* lpMsgBuf;
-	//
+
+	// Format the system error message from the error code
 	if (!FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -129,10 +180,17 @@ void ShowErrorMsg(HWND hWnd, const DWORD dwErrorCode, const TCHAR* szFunctionNam
 		0L))
 		return;
 
+	// Display the error message in a message box
 	MessageBox(hWnd, (const TCHAR*)lpMsgBuf, szFunctionName, MB_ICONSTOP | MB_OK);
+	// Free the buffer allocated by FormatMessage
 	LocalFree(lpMsgBuf);
 };
 
+/**
+ * @brief Delete an item or all items from a ListView control
+ * @param hList Handle to the ListView control
+ * @param wItem Index of the item to delete, or -1 to delete all items
+ */
 void ListViewDeleteItem(HWND hList, const DWORD wItem)
 {
 	if (wItem == -1)
@@ -141,6 +199,11 @@ void ListViewDeleteItem(HWND hList, const DWORD wItem)
 		SendMessage(hList, LVM_DELETEITEM, (WPARAM)wItem, 0);
 };
 
+/**
+ * @brief Set extended styles for a ListView control
+ * @param hListView Handle to the ListView control
+ * @param dwStyle Style flags to set, or 0 for default styles
+ */
 void ListViewSetExtStyle(HWND hListView, const DWORD dwStyle)
 {
 	DWORD style;
@@ -150,6 +213,11 @@ void ListViewSetExtStyle(HWND hListView, const DWORD dwStyle)
 	SendMessage(hListView, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, (LPARAM)style);
 };
 
+/**
+ * @brief Select a specific item in a ListView control
+ * @param hListView Handle to the ListView control
+ * @param iItem Index of the item to select
+ */
 void ListViewSetSelectItem(HWND hListView, const DWORD iItem)
 {
 	LVITEM lvItem;
@@ -159,6 +227,15 @@ void ListViewSetSelectItem(HWND hListView, const DWORD iItem)
 	SendMessage(hListView, LVM_SETITEMSTATE, iItem, (LPARAM)&lvItem);
 };
 
+/**
+ * @brief Insert a column with text into a ListView control
+ * @param hListView Handle to the ListView control
+ * @param wIdx Column index where to insert
+ * @param wFmt Column format (alignment), or 0 for default left alignment
+ * @param pszText Column header text
+ * @param bFinal TRUE if this is the last column (uses wider width)
+ * @param hDlg Handle to the parent dialog for text measurement
+ */
 void ListViewInsertColumnText(HWND hListView, const DWORD wIdx,
 	int wFmt, const TCHAR* pszText, const BOOL bFinal, HWND hDlg)
 {
@@ -166,25 +243,40 @@ void ListViewInsertColumnText(HWND hListView, const DWORD wIdx,
 	TEXTMETRIC text;
 	int        nWidth;
 	HDC        hDC = GetDC(hDlg);
-	// int        fmt;
 
+	// Calculate column width based on average character width
 	GetTextMetrics(hDC, &text);
 	nWidth = text.tmAveCharWidth * 20;
 	ReleaseDC(hDlg, hDC);
-	//
+
+	// Default to left alignment if not specified
 	if (!wFmt)
 		wFmt = LVCFMT_LEFT;
+
+	// Set up column structure
 	column.mask = LVCF_TEXT | LVCF_FMT | LVCF_WIDTH;
 	column.pszText = (LPWSTR)pszText;
 	column.fmt = wFmt;
+	// Final column gets extra width to fill remaining space
 	if (!bFinal)
 		column.cx = nWidth;
 	else
 		column.cx = nWidth * 20;
+
+	// Insert the column and handle errors
 	if (SendMessage(hListView, LVM_INSERTCOLUMN, wIdx, (LPARAM)(LPLVCOLUMN)&column) == -1)
 		ShowErrorMsg(hDlg, GetLastError(), _T("InitialListView"));
 };
 
+/**
+ * @brief Add a column with image and text to a ListView control
+ * @param hWnd Handle to the parent window
+ * @param nID Control ID of the ListView
+ * @param wIdx Column index where to insert
+ * @param wFmt Column format (alignment), or 0 for default left alignment
+ * @param pszText Column header text
+ * @param bFinal TRUE if this is the last column (uses wider width)
+ */
 void ListViewAddColumnImageText(HWND hWnd, const UINT nID, const DWORD wIdx,
 	int wFmt, TCHAR* pszText, const BOOL bFinal)
 {
@@ -212,6 +304,13 @@ void ListViewAddColumnImageText(HWND hWnd, const UINT nID, const DWORD wIdx,
 		ShowErrorMsg(hWnd, GetLastError(), _T("InitialListView"));
 };
 
+/**
+ * @brief Insert or set text for a ListView item or subitem
+ * @param hListView Handle to the ListView control
+ * @param iItem Item index
+ * @param iSubItem Subitem (column) index
+ * @param pszText Text to insert or set
+ */
 void ListViewInsertItemText(HWND hListView, const int iItem,
 	const int iSubItem, const TCHAR* pszText)
 {
@@ -232,16 +331,32 @@ void ListViewInsertItemText(HWND hListView, const int iItem,
 		SendMessage(hListView, LVM_SETITEMTEXT, iItem, (LPARAM)&item);
 };
 
+/**
+ * @brief Get the index of the currently selected item in a ListView
+ * @param hListView Handle to the ListView control
+ * @return Index of the selected item, or -1 if no item is selected
+ */
 int ListViewGetItemSelect(HWND hListView)
 {
 	return (int)SendMessage(hListView, LVM_GETNEXTITEM, (WPARAM) - 1, MAKELPARAM((UINT)LVNI_SELECTED, 0));
 };
 
+/**
+ * @brief Get the total number of items in a ListView
+ * @param hListView Handle to the ListView control
+ * @return Number of items in the ListView
+ */
 int ListViewGetItemCount(HWND hListView)
 {
 	return (int)SendMessage(hListView, LVM_GETITEMCOUNT, 0, 0);
 };
 
+/**
+ * @brief Get the text of a specific subitem from the selected item
+ * @param hListView Handle to the ListView control
+ * @param iSubItem Subitem (column) index
+ * @param pszText Output buffer to receive the text
+ */
 void ListViewGetItemText(HWND hListView, const int iSubItem, TCHAR* pszText)
 {
 	LVITEM item;
@@ -256,6 +371,13 @@ void ListViewGetItemText(HWND hListView, const int iSubItem, TCHAR* pszText)
 	SendMessage(hListView, LVM_GETITEMTEXT, idx, (LPARAM)&item);
 };
 
+/**
+ * @brief Get the text of a specific item and subitem
+ * @param hListView Handle to the ListView control
+ * @param iItem Item index
+ * @param iSubItem Subitem (column) index
+ * @param pszText Output buffer to receive the text
+ */
 void ListViewGetSpecItem(HWND hListView, const int iItem, const int iSubItem, TCHAR* pszText)
 {
 	LVITEM item;
@@ -269,6 +391,12 @@ void ListViewGetSpecItem(HWND hListView, const int iItem, const int iSubItem, TC
 	SendMessage(hListView, LVM_GETITEMTEXT, iItem, (LPARAM)&item);
 };
 
+/**
+ * @brief Check if a notification is a ListView double-click event
+ * @param nID Control ID to check
+ * @param pnmh Pointer to the notification message header
+ * @return The control ID if it's a double-click event, 0 otherwise
+ */
 UINT IsListViewDBClkEvent(const UINT nID, NMHDR* pnmh)
 {
 	if (pnmh->idFrom == nID)
@@ -279,6 +407,12 @@ UINT IsListViewDBClkEvent(const UINT nID, NMHDR* pnmh)
 	return 0;
 };
 
+/**
+ * @brief Check if a notification is a ListView click event (left or right)
+ * @param nID Control ID to check
+ * @param pnmh Pointer to the notification message header
+ * @return NM_CLICK for left click, NM_RCLICK for right click, 0 otherwise
+ */
 UINT IsListViewClkEvent(const UINT nID, NMHDR* pnmh)
 {
 	if (pnmh->idFrom == nID)
@@ -291,6 +425,10 @@ UINT IsListViewClkEvent(const UINT nID, NMHDR* pnmh)
 	return 0;
 };
 
+/**
+ * @brief Remove all items from a ListView control
+ * @param hListView Handle to the ListView control
+ */
 void ListViewRemoveAllItems(HWND hListView)
 {
 	LRESULT wCnt = SendMessage(hListView, LVM_GETITEMCOUNT, 0, 0);
@@ -301,16 +439,33 @@ void ListViewRemoveAllItems(HWND hListView)
 	SendMessage(hListView, LVM_DELETEALLITEMS, 0, 0);
 };
 
+/**
+ * @brief Remove a specific item from a ListView control
+ * @param hDlg Handle to the parent dialog
+ * @param nID Control ID of the ListView
+ * @param iItem Index of the item to remove
+ */
 void ListViewRemoveItem(HWND hDlg, const UINT nID, const int iItem)
 {
 	SendMessage(GetDlgItem(hDlg, nID), LVM_DELETEITEM, (WPARAM)iItem, 0);
 };
 
+/**
+ * @brief Remove a specific column from a ListView control
+ * @param hDlg Handle to the parent dialog
+ * @param nID Control ID of the ListView
+ * @param iCol Index of the column to remove
+ */
 void ListViewRemoveColumn(HWND hDlg, const UINT nID, const int iCol)
 {
 	SendMessage(GetDlgItem(hDlg, nID), LVM_DELETECOLUMN, (WPARAM)iCol, 0);
 };
 
+/**
+ * @brief Remove all nodes from a TreeView control
+ * @param hDlg Handle to the parent dialog
+ * @param nIdTree Control ID of the TreeView
+ */
 void TreeViewRemoveAllNodes(HWND hDlg, const UINT nIdTree)
 {
 	HWND  hTree = GetDlgItem(hDlg, nIdTree);
@@ -321,7 +476,16 @@ void TreeViewRemoveAllNodes(HWND hDlg, const UINT nIdTree)
 	SendMessage(hTree, TVM_DELETEITEM, 0, (LPARAM)TVI_ROOT);
 };
 
+/**
+ * @brief Global device class image list data
+ */
 SP_CLASSIMAGELIST_DATA _spImageData = { 0 };
+
+/**
+ * @brief Initialize the device class image list
+ * 
+ * Destroys any existing class image list and retrieves a new one from the system.
+ */
 void InitialImageData()
 {
 	// HIMAGELIST hImageListView = 0L;
@@ -331,6 +495,14 @@ void InitialImageData()
 	SetupDiGetClassImageList(&_spImageData);
 };
 
+/**
+ * @brief Create the root tree item for the device tree
+ * @param spImageData Device class image list data
+ * @param nIdTree Control ID of the TreeView
+ * @param nIdBmp Bitmap resource ID for the root icon
+ * @param hDlg Handle to the parent dialog
+ * @return Handle to the root tree item, or NULL on failure
+ */
 HTREEITEM MakeDeviceRootTree(SP_CLASSIMAGELIST_DATA spImageData, const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 {
 	TVINSERTSTRUCT tvStruct = { 0 };
@@ -361,16 +533,34 @@ HTREEITEM MakeDeviceRootTree(SP_CLASSIMAGELIST_DATA spImageData, const UINT nIdT
 	return 0;
 };
 
+/**
+ * @brief Global pointer to the head of the device list
+ */
 DEVICE_LIST* _pHead = 0L;
+
+/**
+ * @brief Global pointer to the head of the device order list
+ */
 DEVICE_ORDER* _pOrderHead = 0L;
 
 DEVICE_ORDER* AllocNewDeviceOrderNode(HWND hDlg);
+
+/**
+ * @brief Initialize the device order list
+ * @param hDlg Handle to the parent dialog
+ * @return 1 on success, 0 on failure
+ */
 char InitialDeviceOrder(HWND hDlg)
 {
 	_pOrderHead = AllocNewDeviceOrderNode(hDlg);
 	return (_pOrderHead) ? 1 : 0;
 };
 
+/**
+ * @brief Allocate a new device order node
+ * @param hDlg Handle to the parent dialog for error messages
+ * @return Pointer to the new node, or NULL on failure
+ */
 DEVICE_ORDER* AllocNewDeviceOrderNode(HWND hDlg)
 {
 	DEVICE_ORDER* pNew = (DEVICE_ORDER*)LocalAlloc(LPTR, sizeof(DEVICE_ORDER));
@@ -385,23 +575,40 @@ DEVICE_ORDER* AllocNewDeviceOrderNode(HWND hDlg)
 	return pNew;
 };
 
+/**
+ * @brief Add a new device order node to the list
+ * @param szDevName Device name to store in the node
+ * @param hDlg Handle to the parent dialog for error messages
+ * @return 1 on success, 0 on failure
+ */
 char AddNewDeviceOrderNode(const TCHAR* szDevName, HWND hDlg)
 {
+	// Allocate a new device order node
 	DEVICE_ORDER* pAdd = AllocNewDeviceOrderNode(hDlg);
-	//
+
 	if (!pAdd)
 		return 0;
+
+	// Copy device name into the node
 	_tcscpy(pAdd->szDevName, szDevName);
+	// Insert at the head of the list (after the dummy head node)
 	pAdd->pNext = _pOrderHead->pNext;
 	_pOrderHead->pNext = pAdd;
 	return 1;
 };
 
+/**
+ * @brief Find the order/count of a device by name
+ * @param szName Device name to search for
+ * @return Number of times the device name appears in the order list
+ */
 DWORD FindDeviceOrder(const TCHAR* szName)
 {
 	DEVICE_ORDER* pList = _pOrderHead->pNext;
 	DWORD        wOrder = 0;
-	//
+
+	// Traverse the list and count how many times this device name appears
+	// This determines the order index for devices with the same class
 	while (pList)
 	{
 		if (!_tcscmp(pList->szDevName, szName))
@@ -411,27 +618,42 @@ DWORD FindDeviceOrder(const TCHAR* szName)
 	return wOrder;
 };
 
+/**
+ * @brief Free all device order nodes and cleanup the list
+ */
 void FreeAllDeviceOrderNode()
 {
 	DEVICE_ORDER* pDel = _pOrderHead->pNext;
 	DEVICE_ORDER* pTmp = 0L;
-	//
+
+	// Traverse the list and free each node
 	while (pDel->pNext)
 	{
 		pTmp = pDel;
 		pDel = pDel->pNext;
 		LocalFree(pTmp);
 	};
+	// Free the dummy head node
 	LocalFree(_pOrderHead);
 	_pOrderHead = 0L;
 };
 
+/**
+ * @brief Initialize the device list
+ * @param hDlg Handle to the parent dialog for error messages
+ * @return 1 on success, 0 on failure
+ */
 char InitialDeviceList(HWND hDlg)
 {
 	_pHead = AllocNewDeviceNode(hDlg);
 	return (_pHead) ? 1 : 0;
 };
 
+/**
+ * @brief Allocate a new device list node
+ * @param hDlg Handle to the parent dialog for error messages
+ * @return Pointer to the new node, or NULL on failure
+ */
 DEVICE_LIST* AllocNewDeviceNode(HWND hDlg)
 {
 	DEVICE_LIST* pNew = (DEVICE_LIST*)LocalAlloc(LPTR, sizeof(DEVICE_LIST));
@@ -451,6 +673,17 @@ DEVICE_LIST* AllocNewDeviceNode(HWND hDlg)
 	return pNew;
 };
 
+/**
+ * @brief Add a new device node to the device list
+ * @param guid Device class GUID
+ * @param szName Device name
+ * @param szInstallID Device installation ID
+ * @param szPath Device path
+ * @param wIndex Device index
+ * @param wOrder Device order
+ * @param hDlg Handle to the parent dialog for error messages
+ * @return 1 on success, 0 on failure
+ */
 char AddNewDeviceNode(const GUID guid,
 	const TCHAR* szName,
 	const TCHAR* szInstallID,
@@ -474,6 +707,9 @@ char AddNewDeviceNode(const GUID guid,
 	return 1;
 };
 
+/**
+ * @brief Free all device nodes and cleanup the device list
+ */
 void FreeAllocDeviceNode()
 {
 	DEVICE_LIST* pDel = _pHead->pNext;
@@ -489,6 +725,11 @@ void FreeAllocDeviceNode()
 	_pHead = 0L;
 };
 
+/**
+ * @brief Get and display detailed information about a device
+ * @param pList Pointer to the device list node
+ * @param hDlg Handle to the parent dialog
+ */
 void GetDeviceDetailInfo(DEVICE_LIST* pList, HWND hDlg)
 {
 	TCHAR szBuf[MAX_PATH] = { 0 };
@@ -502,6 +743,15 @@ void GetDeviceDetailInfo(DEVICE_LIST* pList, HWND hDlg)
 	ListViewInsertItemText(hList, 11, 1, pList->szPath);
 };
 
+/**
+ * @brief Display driver detail information in the tree view
+ * @param hTreeChild Handle to the parent tree item
+ * @param nID Control ID of the TreeView
+ * @param szBuf Text to display
+ * @param iImageIdx Image index for the item
+ * @param iSelectImage Selected image index (unused)
+ * @param hDlg Handle to the parent dialog
+ */
 void DisplayDriverDetailInfo(HTREEITEM hTreeChild, const UINT nID, const TCHAR* szBuf, const int iImageIdx, const int /*iSelectImage*/, HWND hDlg)
 {
 	TVINSERTSTRUCT tvStruct = { 0 };
@@ -518,6 +768,13 @@ void DisplayDriverDetailInfo(HTREEITEM hTreeChild, const UINT nID, const TCHAR* 
 	SendMessage(hTree, TVM_INSERTITEM, 0, (LPARAM)&tvStruct);
 };
 
+/**
+ * @brief Get the device instance ID
+ * @param hDevInfo Device information set handle
+ * @param pspDevInfoData Pointer to device information data
+ * @param szInstanceID Output buffer for the instance ID
+ * @param hDlg Handle to the parent dialog for error messages
+ */
 void GetDeviceInstanceID(HDEVINFO hDevInfo,
 	SP_DEVINFO_DATA* pspDevInfoData,
 	TCHAR* szInstanceID, HWND hDlg)
@@ -530,6 +787,15 @@ void GetDeviceInstanceID(HDEVINFO hDevInfo,
 		ShowErrorMsg(hDlg, GetLastError(), _T("SetupDiBuildDriverInfoList"));
 };
 
+/**
+ * @brief Insert text into a TreeView as a root or child item
+ * @param hWnd Handle to the parent window
+ * @param nID Control ID of the TreeView
+ * @param hParent Handle to the parent tree item, or NULL for root
+ * @param hAfter Handle to the item after which to insert, or NULL
+ * @param pszText Text to display in the tree item
+ * @return Handle to the newly inserted tree item
+ */
 HTREEITEM TreeViewInsertRootText(HWND hWnd, UINT nID, HTREEITEM hParent, HTREEITEM hAfter, TCHAR* pszText)
 {
 	TVINSERTSTRUCT tvInsert;
@@ -550,6 +816,13 @@ HTREEITEM TreeViewInsertRootText(HWND hWnd, UINT nID, HTREEITEM hParent, HTREEIT
 	return (HTREEITEM)SendMessage(hTree, TVM_INSERTITEM, 0, (LPARAM)&tvInsert);
 };
 
+/**
+ * @brief Find a child item in a TreeView by text
+ * @param hTreeView Handle to the TreeView control
+ * @param hRoot Handle to the root item to search from
+ * @param szBuf Text to search for
+ * @return Handle to the found tree item, or NULL if not found
+ */
 HTREEITEM TreeViewFindChild(HWND hTreeView, HTREEITEM hRoot,
 	const TCHAR* szBuf)
 {
@@ -583,6 +856,12 @@ HTREEITEM TreeViewFindChild(HWND hTreeView, HTREEITEM hRoot,
 	return 0;
 };
 
+/**
+ * @brief Check if a notification is a TreeView click event
+ * @param nID Control ID to check
+ * @param pnmh Pointer to the notification message header
+ * @return NM_CLICK for left click, NM_RCLICK for right click, 0 otherwise
+ */
 UINT IsTreeViewClkEvent(const UINT nID, NMHDR* pnmh)
 {
 	if (pnmh->idFrom == nID)
@@ -594,21 +873,39 @@ UINT IsTreeViewClkEvent(const UINT nID, NMHDR* pnmh)
 	};
 	return 0;
 };
-//
+
+/**
+ * @brief Check if a notification is a TreeView selection changed event
+ * @param nID Control ID to check
+ * @param pnmh Pointer to the notification message header
+ * @return TVN_SELCHANGED if selection changed, 0 otherwise
+ */
 UINT IsTreeViewSelectChanged(const UINT nID, NMHDR* pnmh)
 {
 	if (pnmh->code == TVN_SELCHANGED && pnmh->idFrom == nID)
 		return TVN_SELCHANGED;
 	return 0;
 };
-//
+
+/**
+ * @brief Expand or collapse a TreeView item
+ * @param hTree Handle to the TreeView control
+ * @param hTreeItem Handle to the tree item
+ * @param bExpand TRUE to expand, FALSE to collapse
+ */
 void TreeViewExpand(HWND hTree, HTREEITEM hTreeItem, const BOOL bExpand)
 {
 	UINT flags = (bExpand) ? TVE_EXPAND : TVE_COLLAPSE;
 	//
 	SendMessage(hTree, TVM_EXPAND, (WPARAM)flags, (LPARAM)hTreeItem);
 };
-//
+
+/**
+ * @brief Get the text of the selected TreeView item
+ * @param hTree Handle to the TreeView control
+ * @param pnmh Pointer to the notification message header
+ * @param pItem Pointer to TVITEM structure to receive the item information
+ */
 void TreeViewGetSelectText(HWND hTree, NMHDR* pnmh, TVITEM* pItem)
 {
 	NMTREEVIEW* pnmView = (NMTREEVIEW*)pnmh;
@@ -627,6 +924,13 @@ void TreeViewGetSelectText(HWND hTree, NMHDR* pnmh, TVITEM* pItem)
 	} while (1);
 };
 
+/**
+ * @brief Enumerate all WDM (Windows Driver Model) drivers and populate the device tree
+ * @param nIdTree Control ID of the TreeView
+ * @param nIdBmp Bitmap resource ID for the root icon
+ * @param hDlg Handle to the parent dialog
+ * @return 1 on success, 0 on failure
+ */
 char EnumWDMDriver(const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 {
 	HDEVINFO        hDevInfo = 0L;
@@ -752,6 +1056,13 @@ char EnumWDMDriver(const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 	return 1;
 };
 
+/**
+ * @brief Get and display memory resource information for a device
+ * @param pMemDes Pointer to memory resource descriptor
+ * @param ulSize Size of the resource data
+ * @param nID Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
@@ -782,6 +1093,13 @@ void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWN
 	};
 };
 
+/**
+ * @brief Get and display I/O port resource information for a device
+ * @param pIODes Pointer to I/O resource descriptor
+ * @param ulSize Size of the resource data
+ * @param nID Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
@@ -812,6 +1130,13 @@ void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg
 	};
 };
 
+/**
+ * @brief Get and display DMA (Direct Memory Access) resource information for a device
+ * @param pDMADes Pointer to DMA resource descriptor
+ * @param ulSize Size of the resource data
+ * @param nID Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
@@ -841,6 +1166,13 @@ void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND h
 	};
 };
 
+/**
+ * @brief Get and display IRQ (Interrupt Request) resource information for a device
+ * @param pIRQDes Pointer to IRQ resource descriptor
+ * @param ulSize Size of the resource data
+ * @param nID Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND hDlg)
 {
 	TCHAR szBuf[128] = { 0 };
@@ -870,6 +1202,14 @@ void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND h
 	};
 };
 
+/**
+ * @brief Find and display specific hardware resource types for a device
+ * @param DevInst Device instance handle
+ * @param dwResType Resource type (Memory, I/O, DMA, or IRQ)
+ * @param wOrder Device order (unused)
+ * @param nID Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void FindSpecResource(const DEVINST DevInst, const DWORD dwResType,
 	const DWORD /*wOrder*/, const UINT nID, HWND hDlg)
 {
@@ -977,6 +1317,13 @@ void FindSpecResource(const DEVINST DevInst, const DWORD dwResType,
 	CM_Free_Res_Des_Handle(nextLogConf);
 };
 
+/**
+ * @brief Get and display comprehensive device information
+ * @param guid Device class GUID
+ * @param wOrder Device order index
+ * @param nIDList1 Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void GetOtherInfo(GUID guid, const DWORD wOrder, const UINT nIDList1, HWND hDlg)
 {
 	HDEVINFO         hDevInfo = 0L;
@@ -1066,6 +1413,13 @@ void GetOtherInfo(GUID guid, const DWORD wOrder, const UINT nIDList1, HWND hDlg)
 	};
 };
 
+/**
+ * @brief Get device interface information and path
+ * @param hDevInfo Device information set handle
+ * @param spDevInfoData Device information data structure
+ * @param szPath Output buffer for the device path
+ * @param hDlg Handle to the parent dialog for error messages
+ */
 void GetDeviceInterfaceInfo(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, TCHAR* szPath, HWND hDlg)
 {
 	SP_DEVICE_INTERFACE_DATA spDevInterfaceData = { 0 };
@@ -1124,6 +1478,12 @@ void GetDeviceInterfaceInfo(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, TC
 	};
 };
 
+/**
+ * @brief Display device property information in a ListView
+ * @param hListView Handle to the ListView control
+ * @param szItemName Property name to display (can be NULL)
+ * @param szValue Property value to display (can be NULL)
+ */
 void ShowDevPropertyInfo(HWND hListView, const TCHAR* szItemName, const TCHAR* szValue)
 {
 	DWORD  wCount = ListViewGetItemCount(hListView);
@@ -1157,6 +1517,11 @@ void ShowDevPropertyInfo(HWND hListView, const TCHAR* szItemName, const TCHAR* s
 	};
 };
 
+/**
+ * @brief Get and display driver name and service information from registry
+ * @param hListView Handle to the ListView control to display results
+ * @param szServiceName Name of the service to query
+ */
 void GetDriverName(HWND hListView, const TCHAR* szServiceName)
 {
 	HKEY  hKey = 0L;
@@ -1240,6 +1605,13 @@ void GetDriverName(HWND hListView, const TCHAR* szServiceName)
 	RegCloseKey(hKey);
 };
 
+/**
+ * @brief Get comprehensive device properties and capabilities
+ * @param hDevInfo Device information set handle
+ * @param spDevInfoData Pointer to device information data structure
+ * @param nIDList1 Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ */
 void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA* spDevInfoData, const UINT nIDList1, HWND hDlg)
 {
 	HWND  hListView = GetDlgItem(hDlg, nIDList1);
@@ -1570,22 +1942,48 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA* spDevInfoData, const
 	};
 };
 
+/**
+ * @brief Enumerate all devices and populate the tree and list views
+ * 
+ * This method initializes the device enumeration process, clearing existing
+ * data and rebuilding the complete device tree with all hardware information.
+ */
 void CEnumDevicesDlg::EnumDevices()
 {
+	// Show wait cursor during enumeration
 	CWaitCursor pWaitCursor;
+
+	// Disable redrawing for better performance during updates
 	m_ctrlDevices.SetRedraw(FALSE);
 	m_ctrlDetails.SetRedraw(FALSE);
+
+	// Initialize data structures for device tracking
 	InitialDeviceList(GetSafeHwnd());
 	InitialDeviceOrder(GetSafeHwnd());
+
+	// Clear existing tree view nodes
 	TreeViewRemoveAllNodes(GetSafeHwnd(), IDC_DEVICES);
+
+	// Load device class images
 	InitialImageData();
+
+	// Enumerate all WDM drivers and populate the tree
 	EnumWDMDriver(IDC_DEVICES, IDB_COMPUTER, GetSafeHwnd());
+
+	// Re-enable redrawing and update the display
 	m_ctrlDevices.SetRedraw(TRUE);
 	m_ctrlDetails.SetRedraw(TRUE);
 	m_ctrlDevices.UpdateWindow();
 	m_ctrlDetails.UpdateWindow();
 }
 
+/**
+ * @brief Find a device by name and display its detailed information
+ * @param szName Device name to search for
+ * @param nIDList1 Control ID of the ListView to display results
+ * @param hDlg Handle to the parent dialog
+ * @return 1 if device found and displayed, 0 if not found
+ */
 char FindDeviceName(const TCHAR* szName, const UINT nIDList1, HWND hDlg)
 {
 	DEVICE_LIST* pList = _pHead->pNext;
@@ -1603,6 +2001,11 @@ char FindDeviceName(const TCHAR* szName, const UINT nIDList1, HWND hDlg)
 	return 0;
 };
 
+/**
+ * @brief Handle TreeView selection change event to display device details
+ * @param pNMHDR Pointer to notification message header
+ * @param pResult Pointer to result value
+ */
 void CEnumDevicesDlg::OnSelchangedDevices(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);

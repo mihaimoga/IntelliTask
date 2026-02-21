@@ -291,26 +291,41 @@ IntelliTask. If not, see <http://www.opensource.org/licenses/gpl-3.0.html>*/
 #define DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09 0x0000002D
 #endif //#ifndef DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09
 
-#pragma warning(disable: 26485)
-#pragma warning(disable: 26493)
-#pragma warning(disable: 26477)
+// Disable specific code analysis warnings
+#pragma warning(disable: 26485)  // Array to pointer decay
+#pragma warning(disable: 26493)  // Don't use C-style casts
+#pragma warning(disable: 26477)  // Use 'nullptr' rather than 0 or NULL
 
-// CEnumProgramsDlg dialog
+/**
+ * @brief Implementation of the Enumerate Programs dialog
+ */
 
 IMPLEMENT_DYNAMIC(CEnumProgramsDlg, CDialogEx)
 
+/**
+ * @brief Constructor for the Enumerate Programs dialog
+ * @param pParent Pointer to the parent window (default: nullptr)
+ */
 CEnumProgramsDlg::CEnumProgramsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ENUMPROGRAMS_DIALOG, pParent)
 {
 }
 
+/**
+ * @brief Destructor for the Enumerate Programs dialog
+ */
 CEnumProgramsDlg::~CEnumProgramsDlg()
 {
 }
 
+/**
+ * @brief Exchange data between dialog controls and member variables
+ * @param pDX Pointer to the CDataExchange object
+ */
 void CEnumProgramsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	// Map the programs list control to member variable
 	DDX_Control(pDX, IDC_PROGRAMS, m_ctrlPrograms);
 }
 
@@ -322,18 +337,27 @@ END_MESSAGE_MAP()
 
 // CEnumProgramsDlg message handlers
 
+/**
+ * @brief Initialize the dialog and populate the installed programs list
+ * @return TRUE unless focus is set to a control
+ */
 BOOL CEnumProgramsDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	// Populate the list of installed programs
 	OnClickedRefresh();
 
+	// Set up window resizing behavior for controls
 	VERIFY(m_pWindowResizer.Hook(this));
+	// Programs list resizes with the window
 	VERIFY(m_pWindowResizer.SetAnchor(IDC_PROGRAMS, ANCHOR_LEFT | ANCHOR_RIGHT | ANCHOR_TOP | ANCHOR_BOTTOM));
+	// Buttons stay anchored at the bottom
 	VERIFY(m_pWindowResizer.SetAnchor(IDC_OS_VERSION, ANCHOR_LEFT | ANCHOR_BOTTOM));
 	VERIFY(m_pWindowResizer.SetAnchor(IDC_REFRESH, ANCHOR_LEFT | ANCHOR_BOTTOM));
 	VERIFY(m_pWindowResizer.SetAnchor(IDCANCEL, ANCHOR_RIGHT | ANCHOR_BOTTOM));
 
+	// Restore previous window size if available
 	const int nWidth = theApp.GetInt(_T("Width"), -1);
 	const int nHeight = theApp.GetInt(_T("Height"), -1);
 	if ((-1 != nWidth) && (-1 != nHeight))
@@ -348,10 +372,14 @@ BOOL CEnumProgramsDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
+/**
+ * @brief Save window size before dialog destruction
+ */
 void CEnumProgramsDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
+	// Save current window dimensions for next time
 	RECT pWndRect;
 	GetWindowRect(&pWndRect);
 	const int nWidth = pWndRect.right - pWndRect.left;
@@ -360,17 +388,30 @@ void CEnumProgramsDlg::OnDestroy()
 	theApp.WriteInt(_T("Height"), nHeight);
 }
 
+/**
+ * @brief Sort the string array using bubble sort algorithm
+ * 
+ * Repeatedly compares and swaps adjacent elements until the array is sorted.
+ */
 void CSortStringArray::Sort()
 {
 	BOOL bNotDone = TRUE;
 
+	// Continue sorting until no more swaps are needed
 	while (bNotDone)
 	{
 		bNotDone = FALSE;
+		// Compare each adjacent pair of elements
 		for (int pos = 0; pos < GetUpperBound(); pos++)
 			bNotDone |= CompareAndSwap(pos);
 	}
 }
+
+/**
+ * @brief Compare and swap two adjacent elements if they are out of order
+ * @param pos Index of the first element to compare
+ * @return TRUE if elements were swapped, FALSE otherwise
+ */
 BOOL CSortStringArray::CompareAndSwap(int pos)
 {
 	CString temp;
@@ -388,18 +429,30 @@ BOOL CSortStringArray::CompareAndSwap(int pos)
 	return FALSE;
 }
 
+/**
+ * @brief Refresh the list of installed programs by reading from Windows Registry
+ * 
+ * Enumerates the Windows Registry key HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
+ * and retrieves the DisplayName for each installed application.
+ */
 void CEnumProgramsDlg::OnClickedRefresh()
 {
+	// Display wait cursor during lengthy enumeration
 	CWaitCursor pWaitCursor;
+
+	// Disable redrawing for better performance
 	m_ctrlPrograms.SetRedraw(FALSE);
+
+	// Clear existing data
 	m_arrPrograms.RemoveAll();
 	m_ctrlPrograms.DeleteAllItems();
 
 	// Build a list of installed applications by enumerating
-	//	HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
-	//	and fetching "DisplayName" entry
+	// HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
+	// and fetching "DisplayName" entry for each subkey
 
 	HKEY hKey;
+	// Open the main Uninstall registry key
 	if (::RegOpenKeyEx(HKEY_LOCAL_MACHINE, IS_KEY, 0, KEY_READ, &hKey) != ERROR_SUCCESS)
 		return;
 
@@ -408,17 +461,19 @@ void CEnumProgramsDlg::OnClickedRefresh()
 	DWORD cbName = IS_KEY_LEN;
 	TCHAR szSubKeyName[IS_KEY_LEN];
 
+	// Enumerate all subkeys (each represents an installed application)
 	while ((lRet = ::RegEnumKeyEx(hKey, dwIndex, szSubKeyName, &cbName, NULL,
 		NULL, NULL, NULL)) != ERROR_NO_MORE_ITEMS)
 	{
-		// Do we have a key to open?
+		// Check if enumeration was successful
 		if (lRet == ERROR_SUCCESS)
 		{
-			// Open the key and get the value
+			// Open the application's registry key
 			HKEY hItem;
 			if (::RegOpenKeyEx(hKey, szSubKeyName, 0, KEY_READ, &hItem) != ERROR_SUCCESS)
 				continue;
-			// Opened - look for "DisplayName"
+
+			// Look for the "DisplayName" value which contains the program name
 			TCHAR szDisplayName[IS_KEY_LEN];
 			DWORD dwSize = sizeof(szDisplayName);
 			DWORD dwType;
@@ -426,29 +481,45 @@ void CEnumProgramsDlg::OnClickedRefresh()
 			if (::RegQueryValueEx(hItem, IS_DISPLAY, NULL, &dwType,
 				(LPBYTE)&szDisplayName, &dwSize) == ERROR_SUCCESS)
 			{
-				// Add to the main array
+				// Add the program name to our array
 				m_arrPrograms.Add(szDisplayName);
 			}
+			// Close the application's registry key
 			::RegCloseKey(hItem);
 		}
+		// Move to next subkey
 		dwIndex++;
 		cbName = IS_KEY_LEN;
 	}
+	// Close the main Uninstall registry key
 	::RegCloseKey(hKey);
 
+	// Sort the programs alphabetically
 	m_arrPrograms.Sort();
 
+	// Populate the list control with sorted program names
 	for (int nIndex = 0; nIndex <= m_arrPrograms.GetUpperBound(); nIndex++)
 		m_ctrlPrograms.InsertItem(m_ctrlPrograms.GetItemCount(), m_arrPrograms[nIndex], 0);
 
+	// Re-enable redrawing and update the display
 	m_ctrlPrograms.SetRedraw(TRUE);
 	m_ctrlPrograms.UpdateWindow();
 }
 
+/**
+ * @brief Display comprehensive operating system version information
+ * 
+ * Uses the COSVersion library to detect and display detailed information about
+ * the current Windows version, including edition, processor type, service pack,
+ * and various system characteristics.
+ */
 void CEnumProgramsDlg::OnBnClickedVersion()
 {
+	// Initialize OS version information structure
 	COSVersion::OS_VERSION_INFO osvi;
 	memset(&osvi, 0, sizeof(osvi));
+
+	// Allocate buffers for building the version string
 #ifdef _WIN32
 	TCHAR sText[2048]; //NOLINT(modernize-avoid-c-arrays)
 	sText[0] = _T('\0');
@@ -459,10 +530,13 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 	char sBuf[100];
 #endif //#ifdef _WIN32
 
+	// Create OS version detection object and retrieve version information
 	COSVersion os;
 	if (os.GetVersion(&osvi))
 	{
 #ifndef UNDER_CE
+		// === EMULATED OS DETECTION ===
+		// This section detects the OS layer that the application is running under
 		_stprintf(sText, _T("Emulated OS: "));
 
 		switch (osvi.EmulatedPlatform)
@@ -944,6 +1018,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		}
 
 #ifndef UNDER_CE
+		// === EMULATED PROCESSOR TYPE ===
+		// Detect the processor architecture the application is compiled for
 		switch (osvi.EmulatedProcessorType)
 		{
 			case COSVersion::X86_PROCESSOR:
@@ -1029,6 +1105,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			}
 		}
 #endif //#ifndef UNDER_CE
+
+		// === FORMAT VERSION NUMBER ===
+		// Build version string (major.minor.build)
 		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwEmulatedMajorVersion));
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.dwEmulatedMinorVersion % 10)
@@ -1046,6 +1125,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwEmulatedBuildNumber));
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
+
+		// === SERVICE PACK INFORMATION ===
+		// Add service pack version if available
 		if (osvi.wEmulatedServicePackMajor)
 		{
 			if (osvi.wEmulatedServicePackMinor)
@@ -1072,8 +1154,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		_tcscat(sText, _T("\n")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 #endif //#ifndef UNDER_CE
 
-		//CE does not really have a concept of an emulated OS so
-		//lets not bother displaying any info on this on CE
+		// === UNDERLYING OS DETECTION ===
+		// CE does not really have a concept of an emulated OS so
+		// lets not bother displaying any info on this on CE
 		if (osvi.UnderlyingPlatform == COSVersion::WindowsCE)
 			_tcscpy(sText, _T("OS: "));
 		else
@@ -1558,6 +1641,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 		}
 
 #ifndef UNDER_CE
+		// === UNDERLYING PROCESSOR TYPE ===
+		// Detect the actual processor architecture of the physical hardware
 		switch (osvi.UnderlyingProcessorType)
 		{
 			case COSVersion::X86_PROCESSOR:
@@ -1643,6 +1728,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			}
 		}
 #endif //#ifndef UNDER_CE
+
+		// === FORMAT UNDERLYING VERSION NUMBER ===
 		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion));
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.dwUnderlyingMinorVersion % 10)
@@ -1690,6 +1777,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			if (osvi.wUnderlyingServicePackMinor)
 				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor));
 		}
+
+		// === UAP (UNIVERSAL WINDOWS PLATFORM) INFORMATION ===
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 		if (osvi.ullUAPInfo)
 		{
@@ -1697,6 +1786,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
+
+		// === DEVICE FAMILY INFORMATION ===
+		// Identify the device family (Desktop, Mobile, Xbox, IoT, etc.)
 		if (osvi.ulDeviceFamily)
 		{
 			_stprintf(sBuf, _T(", Device Family:0x%08X"), osvi.ulDeviceFamily); //NOLINT(clang-diagnostic-format)
@@ -1794,6 +1886,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				}
 			}
 		}
+
+		// === DEVICE FORM FACTOR ===
+		// Identify the physical form of the device (Phone, Tablet, Desktop, etc.)
 		if (osvi.ulDeviceForm)
 		{
 			_stprintf(sBuf, _T(", Device Form:0x%08X"), osvi.ulDeviceForm); //NOLINT(clang-diagnostic-format)
@@ -2031,6 +2126,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				}
 			}
 		}
+
+		// === PRODUCT TYPE AND EDITION FLAGS ===
+		// Display various Windows edition and configuration flags
 		if (osvi.dwProductType)
 		{
 			_stprintf(sBuf, _T(", ProductType:0x%08X"), osvi.dwProductType); //NOLINT(clang-diagnostic-format)
@@ -2232,6 +2330,9 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, _T(", (Hyper-V not included)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.bSemiAnnual)
 			_tcscat(sText, _T(", (Semi-Annual Channel)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
+
+		// === BUILD LAB INFORMATION ===
+		// Display detailed build information if available
 		_tcscat(sText, _T("\n")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (_tcslen(osvi.szBuildLab))
 		{
@@ -2258,6 +2359,8 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 	else
 		_stprintf(sText, _T("Failed in call to GetOSVersion\n"));
 
+	// === DISPLAY RESULTS ===
+	// Show the complete OS information in a message box
 #ifdef _WINDOWS
 	::MessageBox(NULL, sText, _T("Operating System details"), MB_OK); //NOLINT(modernize-use-nullptr)
 #elif _WIN32_WCE
