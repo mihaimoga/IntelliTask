@@ -46,7 +46,7 @@ As noted in the [Contributing Rules](https://github.com/mihaimoga/IntelliTask/bl
 
 This open source project uses the following libraries:
 
-- [genUp4win](https://github.com/mihaimoga/genUp4win)
+- Stefan-Mihai MOGA's [genUp4win](https://github.com/mihaimoga/genUp4win)
 - PJ Naughter's [CHLinkCtrl](https://www.naughter.com/hlinkctrl.html)
 - PJ Naughter's [CInstanceChecker](https://www.naughter.com/sinstance.html)
 - PJ Naughter's [CVersionInfo](https://www.naughter.com/versioninfo.html)
