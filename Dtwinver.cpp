@@ -95,7 +95,7 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
                           15. Now correctly reports on Terminal Services being in Remote Admin Mode on OS which do not
                           support calling GetVersionEx using an OSVERSIONINFOEX structure i.e any NT 4 install prior to SP6.
                           16. 16 bit Windows code path now reports as much NT information as the Win32 code path 
-                          17. Fixed a bug in COSVersion::GetInfoBySpawingWriteVer which was failing if it encountered 
+                          17. Fixed a bug in COSVersion::GetInfoBySpawningWriteVer which was failing if it encountered 
                           an empty CSD string. This was spotted on Windows .NET Server which since it is in beta still
                           (as of October 2002) does not have any service pack!.
          PJN / 10-01-2003 1. Update to support MS deciding to change the name of their Whistler Server product. The product 
@@ -204,10 +204,10 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
                           4. Reworked the logic in all the Windows 2008 methods to use IsWindowsVistaOrWindowsServer2008 instead of 
                           IsWindowsServer2008. Thanks to Matt Fox for reporting this issue.
                           5. Added comprehensive support for Windows 2008 R2
-                          6. Reworked the GetInfoBySpawingWriteVer method to work correctly on OSes which use UAC. The code now uses
+                          6. Reworked the GetInfoBySpawningWriteVer method to work correctly on OSes which use UAC. The code now uses
                           _tempnam which places the temporary file in the "TMP" directory.
-                          7. Fixed a bug in GetInfoBySpawingWriteVer where it incorrectly parsed the dwSuiteMask values.
-                          8. Extended WriteVer and GetInfoBySpawingWriteVer to also update dwSuiteMask2
+                          7. Fixed a bug in GetInfoBySpawningWriteVer where it incorrectly parsed the dwSuiteMask values.
+                          8. Extended WriteVer and GetInfoBySpawningWriteVer to also update dwSuiteMask2
                           9. Added support for the following Product types: PRODUCT_ENTERPRISE_E, PRODUCT_HOME_BASIC_E, 
                           PRODUCT_HOME_PREMIUM_E, PRODUCT_PROFESSIONAL, PRODUCT_PROFESSIONAL_E, PRODUCT_PROFESSIONAL_N,
                           PRODUCT_SERVER_FOR_SMALLBUSINESS, PRODUCT_SERVER_FOR_SMALLBUSINESS_V, PRODUCT_SERVER_FOUNDATION,
@@ -529,6 +529,8 @@ History: PJN / 24-02-1997 A number of updates including support for NT 3.1,
                           2. Updated the code to support detecting ReactOS version details.
          PJN / 28-01-2026 1. Provided a new IsWindows11Version26H2 method.
                           2. Updated copyright details.
+         PJN / 20-06-2026 1. Updated the logic in COSVersion::IsWindows11Version26H1.
+                          2. Updated the logic in COSVersion::IsWindows11ActiveDevelopmentBranch.
 
 Copyright (c) 1997 - 2026 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
@@ -548,7 +550,6 @@ to maintain a single distribution point for the source code.
 
 #include "stdafx.h"
 #include "Dtwinver.h"
-
 
 ///////////////////////////////// Macros / Defines ////////////////////////////
 
@@ -1699,7 +1700,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetProcessorType(_Inout_ LPOS_VERSIO
 	{
 		bSuccess = TRUE;
 
-		lpfnGetNativeSystemInfo pGetNativeSystemInfo = (lpfnGetNativeSystemInfo)GetProcAddress(hKernel32, "GetNativeSystemInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+		lpfnGetNativeSystemInfo pGetNativeSystemInfo = (lpfnGetNativeSystemInfo)GetProcAddress(hKernel32, "GetNativeSystemInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 		if (pGetNativeSystemInfo)
 		{
 			pGetNativeSystemInfo(&UnderlyingSI);
@@ -1979,7 +1980,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersion(_Inout_ LPOS_VERSION_INFO
 
 		//Call to the helper method to do the heavy lifting (Note that the PlatformId can only be VER_PLATFORM_WIN32_NT because the check for GetVersionEx 
 		//above can only fail on early versions of Windows NT)
-		_GetVersion((DWORD)(LOBYTE(LOWORD(dwVersion))), (DWORD)(HIBYTE(LOWORD(dwVersion))), dwBuildNumber, _T(""), 0, 0, VER_PLATFORM_WIN32_NT, FALSE, lpVersionInformation);
+		_GetVersion((DWORD)(LOBYTE(LOWORD(dwVersion))), (DWORD)(HIBYTE(LOWORD(dwVersion))), dwBuildNumber, _T(""), 0, 0, VER_PLATFORM_WIN32_NT, FALSE, lpVersionInformation); //NOLINT(modernize-avoid-c-style-cast)
 
 		//Get the Product Suites installed
 		GetProductSuiteDetailsFromRegistry(lpVersionInformation);
@@ -2129,7 +2130,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersion(_Inout_ LPOS_VERSION_INFO
 	lpVersionInformation->dwEmulatedMinorVersion = (DWORD)DosMinor;
 
 	//See can we get the underlying OS info by calling WriteVer
-	if (!GetInfoBySpawingWriteVer(lpVersionInformation))
+	if (!GetInfoBySpawningWriteVer(lpVersionInformation))
 	{
 		//We can detect if NT is running as it reports DOS v5.5
 		if ((lpVersionInformation->dwEmulatedMajorVersion == 5) &&
@@ -2199,7 +2200,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersion(_Inout_ LPOS_VERSION_INFO
 }
 
 #if defined(COSVERSION_DOS)
-BOOL COSVersion::GetInfoBySpawingWriteVer(COSVersion::LPOS_VERSION_INFO lpVersionInformation)
+BOOL COSVersion::GetInfoBySpawningWriteVer(COSVersion::LPOS_VERSION_INFO lpVersionInformation)
 {
 	//What will be the return value from this function (assume the worst)
 	BOOL bSuccess = FALSE;
@@ -2484,7 +2485,7 @@ void COSVersion::GetXPSP1aDetailsFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersio
 
 			DWORD dwType = 0;
 #if !defined(COSVERSION_WIN16)
-			if ((::RegQueryValueEx(hKey, _T("SubVersionNumber"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+			if ((::RegQueryValueEx(hKey, _T("SubVersionNumber"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 			if ((RegQueryValueEx(hKey, _T("SubVersionNumber"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if !defined(COSVERSION_WIN16)
@@ -2520,7 +2521,7 @@ void COSVersion::GetBuildLabDetails(_Inout_ LPOS_VERSION_INFO lpVersionInformati
 
 		DWORD dwType = 0;
 #if !defined(COSVERSION_WIN16)
-		if ((::RegQueryValueEx(hKey, _T("BuildLab"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("BuildLab"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("BuildLab"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if !defined(COSVERSION_WIN16)
@@ -2536,7 +2537,7 @@ void COSVersion::GetBuildLabDetails(_Inout_ LPOS_VERSION_INFO lpVersionInformati
 		dwBufLen = 1024 * sizeof(TCHAR);
 		dwType = 0;
 #if !defined(COSVERSION_WIN16)
-		if ((::RegQueryValueEx(hKey, _T("BuildLabEx"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("BuildLabEx"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("BuildLabEx"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if !defined(COSVERSION_WIN16)
@@ -2553,7 +2554,7 @@ void COSVersion::GetBuildLabDetails(_Inout_ LPOS_VERSION_INFO lpVersionInformati
 		dwBufLen = 1024 * sizeof(TCHAR);
 		dwType = 0;
 #if !defined(COSVERSION_WIN16)
-		if ((::RegQueryValueEx(hKey, _T("ProductName"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("ProductName"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("ProductName"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if !defined(COSVERSION_WIN16)
@@ -2615,7 +2616,7 @@ void COSVersion::GetUBRFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionInformati
 		DWORD dwUBR = 0;
 		DWORD dwBufLen = sizeof(dwUBR);
 #if !defined(COSVERSION_WIN16)
-		if ((::RegQueryValueEx(hKey, _T("UBR"), NULL, &dwType, (LPBYTE)&dwUBR, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("UBR"), NULL, &dwType, (LPBYTE)&dwUBR, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("UBR"), NULL, &dwType, (LPBYTE)&dwUBR, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_DWORD))
 #endif //#if !defined(COSVERSION_WIN16)
@@ -2644,7 +2645,7 @@ void COSVersion::GetSemiAnnualFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionIn
 		DWORD dwBufLen = 1024 * sizeof(TCHAR);
 		DWORD dwType = 0;
 #if !defined(COSVERSION_WIN16)
-		if ((::RegQueryValueEx(hKey, _T("EditionID"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("EditionID"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("EditionID"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if !defined(COSVERSION_WIN16)
@@ -2691,7 +2692,7 @@ COSVersion::OS_TYPE COSVersion::GetNTOSTypeFromRegistry(_In_ HKEY hKeyProductOpt
 	DWORD dwBufLen = 1024 * sizeof(TCHAR);
 	DWORD dwType = 0;
 #if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
-	if ((::RegQueryValueEx(hKeyProductOptions, _T("ProductType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+	if ((::RegQueryValueEx(hKeyProductOptions, _T("ProductType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 	if ((RegQueryValueEx(hKeyProductOptions, _T("ProductType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
@@ -2724,7 +2725,7 @@ void COSVersion::GetNTOSTypeFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersionInfo
 		DWORD dwBufLen = 1024 * sizeof(TCHAR);
 		DWORD dwType = 0;
 #if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
-		if ((::RegQueryValueEx(hKey, _T("ProductType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("ProductType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("ProductType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
@@ -2779,7 +2780,7 @@ void COSVersion::GetBingEditionIDFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersio
 		DWORD dwBufLen = 1024 * sizeof(TCHAR);
 		DWORD dwType = 0;
 #if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
-		if ((::RegQueryValueEx(hKey, _T("EditionID"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("EditionID"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("EditionID"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
@@ -2818,11 +2819,11 @@ void COSVersion::GetProductSuiteDetailsFromRegistry(_Inout_ LPOS_VERSION_INFO lp
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 		{
 			//Allocate buffer.
-			LPTSTR lpszProductSuites = (LPTSTR) new BYTE[dwSize]; //NOLINT(modernize-use-auto)
+			LPTSTR lpszProductSuites = (LPTSTR) new BYTE[dwSize]; //NOLINT(modernize-use-auto, modernize-avoid-c-style-cast)
 
 			//Retrieve array of product suite strings.
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-			if ((::RegQueryValueEx(hKey, _T("ProductSuite"), NULL, &dwType, (LPBYTE)lpszProductSuites, &dwSize) == ERROR_SUCCESS) && (dwType == REG_MULTI_SZ))  //NOLINT(modernize-use-nullptr)
+			if ((::RegQueryValueEx(hKey, _T("ProductSuite"), NULL, &dwType, (LPBYTE)lpszProductSuites, &dwSize) == ERROR_SUCCESS) && (dwType == REG_MULTI_SZ))  //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 			if ((RegQueryValueEx(hKey, _T("ProductSuite"), NULL, &dwType, (LPBYTE)lpszProductSuites, &dwSize) == ERROR_SUCCESS) && (dwType == REG_MULTI_SZ))
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
@@ -2854,7 +2855,7 @@ void COSVersion::GetProductSuiteDetailsFromRegistry(_Inout_ LPOS_VERSION_INFO lp
 						lpVersionInformation->dwSuiteMask |= COSVERSION_SUITE_PERSONAL;
 
 #pragma warning(suppress: 26481)
-					lpszSuite += (lstrlen(lpszSuite) + (size_t)(1));
+					lpszSuite += (lstrlen(lpszSuite) + (size_t)(1)); //NOLINT(modernize-avoid-c-style-cast)
 				}
 			}
 
@@ -2881,7 +2882,7 @@ void COSVersion::GetTerminalServicesRemoteAdminModeDetailsFromRegistry(_Inout_ L
 		DWORD dwType = 0;
 		DWORD dwSize = sizeof(DWORD);
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-		if ((::RegQueryValueEx(hKey, _T("TSAppCompat"), NULL, &dwType, (LPBYTE)&dwTSAppCompat, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("TSAppCompat"), NULL, &dwType, (LPBYTE)&dwTSAppCompat, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("TSAppCompat"), NULL, &dwType, (LPBYTE)&dwTSAppCompat, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD))
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64) 
@@ -2912,7 +2913,7 @@ void COSVersion::GetMediaCenterDetails(_Inout_ LPOS_VERSION_INFO lpVersionInform
 			DWORD dwType = 0;
 			DWORD dwSize = sizeof(DWORD);
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-			if ((::RegQueryValueEx(hKey, _T("Installed"), NULL, &dwType, (LPBYTE)&dwMCE, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr)
+			if ((::RegQueryValueEx(hKey, _T("Installed"), NULL, &dwType, (LPBYTE)&dwMCE, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 			if ((RegQueryValueEx(hKey, _T("Installed"), NULL, &dwType, (LPBYTE)&dwMCE, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD))
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64) 
@@ -2938,7 +2939,7 @@ void COSVersion::GetProductInfo(_Inout_ LPOS_VERSION_INFO lpVersionInformation)
 #if defined(COSVERSION_CE)
 		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, L"GetProductInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, "GetProductInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+		lpfnGetProductInfo pGetProductInfo = (lpfnGetProductInfo)GetProcAddress(hKernel32, "GetProductInfo"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 #endif //#if defined(COSVERSION_CE)
 		if (pGetProductInfo)
 			pGetProductInfo(lpVersionInformation->dwUnderlyingMajorVersion, lpVersionInformation->dwUnderlyingMinorVersion, lpVersionInformation->wUnderlyingServicePackMajor,
@@ -4061,7 +4062,7 @@ void COSVersion::GetTabletPCDetails(_Inout_ LPOS_VERSION_INFO lpVersionInformati
 			DWORD dwType = 0;
 			DWORD dwSize = sizeof(DWORD);
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-			if ((::RegQueryValueEx(hKey, _T("Installed"), NULL, &dwType, (LPBYTE)&dwMCE, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr)
+			if ((::RegQueryValueEx(hKey, _T("Installed"), NULL, &dwType, (LPBYTE)&dwMCE, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 			if ((RegQueryValueEx(hKey, _T("Installed"), NULL, &dwType, (LPBYTE)&dwMCE, &dwSize) == ERROR_SUCCESS) && (dwType == REG_DWORD))
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
@@ -4105,7 +4106,7 @@ void COSVersion::GetNTHALDetailsFromRegistry(_Inout_ LPOS_VERSION_INFO lpVersion
 		DWORD dwBufLen = 1024 * sizeof(TCHAR);
 		DWORD dwType = 0;
 #if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
-		if ((::RegQueryValueEx(hKey, _T("CurrentType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
+		if ((::RegQueryValueEx(hKey, _T("CurrentType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr, modernize-avoid-c-style-cast)
 #else
 		if ((RegQueryValueEx(hKey, _T("CurrentType"), NULL, &dwType, (LPBYTE)sTemp, &dwBufLen) == ERROR_SUCCESS) && (dwType == REG_SZ))
 #endif //#if (defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64))
@@ -4140,7 +4141,7 @@ DWORD COSVersion::GetNTCurrentBuildFromRegistry(_In_ HKEY hKeyCurrentVersion)
 	DWORD dwType = 0;
 	DWORD dwSize = sizeof(byData);
 	if ((::RegQueryValueEx(hKeyCurrentVersion, _T("CurrentBuildNumber"), NULL, &dwType, byData, &dwSize) == ERROR_SUCCESS) && (dwType == REG_SZ)) //NOLINT(modernize-use-nullptr)
-		dwCurrentBuild = _ttoi((TCHAR*)byData);
+		dwCurrentBuild = _ttoi((TCHAR*)byData); //NOLINT(modernize-avoid-c-style-cast)
 
 	return dwCurrentBuild;
 }
@@ -4176,7 +4177,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetNTRTLVersion(_Inout_ LPOS_VERSION
 #if defined(COSVERSION_CE)
 	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, L"RtlGetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, "RtlGetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+	lpfnRtlGetVersion lpRtlGetVersion = (lpfnRtlGetVersion)GetProcAddress(hNTDLL, "RtlGetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 #endif //#if defined(COSVERSION_CE)
 	if (lpRtlGetVersion == NULL) //NOLINT(modernize-use-nullptr)
 		return FALSE;
@@ -4229,7 +4230,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetDeviceFamilyInfo(_Inout_ LPOS_VER
 #if defined(COSVERSION_CE)
 	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, L"RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, "RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+	lpfnRtlGetDeviceFamilyInfo lpRtlGetDeviceFamilyInfo = (lpfnRtlGetDeviceFamilyInfo)GetProcAddress(hNTDLL, "RtlGetDeviceFamilyInfoEnum"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 #endif //#if defined(COSVERSION_CE)
 	if (lpRtlGetDeviceFamilyInfo == NULL) //NOLINT(modernize-use-nullptr)
 		return FALSE;
@@ -4239,10 +4240,10 @@ _Success_(return != FALSE) BOOL COSVersion::GetDeviceFamilyInfo(_Inout_ LPOS_VER
 
 	//Patch up the underlying version info details from ullUAPInfo. This allows us to return true version information even if the process in 
 	//which the DtWinVer code is running with OS Version compatibility mode shims applied.
-	lpVersionInformation->dwUnderlyingMajorVersion = (DWORD)((lpVersionInformation->ullUAPInfo & 0xFFFF000000000000ui64) >> 48);
-	lpVersionInformation->dwUnderlyingMinorVersion = (DWORD)((lpVersionInformation->ullUAPInfo & 0x0000FFFF00000000ui64) >> 32);
-	lpVersionInformation->dwUnderlyingBuildNumber = (DWORD)((lpVersionInformation->ullUAPInfo & 0x00000000FFFF0000ui64) >> 16);
-	lpVersionInformation->dwUBR = (DWORD)(lpVersionInformation->ullUAPInfo & 0x000000000000FFFFui64);
+	lpVersionInformation->dwUnderlyingMajorVersion = (DWORD)((lpVersionInformation->ullUAPInfo & 0xFFFF000000000000ui64) >> 48); //NOLINT(modernize-avoid-c-style-cast)
+	lpVersionInformation->dwUnderlyingMinorVersion = (DWORD)((lpVersionInformation->ullUAPInfo & 0x0000FFFF00000000ui64) >> 32); //NOLINT(modernize-avoid-c-style-cast)
+	lpVersionInformation->dwUnderlyingBuildNumber = (DWORD)((lpVersionInformation->ullUAPInfo & 0x00000000FFFF0000ui64) >> 16); //NOLINT(modernize-avoid-c-style-cast)
+	lpVersionInformation->dwUBR = (DWORD)(lpVersionInformation->ullUAPInfo & 0x000000000000FFFFui64); //NOLINT(modernize-avoid-c-style-cast)
 
 	return TRUE;
 }
@@ -5016,17 +5017,17 @@ _Success_(return != FALSE) BOOL COSVersion::IsWindows11Version25H2(_In_ LPCOS_VE
 _Success_(return != FALSE) BOOL COSVersion::IsWindows11ActiveDevelopmentBranch(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
 {
 	if (bCheckUnderlying)
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26200);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber > 26300) && !IsWindows11Version26H1(lpVersionInformation, bCheckUnderlying);
 	else
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26200);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber > 26300) && !IsWindows11Version26H1(lpVersionInformation, bCheckUnderlying);
 }
 
 _Success_(return != FALSE) BOOL COSVersion::IsWindows11Version26H1(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
 {
 	if (bCheckUnderlying)
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber >= 28000);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwUnderlyingBuildNumber == 28000);
 	else
-		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber >= 28000);
+		return IsWindows11(lpVersionInformation, bCheckUnderlying) && (lpVersionInformation->dwEmulatedBuildNumber == 28000);
 }
 
 _Success_(return != FALSE) BOOL COSVersion::IsWindows11Version26H2(_In_ LPCOS_VERSION_INFO lpVersionInformation, _In_ BOOL bCheckUnderlying)
@@ -5080,10 +5081,10 @@ WORD COSVersion::GetNTServicePackFromCSDString(_In_z_ LPCTSTR pszCSDVersion)
 		//Parse out the CSDVersion string
 		int i = 0;
 #pragma warning(suppress: 26481)
-		while (pszCSDVersion[i] != _T('\0') && !_istdigit((int)pszCSDVersion[i]))
+		while (pszCSDVersion[i] != _T('\0') && !_istdigit((int)pszCSDVersion[i])) //NOLINT(modernize-avoid-c-style-cast)
 			i++;
 #pragma warning(suppress: 26481)
-		wServicePack = (WORD)(_ttoi(&pszCSDVersion[i]));
+		wServicePack = (WORD)(_ttoi(&pszCSDVersion[i])); //NOLINT(modernize-avoid-c-style-cast)
 	}
 
 	return wServicePack;
@@ -6144,7 +6145,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersion(_Out_ DWORD & dwVersion)
 #if defined(COSVERSION_CE)
 	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, L"GetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, "GetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+	lpfnGetVersion lpGetVersion = (lpfnGetVersion)GetProcAddress(hKernel32, "GetVersion"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 #endif //#if defined(COSVERSION_CE)
 	if (lpGetVersion == NULL) //NOLINT(modernize-use-nullptr)
 		return FALSE;
@@ -6159,7 +6160,7 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersion(_Out_ DWORD & dwVersion)
 _Success_(return != FALSE) BOOL COSVersion::GetVersionEx(_Inout_ LPOSVERSIONINFO lpVersionInfo)
 {
 	//Delegate to the other version
-	return GetVersionEx((LPOSVERSIONINFOEX)lpVersionInfo);
+	return GetVersionEx((LPOSVERSIONINFOEX)lpVersionInfo);  //NOLINT(modernize-avoid-c-style-cast)
 }
 
 #if defined(COSVERSION_DOS)
@@ -6185,14 +6186,14 @@ _Success_(return != FALSE) BOOL COSVersion::GetVersionEx(_Inout_ LPOSVERSIONINFO
 #if defined(COSVERSION_CE)
 	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, L"GetVersionExW"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
 #else
-	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExW"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExW"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 #endif //#if defined(COSVERSION_CE)
 #else
-	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExA"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch)
+	lpfnGetVersionEx lpGetVersionEx = (lpfnGetVersionEx)GetProcAddress(hKernel32, "GetVersionExA"); //NOLINT(modernize-use-auto, clang-diagnostic-cast-function-type-mismatch, modernize-avoid-c-style-cast)
 #endif //#if defined(_UNICODE)
 
 	if (lpGetVersionEx)
-		bSuccess = lpGetVersionEx((LPOSVERSIONINFO)lpVersionInfo);
+		bSuccess = lpGetVersionEx((LPOSVERSIONINFO)lpVersionInfo); //NOLINT(modernize-avoid-c-style-cast)
 #endif //#if defined(COSVERSION_WIN16)
 
 	return bSuccess;

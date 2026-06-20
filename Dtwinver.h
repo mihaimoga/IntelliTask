@@ -752,7 +752,7 @@ protected:
 
 	//Methods
 #if defined(COSVERSION_DOS)
-	BOOL GetInfoBySpawingWriteVer(COSVersion::LPOS_VERSION_INFO lpVersionInformation);
+	BOOL GetInfoBySpawningWriteVer(COSVersion::LPOS_VERSION_INFO lpVersionInformation);
 	void GetWinInfo();
 #else
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)

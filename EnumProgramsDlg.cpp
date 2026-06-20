@@ -308,15 +308,13 @@ IMPLEMENT_DYNAMIC(CEnumProgramsDlg, CDialogEx)
  */
 CEnumProgramsDlg::CEnumProgramsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ENUMPROGRAMS_DIALOG, pParent)
-{
-}
+{}
 
 /**
  * @brief Destructor for the Enumerate Programs dialog
  */
 CEnumProgramsDlg::~CEnumProgramsDlg()
-{
-}
+{}
 
 /**
  * @brief Exchange data between dialog controls and member variables
@@ -390,7 +388,7 @@ void CEnumProgramsDlg::OnDestroy()
 
 /**
  * @brief Sort the string array using bubble sort algorithm
- * 
+ *
  * Repeatedly compares and swaps adjacent elements until the array is sorted.
  */
 void CSortStringArray::Sort()
@@ -431,7 +429,7 @@ BOOL CSortStringArray::CompareAndSwap(int pos)
 
 /**
  * @brief Refresh the list of installed programs by reading from Windows Registry
- * 
+ *
  * Enumerates the Windows Registry key HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
  * and retrieves the DisplayName for each installed application.
  */
@@ -508,7 +506,7 @@ void CEnumProgramsDlg::OnClickedRefresh()
 
 /**
  * @brief Display comprehensive operating system version information
- * 
+ *
  * Uses the COSVersion library to detect and display detailed information about
  * the current Windows version, including edition, processor type, service pack,
  * and various system characteristics.
@@ -518,7 +516,6 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 	// Initialize OS version information structure
 	COSVersion::OS_VERSION_INFO osvi;
 	memset(&osvi, 0, sizeof(osvi));
-
 	// Allocate buffers for building the version string
 #ifdef _WIN32
 	TCHAR sText[2048]; //NOLINT(modernize-avoid-c-arrays)
@@ -1105,27 +1102,23 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			}
 		}
 #endif //#ifndef UNDER_CE
-
-		// === FORMAT VERSION NUMBER ===
-		// Build version string (major.minor.build)
-		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwEmulatedMajorVersion));
+		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwEmulatedMajorVersion)); //NOLINT(modernize-avoid-c-style-cast)
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.dwEmulatedMinorVersion % 10)
 		{
 			if (osvi.dwEmulatedMinorVersion > 9)
-				_stprintf(sBuf, _T("%02d"), (int)(osvi.dwEmulatedMinorVersion));
+				_stprintf(sBuf, _T("%02d"), (int)(osvi.dwEmulatedMinorVersion)); //NOLINT(modernize-avoid-c-style-cast)
 			else
-				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwEmulatedMinorVersion));
+				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwEmulatedMinorVersion)); //NOLINT(modernize-avoid-c-style-cast)
 		}
 		else
 			_stprintf(sBuf, _T("%01u"), osvi.dwEmulatedMinorVersion / 10); //NOLINT(clang-diagnostic-format)
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.dwEmulatedBuildNumber)
 		{
-			_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwEmulatedBuildNumber));
+			_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwEmulatedBuildNumber)); //NOLINT(modernize-avoid-c-style-cast)
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
-
 		// === SERVICE PACK INFORMATION ===
 		// Add service pack version if available
 		if (osvi.wEmulatedServicePackMajor)
@@ -1139,16 +1132,16 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				else if (os.IsWindowsXP(&osvi, FALSE) && (osvi.wEmulatedServicePackMajor == 1) && (osvi.wEmulatedServicePackMinor == 1))
 					_stprintf(sBuf, _T(" Service Pack: 1a"));
 				else
-					_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wEmulatedServicePackMajor), (int)(osvi.wEmulatedServicePackMinor));
+					_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wEmulatedServicePackMajor), (int)(osvi.wEmulatedServicePackMinor)); //NOLINT(modernize-avoid-c-style-cast)
 			}
 			else
-				_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wEmulatedServicePackMajor));
+				_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wEmulatedServicePackMajor)); //NOLINT(modernize-avoid-c-style-cast)
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
 		else
 		{
 			if (osvi.wEmulatedServicePackMinor)
-				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wEmulatedServicePackMinor));
+				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wEmulatedServicePackMinor)); //NOLINT(modernize-avoid-c-style-cast)
 		}
 
 		_tcscat(sText, _T("\n")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
@@ -1728,31 +1721,29 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			}
 		}
 #endif //#ifndef UNDER_CE
-
-		// === FORMAT UNDERLYING VERSION NUMBER ===
-		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion));
+		_stprintf(sBuf, _T(" v%d."), (int)(osvi.dwUnderlyingMajorVersion)); //NOLINT(modernize-avoid-c-style-cast)
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.dwUnderlyingMinorVersion % 10)
 		{
 			if (osvi.dwUnderlyingMinorVersion > 9)
-				_stprintf(sBuf, _T("%02d"), (int)(osvi.dwUnderlyingMinorVersion));
+				_stprintf(sBuf, _T("%02d"), (int)(osvi.dwUnderlyingMinorVersion)); //NOLINT(modernize-avoid-c-style-cast)
 			else
-				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion));
+				_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion)); //NOLINT(modernize-avoid-c-style-cast)
 		}
 		else
-			_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10));
+			_stprintf(sBuf, _T("%01d"), (int)(osvi.dwUnderlyingMinorVersion / 10)); //NOLINT(modernize-avoid-c-style-cast)
 		_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.UnderlyingPlatform == COSVersion::ReactOS)
 		{
-			_stprintf(sBuf, _T(".%d"), (int)(osvi.dwUnderlyingBuildNumber));
+			_stprintf(sBuf, _T(".%d"), (int)(osvi.dwUnderlyingBuildNumber)); //NOLINT(modernize-avoid-c-style-cast)
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
 		if (osvi.dwUnderlyingBuildNumber && (osvi.UnderlyingPlatform != COSVersion::ReactOS))
 		{
 			if (osvi.dwUBR)
-				_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR));
+				_stprintf(sBuf, _T(" Build:%d.%d"), (int)(osvi.dwUnderlyingBuildNumber), (int)(osvi.dwUBR)); //NOLINT(modernize-avoid-c-style-cast)
 			else
-				_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber));
+				_stprintf(sBuf, _T(" Build:%d"), (int)(osvi.dwUnderlyingBuildNumber)); //NOLINT(modernize-avoid-c-style-cast)
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
 		if (osvi.wUnderlyingServicePackMajor)
@@ -1766,27 +1757,25 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				else if (os.IsWindowsXP(&osvi, TRUE) && (osvi.wUnderlyingServicePackMajor == 1) && (osvi.wUnderlyingServicePackMinor == 1))
 					_stprintf(sBuf, _T(" Service Pack: 1a"));
 				else
-					_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wUnderlyingServicePackMajor), (int)(osvi.wUnderlyingServicePackMinor));
+					_stprintf(sBuf, _T(" Service Pack:%d.%d"), (int)(osvi.wUnderlyingServicePackMajor), (int)(osvi.wUnderlyingServicePackMinor)); //NOLINT(modernize-avoid-c-style-cast)
 			}
 			else
-				_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wUnderlyingServicePackMajor));
+				_stprintf(sBuf, _T(" Service Pack:%d"), (int)(osvi.wUnderlyingServicePackMajor)); //NOLINT(modernize-avoid-c-style-cast)
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
 		else
 		{
 			if (osvi.wUnderlyingServicePackMinor)
-				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor));
+				_stprintf(sBuf, _T(" Service Pack:0.%d"), (int)(osvi.wUnderlyingServicePackMinor)); //NOLINT(modernize-avoid-c-style-cast)
 		}
-
 		// === UAP (UNIVERSAL WINDOWS PLATFORM) INFORMATION ===
 #if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
 		if (osvi.ullUAPInfo)
 		{
-			_stprintf(sBuf, _T(", RtlGetDeviceFamilyInfo UAPInfo:%u.%u.%u.%u"), (DWORD)((osvi.ullUAPInfo & 0xFFFF000000000000ui64) >> 48), (DWORD)((osvi.ullUAPInfo & 0x0000FFFF00000000ui64) >> 32), (DWORD)((osvi.ullUAPInfo & 0x00000000FFFF0000ui64) >> 16), (DWORD)(osvi.ullUAPInfo & 0x000000000000FFFFui64)); //NOLINT(clang-diagnostic-format)
+			_stprintf(sBuf, _T(", RtlGetDeviceFamilyInfo UAPInfo:%u.%u.%u.%u"), (DWORD)((osvi.ullUAPInfo & 0xFFFF000000000000ui64) >> 48), (DWORD)((osvi.ullUAPInfo & 0x0000FFFF00000000ui64) >> 32), (DWORD)((osvi.ullUAPInfo & 0x00000000FFFF0000ui64) >> 16), (DWORD)(osvi.ullUAPInfo & 0x000000000000FFFFui64)); //NOLINT(clang-diagnostic-format, modernize-avoid-c-style-cast)
 			_tcscat(sText, sBuf); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		}
 #endif //#if defined(COSVERSION_WIN32) || defined(COSVERSION_WIN64)
-
 		// === DEVICE FAMILY INFORMATION ===
 		// Identify the device family (Desktop, Mobile, Xbox, IoT, etc.)
 		if (osvi.ulDeviceFamily)
@@ -1886,7 +1875,6 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				}
 			}
 		}
-
 		// === DEVICE FORM FACTOR ===
 		// Identify the physical form of the device (Phone, Tablet, Desktop, etc.)
 		if (osvi.ulDeviceForm)
@@ -2126,7 +2114,6 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 				}
 			}
 		}
-
 		// === PRODUCT TYPE AND EDITION FLAGS ===
 		// Display various Windows edition and configuration flags
 		if (osvi.dwProductType)
@@ -2330,7 +2317,6 @@ void CEnumProgramsDlg::OnBnClickedVersion()
 			_tcscat(sText, _T(", (Hyper-V not included)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
 		if (osvi.bSemiAnnual)
 			_tcscat(sText, _T(", (Semi-Annual Channel)")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
-
 		// === BUILD LAB INFORMATION ===
 		// Display detailed build information if available
 		_tcscat(sText, _T("\n")); //NOLINT(clang-analyzer-security.insecureAPI.strcpy)
