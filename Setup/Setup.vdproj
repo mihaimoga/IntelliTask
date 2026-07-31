@@ -851,8 +851,8 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:IntelliTask"
-        "ProductCode" = "8:{B4740319-52ED-4FE3-BAE8-3122DCA08D31}"
-        "PackageCode" = "8:{DE75EEA6-9046-4D7E-AC1A-7961BEEEB08F}"
+        "ProductCode" = "8:{4803A137-0781-44F9-B7FE-36CEEFA8F01A}"
+        "PackageCode" = "8:{DF584734-F03F-4744-8CF6-A0292540BCC6}"
         "UpgradeCode" = "8:{A1D627D3-9FDB-40D4-B332-88CF1E72CD38}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
