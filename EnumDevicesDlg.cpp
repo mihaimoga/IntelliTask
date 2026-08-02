@@ -36,17 +36,15 @@ IMPLEMENT_DYNAMIC(CEnumDevicesDlg, CDialogEx)
  * @brief Constructor for the Enumerate Devices dialog
  * @param pParent Pointer to the parent window (default: nullptr)
  */
-CEnumDevicesDlg::CEnumDevicesDlg(CWnd* pParent /*=nullptr*/)
+	CEnumDevicesDlg::CEnumDevicesDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ENUMDEVICES_DIALOG, pParent)
-{
-}
+{}
 
 /**
  * @brief Destructor for the Enumerate Devices dialog
  */
 CEnumDevicesDlg::~CEnumDevicesDlg()
-{
-}
+{}
 
 /**
  * @brief Exchange data between dialog controls and member variables
@@ -338,7 +336,7 @@ void ListViewInsertItemText(HWND hListView, const int iItem,
  */
 int ListViewGetItemSelect(HWND hListView)
 {
-	return (int)SendMessage(hListView, LVM_GETNEXTITEM, (WPARAM) - 1, MAKELPARAM((UINT)LVNI_SELECTED, 0));
+	return (int)SendMessage(hListView, LVM_GETNEXTITEM, (WPARAM)-1, MAKELPARAM((UINT)LVNI_SELECTED, 0));
 };
 
 /**
@@ -431,9 +429,7 @@ UINT IsListViewClkEvent(const UINT nID, NMHDR* pnmh)
  */
 void ListViewRemoveAllItems(HWND hListView)
 {
-	LRESULT wCnt = SendMessage(hListView, LVM_GETITEMCOUNT, 0, 0);
-	DWORD wLoop;
-	//
+	DWORD wLoop = 0, wCnt = static_cast<DWORD>(SendMessage(hListView, LVM_GETITEMCOUNT, 0, 0));
 	for (wLoop = 0; wLoop < wCnt; wLoop++)
 		SendMessage(hListView, LVM_DELETEITEM, 0, 0);
 	SendMessage(hListView, LVM_DELETEALLITEMS, 0, 0);
@@ -469,9 +465,8 @@ void ListViewRemoveColumn(HWND hDlg, const UINT nID, const int iCol)
 void TreeViewRemoveAllNodes(HWND hDlg, const UINT nIdTree)
 {
 	HWND  hTree = GetDlgItem(hDlg, nIdTree);
-	LRESULT wCnt = SendMessage(hDlg, TVM_GETCOUNT, 0, 0);
-	DWORD wLoop;
-	for (wLoop = 0; wLoop < wCnt; wLoop)
+	DWORD wLoop = 0, wCnt = static_cast<DWORD>(SendMessage(hTree, TVM_GETCOUNT, 0, 0));
+	for (wLoop = 0; wLoop < wCnt; wLoop++)
 		SendMessage(hTree, TVM_DELETEITEM, 0, (LPARAM)TVI_ROOT);
 	SendMessage(hTree, TVM_DELETEITEM, 0, (LPARAM)TVI_ROOT);
 };
@@ -483,7 +478,7 @@ SP_CLASSIMAGELIST_DATA _spImageData = { 0 };
 
 /**
  * @brief Initialize the device class image list
- * 
+ *
  * Destroys any existing class image list and retrieves a new one from the system.
  */
 void InitialImageData()
@@ -554,7 +549,7 @@ char InitialDeviceOrder(HWND hDlg)
 {
 	_pOrderHead = AllocNewDeviceOrderNode(hDlg);
 	return (_pOrderHead) ? 1 : 0;
-};
+}
 
 /**
  * @brief Allocate a new device order node
@@ -573,7 +568,7 @@ DEVICE_ORDER* AllocNewDeviceOrderNode(HWND hDlg)
 	RtlZeroMemory(pNew->szDevName, sizeof(TCHAR) * LINE_LEN);
 	pNew->pNext = 0L;
 	return pNew;
-};
+}
 
 /**
  * @brief Add a new device order node to the list
@@ -616,7 +611,7 @@ DWORD FindDeviceOrder(const TCHAR* szName)
 		pList = pList->pNext;
 	};
 	return wOrder;
-};
+}
 
 /**
  * @brief Free all device order nodes and cleanup the list
@@ -636,7 +631,7 @@ void FreeAllDeviceOrderNode()
 	// Free the dummy head node
 	LocalFree(_pOrderHead);
 	_pOrderHead = 0L;
-};
+}
 
 /**
  * @brief Initialize the device list
@@ -647,7 +642,7 @@ char InitialDeviceList(HWND hDlg)
 {
 	_pHead = AllocNewDeviceNode(hDlg);
 	return (_pHead) ? 1 : 0;
-};
+}
 
 /**
  * @brief Allocate a new device list node
@@ -667,11 +662,11 @@ DEVICE_LIST* AllocNewDeviceNode(HWND hDlg)
 	RtlZeroMemory(pNew->szInstallID, sizeof(char) * LINE_LEN);
 	RtlZeroMemory(pNew->szName, sizeof(char) * MAX_PATH);
 	RtlZeroMemory(pNew->szPath, sizeof(char) * MAX_PATH);
-	pNew->wOrder = (DWORD) - 1;
-	pNew->wIndex = (DWORD) - 1;
+	pNew->wOrder = (DWORD)-1;
+	pNew->wIndex = (DWORD)-1;
 	pNew->pNext = 0L;
 	return pNew;
-};
+}
 
 /**
  * @brief Add a new device node to the device list
@@ -705,7 +700,7 @@ char AddNewDeviceNode(const GUID guid,
 	pAdd->pNext = _pHead->pNext;
 	_pHead->pNext = pAdd;
 	return 1;
-};
+}
 
 /**
  * @brief Free all device nodes and cleanup the device list
@@ -723,7 +718,7 @@ void FreeAllocDeviceNode()
 	};
 	LocalFree(_pHead);
 	_pHead = 0L;
-};
+}
 
 /**
  * @brief Get and display detailed information about a device
@@ -961,7 +956,7 @@ char EnumWDMDriver(const UINT nIdTree, const UINT nIdBmp, HWND hDlg)
 			wIndex,
 			&spDevInfoData))
 		{
-			TCHAR szBuf[MAX_PATH] = { 0 };
+			TCHAR szBuf[2048] = { 0 };
 			int wImageIdx = 0;
 			// DWORD wItem = 0;
 
@@ -1067,8 +1062,7 @@ void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWN
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	DWORD wLoop = 0;
-	DWORD wCnt = ListViewGetItemCount(hListView);
+	DWORD wLoop = 0, wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%08X - "), (unsigned int)pMemDes->MD_Alloc_Base);
 	_stprintf(szBuf + _tcslen(szBuf), _T("%08X"), (unsigned int)pMemDes->MD_Alloc_End);
@@ -1091,7 +1085,7 @@ void GetMemoryResource(MEM_DES* pMemDes, const ULONG ulSize, const UINT nID, HWN
 			};
 		};
 	};
-};
+}
 
 /**
  * @brief Get and display I/O port resource information for a device
@@ -1104,8 +1098,7 @@ void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	DWORD wLoop = 0;
-	DWORD wCnt = ListViewGetItemCount(hListView);
+	DWORD wLoop = 0, wCnt = static_cast<DWORD>(ListViewGetItemCount(hListView));
 
 	_stprintf(szBuf, _T("%04X - "), (unsigned int)pIODes->IOD_Alloc_Base);
 	_stprintf(szBuf + _tcslen(szBuf), _T("%04X"), (unsigned int)pIODes->IOD_Alloc_End);
@@ -1128,7 +1121,7 @@ void GetIOResource(IO_DES* pIODes, const ULONG ulSize, const UINT nID, HWND hDlg
 			};
 		};
 	};
-};
+}
 
 /**
  * @brief Get and display DMA (Direct Memory Access) resource information for a device
@@ -1141,8 +1134,7 @@ void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND h
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	DWORD wLoop = 0;
-	DWORD wCnt = ListViewGetItemCount(hListView);
+	DWORD wLoop = 0, wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%02d"), pDMADes->DD_Alloc_Chan);
 	ListViewInsertItemText(hListView, wCnt, 0, _T("DMA"));
@@ -1164,7 +1156,7 @@ void GetDMAResource(DMA_DES* pDMADes, const ULONG ulSize, const UINT nID, HWND h
 			};
 		};
 	};
-};
+}
 
 /**
  * @brief Get and display IRQ (Interrupt Request) resource information for a device
@@ -1177,8 +1169,7 @@ void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND h
 {
 	TCHAR szBuf[128] = { 0 };
 	HWND  hListView = GetDlgItem(hDlg, nID);
-	DWORD wLoop = 0;
-	DWORD wCnt = ListViewGetItemCount(hListView);
+	DWORD wLoop= 0, wCnt = ListViewGetItemCount(hListView);
 
 	_stprintf(szBuf, _T("%02d"), pIRQDes->IRQD_Alloc_Num);
 	ListViewInsertItemText(hListView, wCnt, 0, _T("IRQ"));
@@ -1200,7 +1191,7 @@ void GetIRQResource(IRQ_DES* pIRQDes, const ULONG ulSize, const UINT nID, HWND h
 			};
 		};
 	};
-};
+}
 
 /**
  * @brief Find and display specific hardware resource types for a device
@@ -1343,75 +1334,47 @@ void GetOtherInfo(GUID guid, const DWORD wOrder, const UINT nIDList1, HWND hDlg)
 		&spDevInfoData))
 	{
 		SP_DRVINFO_DATA        spDrvInfoData = { 0 };
-		SP_DRVINFO_DETAIL_DATA spDrvInfoDetail[2] = {0};
+		SP_DRVINFO_DETAIL_DATA spDrvInfoDetail[2] = { 0 };
 		TCHAR                  HardwareID[256] = { 0 };
 		HWND                   hList = GetDlgItem(hDlg, nIDList1);
 		DWORD                  dwRequireSize;
-		DWORD                  wIdx;
-		
+
 		RtlZeroMemory(&spDrvInfoData, sizeof(spDrvInfoData));
 		// RtlZeroMemory(&spDrvInfoDetail, sizeof(spDrvInfoDetail));
-		GetMoreInformation(hDevInfo, &spDevInfoData, nIDList1, hDlg);
-		/* Show Resource Information
-		for (wIdx = ResType_Mem; wIdx <= ResType_IRQ; wIdx++)
-			FindSpecResource(spDevInfoData.DevInst,
-				wIdx, wOrder, nIDList2, hDlg);*/
-		//
-		if (!SetupDiBuildDriverInfoList(hDevInfo,
+		spDrvInfoDetail[0].cbSize = sizeof(SP_DRVINFO_DETAIL_DATA);
+		dwRequireSize = 0;
+		if (SetupDiGetDriverInfoDetail(hDevInfo,
 			&spDevInfoData,
-			SPDIT_COMPATDRIVER))
-			ShowErrorMsg(hDlg, GetLastError(), _T("SetupDiBuildDriverInfoList"));
-		wIdx = 0;
-		while (1)
+			&spDrvInfoData,
+			&spDrvInfoDetail[0],
+			sizeof(spDrvInfoDetail),
+			&dwRequireSize))
 		{
-			spDrvInfoData.cbSize = sizeof(SP_DRVINFO_DATA);
-			if (SetupDiEnumDriverInfo(hDevInfo,
-				&spDevInfoData,
-				SPDIT_COMPATDRIVER,
-				wIdx++,
-				&spDrvInfoData))
-			{
-				// BYTE szBuf[2048] = { 0 };
-				// RtlZeroMemory(szBuf, sizeof(szBuf));
-				RtlZeroMemory(&spDrvInfoDetail, sizeof(spDrvInfoDetail));
-				spDrvInfoDetail[0].cbSize = sizeof(SP_DRVINFO_DETAIL_DATA);
-				dwRequireSize = 0;
-				if (SetupDiGetDriverInfoDetail(hDevInfo,
-					&spDevInfoData,
-					&spDrvInfoData,
-					&spDrvInfoDetail[0],
-					sizeof(spDrvInfoDetail),
-					&dwRequireSize))
-				{
-					SYSTEMTIME sysTime = {0};
-					TCHAR      szTmp[64] = { 0 };
-					_tcscpy(HardwareID, spDrvInfoDetail[0].HardwareID);
-					ListViewInsertItemText(hList, 1, 1, HardwareID);
-					ListViewInsertItemText(hList, 3, 1, spDrvInfoData.MfgName);
-					ListViewInsertItemText(hList, 4, 1, spDrvInfoData.ProviderName);
-					ListViewInsertItemText(hList, 5, 1, spDrvInfoData.Description);
-					FileTimeToSystemTime(&spDrvInfoData.DriverDate, &sysTime);
-					_stprintf(szTmp, _T("%02d/%02d/%04d"), sysTime.wMonth,
-						sysTime.wDay, sysTime.wYear);
-					ListViewInsertItemText(hList, 7, 1, szTmp);
-					ListViewInsertItemText(hList, 6, 1, spDrvInfoDetail[0].SectionName);
-					ListViewInsertItemText(hList, 8, 1, spDrvInfoDetail[0].InfFileName);
-				}
-				else
-					RtlZeroMemory(HardwareID, sizeof(HardwareID));
-			}
-			else
-			{
-				DWORD dwError = GetLastError();
-				if (dwError != ERROR_NO_MORE_ITEMS)
-					ShowErrorMsg(hDlg, dwError, _T("SetupDiEnumDriverInfo"));
-				break;
-			};
-			SetupDiDestroyDriverInfoList(hDevInfo, &spDevInfoData, SPDIT_COMPATDRIVER);
-		};
-		SetupDiDestroyDeviceInfoList(hDevInfo);
-	};
-};
+			SYSTEMTIME sysTime = {0};
+			TCHAR      szTmp[64] = { 0 };
+			_tcscpy(HardwareID, spDrvInfoDetail[0].HardwareID);
+			ListViewInsertItemText(hList, 1, 1, HardwareID);
+			ListViewInsertItemText(hList, 3, 1, spDrvInfoData.MfgName);
+			ListViewInsertItemText(hList, 4, 1, spDrvInfoData.ProviderName);
+			ListViewInsertItemText(hList, 5, 1, spDrvInfoData.Description);
+			FileTimeToSystemTime(&spDrvInfoData.DriverDate, &sysTime);
+			_stprintf(szTmp, _T("%02d/%02d/%04d"), sysTime.wMonth, sysTime.wDay, sysTime.wYear);
+			ListViewInsertItemText(hList, 7, 1, szTmp);
+			ListViewInsertItemText(hList, 6, 1, spDrvInfoDetail[0].SectionName);
+			ListViewInsertItemText(hList, 8, 1, spDrvInfoDetail[0].InfFileName);
+		}
+		else
+			RtlZeroMemory(HardwareID, sizeof(HardwareID));
+	}
+	else
+	{
+		DWORD dwError = GetLastError();
+		if (dwError != ERROR_NO_MORE_ITEMS)
+			ShowErrorMsg(hDlg, dwError, _T("SetupDiEnumDriverInfo"));
+	}
+	SetupDiDestroyDriverInfoList(hDevInfo, &spDevInfoData, SPDIT_COMPATDRIVER);
+	SetupDiDestroyDeviceInfoList(hDevInfo);
+}
 
 /**
  * @brief Get device interface information and path
@@ -1453,8 +1416,12 @@ void GetDeviceInterfaceInfo(HDEVINFO hDevInfo, SP_DEVINFO_DATA spDevInfoData, TC
 			};
 		};
 		//
-		pspDevInterfaceDetail = (SP_DEVICE_INTERFACE_DETAIL_DATA*)LocalAlloc(LPTR,
-			sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA) * dwRequire);
+		pspDevInterfaceDetail = (PSP_DEVICE_INTERFACE_DETAIL_DATA)LocalAlloc(LPTR, dwRequire);
+		if (pspDevInterfaceDetail == NULL)
+		{
+			// Handle allocation failure
+			return; // or appropriate error handling
+		}
 		pspDevInterfaceDetail->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA);
 		if (!SetupDiGetDeviceInterfaceDetail(hDevInfo,
 			&spDevInterfaceData,
@@ -1769,7 +1736,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA* spDevInfoData, const
 			if (dwAddr & FILE_DEVICE_SERIAL_PORT)
 				ShowDevPropertyInfo(hListView, 0L, _T("DEVICE_SERIAL_PORT"));
 			if (dwAddr & FILE_DEVICE_SCREEN)
-				ShowDevPropertyInfo(hListView, 0L, _T("DEVICE_SCREEN"));
+				ShowDevPropertyInfo(hListView,  0L, _T("DEVICE_SCREEN"));
 			if (dwAddr & FILE_DEVICE_SOUND)
 				ShowDevPropertyInfo(hListView, 0L, _T("DEVICE_SOUND"));
 			if (dwAddr & FILE_DEVICE_STREAMS)
@@ -1932,11 +1899,6 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA* spDevInfoData, const
 			ShowDevPropertyInfo(hListView, 0L, p);
 			p = _tcschr(p, 0);
 			*p++;
-			while (_tcschr(p, '\\'))
-			{
-				p = _tcschr(p, 0);
-				*p++;
-			};
 		};
 
 	};
@@ -1944,7 +1906,7 @@ void GetMoreInformation(HDEVINFO hDevInfo, SP_DEVINFO_DATA* spDevInfoData, const
 
 /**
  * @brief Enumerate all devices and populate the tree and list views
- * 
+ *
  * This method initializes the device enumeration process, clearing existing
  * data and rebuilding the complete device tree with all hardware information.
  */
