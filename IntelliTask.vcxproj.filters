@@ -274,6 +274,7 @@
     <None Include="IntelliTask.html" />
     <None Include="SoftwareContentRegister.html" />
     <None Include="packages.config" />
+    <None Include="AGENTS.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntelliTask.h">
